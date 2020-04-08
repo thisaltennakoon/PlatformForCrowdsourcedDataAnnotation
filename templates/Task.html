@@ -16,7 +16,9 @@
     {% endfor %}
     <h4>Data Instances</h4>
     {% load static %}
-    <img src="{% static 'img/c1.jpeg' %}" alt="fsfsfs">
+    {% for datainstance in data_instance_list %}
+        <img src="{% static datainstance %}" alt="{{datainstance}}"><br>
+    {% endfor %}
 
 </body>
 </html>
