@@ -18,6 +18,6 @@ from django.conf.urls import include,url
 # from django.urls import path
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    url('admin/', admin.site.urls),
     url(r'^task/', include('createtask.urls'))
 ]
