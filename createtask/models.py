@@ -12,3 +12,6 @@ class AnnotationTask(models.Model):
     status = models.CharField(max_length=60, default='new')    #new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
     
+class Cateogary(models.Model):
+    taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
+    cateogaryName = models.CharField(max_length= 250)
