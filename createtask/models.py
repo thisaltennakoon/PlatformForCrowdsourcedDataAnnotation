@@ -15,3 +15,20 @@ class AnnotationTask(models.Model):
 class Cateogary(models.Model):
     taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
     cateogaryName = models.CharField(max_length= 250)
+
+class Questionaire(models.Model):
+    taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, default='Active')  #ative,#notactive
+
+class McqQuestion(models.Model):
+    questionaireID = models.ForeignKey(Questionaire, on_delete=models.CASCADE)
+    description = models.CharField(max_length=2000)
+
+class DescrptiveQuestion(models.Model):
+    questionaireID = models.ForeignKey(Questionaire, on_delete=models.CASCADE)
+    description = models.CharField(max_length=2000)
+
+class McqOption(models.Model):
+    questionID = models.ForeignKey(McqQuestion, on_delete=models.CASCADE)
+    description = models.CharField(max_length=1000)
+

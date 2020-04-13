@@ -19,7 +19,7 @@ CateogaryFormSet = modelformset_factory(
         'cateogaryName': forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter Author Name here'
+                #'placeholder': 'Enter Author Name here'
             }
         )
     }

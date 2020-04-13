@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import AnnotationTask
 from django.views.generic.edit import CreateView
 from django.views.generic import View
-from .forms import CreateTaskForm,AddCateogariesForm,CateogaryFormSet
+from .forms import CreateTaskForm,CateogaryFormSet
 from .models import UserNew2,Cateogary
 from django.forms import formset_factory
 
