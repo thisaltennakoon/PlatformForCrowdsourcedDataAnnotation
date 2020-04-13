@@ -1,5 +1,5 @@
 from django import forms
-from .models import AnnotationTask,Cateogary
+from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption
 from django.forms import formset_factory,modelformset_factory
 
 # class CreateTaskForm(forms.ModelForm):
@@ -49,3 +49,58 @@ class CreateTaskForm(forms.ModelForm):
                 }
             )
         }
+
+DQuestionFormSet = modelformset_factory(
+    DescrptiveQuestion,
+    fields=('description',),
+    extra=1,
+    widgets={
+        'Question': forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                #'placeholder': 'Enter Author Name here'
+            }
+        )
+    }
+)
+
+# McqQuestionFormSet = modelformset_factory(
+#     McqQuestion,
+#     fields=('description',),
+#     extra=1,
+#     widgets={
+#         'Question': forms.TextInput(
+#             attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Author Name here'
+#             }
+#         )
+#     }
+# )
+
+# McqOptionFormSet = modelformset_factory(
+#     McqOption,
+#     fields=('description',),
+#     extra=5,
+#     widgets={
+#         'Options': forms.TextInput(
+#             attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Author Name here'
+#             }
+#         )
+#     }
+# )
+
+class McqForm(forms.Form):
+    description = forms.CharField(max_length=2000)
+    correctanswer = forms.CharField(max_length=1000)
+    option1 = forms.CharField(max_length=1000)
+    option2 = forms.CharField(max_length=1000)
+    option3 = forms.CharField(max_length=1000)
+    option4 = forms.CharField(max_length=1000)
+
+McqFormSet = formset_factory(
+    McqForm,
+    extra=1,
+)

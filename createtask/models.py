@@ -31,4 +31,5 @@ class DescrptiveQuestion(models.Model):
 class McqOption(models.Model):
     questionID = models.ForeignKey(McqQuestion, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
+    is_correct = models.BooleanField(default=False)
 
