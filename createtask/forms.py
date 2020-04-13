@@ -8,8 +8,7 @@ from django.forms import formset_factory,modelformset_factory
 #         model = AnnotationTask
 #         fields = ['title', 'description', 'instructions']
 
-class AddCateogariesForm(forms.Form):
-    cateogary = forms.CharField()
+
 
 
 CateogaryFormSet = modelformset_factory(
