@@ -17,8 +17,8 @@ class DataClass(models.Model):
 
 class DataAnnotation(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
-    DataInstance = models.ImageField(upload_to='static/img/',blank=False,  )
-    #def __str__(self):  # display book name in admin panel
-        #return self.TaskID
+    DataInstance = models.ImageField(upload_to='img',blank=False,  )
+    def __str__(self):  # display book name in admin panel
+        return self.DataInstance.url
 
 

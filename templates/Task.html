@@ -10,15 +10,23 @@
 <body>
     <h3>Task Title : {{taskobject.Title}}</h3>
     <h3>Task Description : {{taskobject.Description}}</h3>
-    <h4>Data Classes</h4>
-    {% for dataclass in dataclasses %}
-        {{dataclass.ClassName}}<br>
-    {% endfor %}
-    <h4>Data Instances</h4>
+    <h4>Data Instance</h4>
     {% load static %}
-    {% for datainstance in data_instance_list %}
-        <img src="{% static datainstance %}" alt="{{datainstance}}"><br>
+    <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
+    <h4>Data Classes</h4>
+
+<form action="Task" method="POST">
+    {% csrf_token %}
+    {% for dataclass in dataclasses %}
+    <input type="radio" id="{{dataclass.ClassName}}" name="data_class" value="{{dataclass}}">
+    <lable for="{{dataclass.ClassName}}">{{dataclass.ClassName}}</lable><br>
     {% endfor %}
+    <input type="hidden" name="DataInstance" value="{{data_instance.DataInstance}}">
+    <input type="hidden" name="task_id" value="{{task_id}}">
+    <input type="hidden" name="user_id" value="{{user_id}}">
+    <input type="Submit" value="Submit Data Annotation">
+</form>
+
 
 </body>
 </html>
