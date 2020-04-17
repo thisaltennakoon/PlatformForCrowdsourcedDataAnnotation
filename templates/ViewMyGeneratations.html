@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Task Title : {{task_object.Title}}</h3>
+    <h3>Task Description : {{task_object.Description}}</h3>
+    {% if generated_data_instances_available %}
+        {% for generated_data_instance in generated_data_instances %}
+            <p>Data Instance : {{generated_data_instance.DataInstance}}</p>
+            <p>Your Answer : {{generated_data_instance.GenerationResult}}</p>
+            <p>Last Update : {{generated_data_instance.LastUpdate}}</p>
+    <button onclick="window.location.href = '/DoDataGenerationTask/ViewMyGenerations/Change?generated_data_instance_id={{generated_data_instance.id}}'">Make a Change</button><br><hr>
+        {% endfor %}
+    {% else %}
+         <h3>You haven't done any contributions</h3>
+    {% endif %}
+
+</body>
+</html>
+

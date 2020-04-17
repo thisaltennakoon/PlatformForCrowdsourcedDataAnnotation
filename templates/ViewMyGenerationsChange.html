@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .button {
+          border: none;
+          color: white;
+          padding: 5px 10px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .SaveButtonStyle {background-color: #008CBA;} /* Blue */
+        .DeleteButtonStyle {background-color: #f44336;} /* Red */
+
+    </style>
+</head>
+<body>
+
+    <h3>Task Title : {{task_object.Title}}</h3>
+    <h3>Task Description : {{task_object.Description}}</h3>
+    <h4>Data Instance : {{ generated_data_instance.DataInstance }}</h4>
+        <form action="Change" method="POST">
+            {% csrf_token %}
+            <input type="text"  name="modification_of_generated_data" value="{{generated_data_instance.GenerationResult}}"><br>
+            <input type="hidden" name="generated_data_instance_id" value="{{generated_data_instance.id}}">
+            <input class="button SaveButtonStyle" type="Submit" value="Save">
+        </form>
+<button onclick="window.location.href = '/DoDataGenerationTask/ViewMyGenerations/Delete?generated_data_instance_id={{generated_data_instance.id}}'" class="button DeleteButtonStyle">Delete</button>
+</body>
+</html>
+
