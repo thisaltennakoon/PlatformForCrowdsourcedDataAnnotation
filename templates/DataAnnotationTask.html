@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Task Title : {{task_object.Title}}</h3>
+    <h3>Task Description : {{task_object.Description}}</h3>
+    {% if data_instance_available %}
+        <h4>Data Instance</h4>
+        {% load static %}
+        <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
+        <h4>Data Classes</h4>
+
+        <form action="Task" method="POST">
+            {% csrf_token %}
+            {% for data_class in data_classes %}
+                <input type="radio" id="{{data_class.ClassName}}" name="data_class" value="{{data_class}}" required>
+                <lable for="{{data_class.ClassName}}">{{data_class.ClassName}}</lable><br>
+            {% endfor %}
+            <input type="hidden" name="DataInstance" value="{{data_instance.DataInstance}}">
+            <input type="hidden" name="task_id" value="{{task_id}}">
+            <input type="hidden" name="user_id" value="{{user_id}}">
+            <input type="Submit" value="Submit Data Annotation">
+        </form>
+    {% else %}
+        <h2>Congratulations!</h2> <h3><br>All the data instances in this task has been annotated.Try another task</h3>
+    {% endif %}
+    <br><a href="/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}">View My Contributions</a><br><br>
+</body>
+</html>
+
