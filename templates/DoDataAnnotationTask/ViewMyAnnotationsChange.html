@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .button {
+          border: none;
+          color: white;
+          padding: 5px 10px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .SaveButtonStyle {background-color: #008CBA;} /* Blue */
+        .DeleteButtonStyle {background-color: #f44336;} /* Red */
+
+    </style>
+</head>
+<body>
+
+    <h3>Task Title : {{task_object.Title}}</h3>
+    <h3>Task Description : {{task_object.Description}}</h3>
+
+        <h4>Data Instance</h4>
+        {% load static %}
+        <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
+        <h4>Data Classes</h4>
+
+        <form action="Change" method="POST">
+            {% csrf_token %}
+            {% for data_class in data_classes %}
+                {% if annotated_data_instance.ClassName == data_class.ClassName %}
+                    <input id="{{data_class.ClassName}}" type="radio"  value="{{data_class}}" name="data_class"  checked>
+                {% else %}
+                    <input id="{{data_class.ClassName}}" type="radio"  value="{{data_class}}" name="data_class" unchecked>
+                {% endif %}
+                <lable for="{{data_class.ClassName}}">{{data_class.ClassName}}</lable><br>
+            {% endfor %}
+            <input type="hidden" name="annotated_data_instance_id" value="{{annotated_data_instance.id}}">
+            <input class="button SaveButtonStyle" type="Submit" value="Save">
+        </form>
+<button onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations/Delete?annotated_data_instance_id={{annotated_data_instance.id}}'" class="button DeleteButtonStyle">Delete</button>
+</body>
+</html>
+
