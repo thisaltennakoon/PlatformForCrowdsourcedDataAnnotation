@@ -8,8 +8,7 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
     <meta name="robots" content="NONE,NOARCHIVE">
-
-        <style>
+    <style>
 .button {
   background-color:#D3D3D3; /* Grey */
   border: none;
@@ -27,10 +26,7 @@
 color: white;}
 </style>
 </head>
-
-
 <body class=" dashboard" data-admin-utc-offset="0">
-
 <!-- Container -->
 <div id="container">
     <!-- Header -->
@@ -39,7 +35,6 @@ color: white;}
             <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
         </div>
         <div id="user-tools">
-
         </div>
     </div>
     <!-- END Header -->
@@ -49,16 +44,13 @@ color: white;}
         &rsaquo; <a href="/DoDataAnnotationTask/Task?task_id={{task_object.id}}">{{task_object.Title}}</a>
         &rsaquo; <a href="/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_object.id}}">My Contributions</a>
         &rsaquo; Annotated Data Instance(id={{annotated_data_instance.id}})
-
     </div>
     <!-- Content -->
     <div id="content" class="colMS">
         <h1>Task Title : {{task_object.Title}}</h1>
         <h1>Task Description : {{task_object.Description}}</h1>
-
         <div id="content-main">
             <div class="app-auth module">
-
                 <h1><strong>Data Instance</strong></h1>
                 {% load static %}
                 <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
@@ -79,16 +71,11 @@ color: white;}
                 <button class="button button1" onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations/Delete?annotated_data_instance_id={{annotated_data_instance.id}}'" class="button DeleteButtonStyle">Delete</button>
             </div>
         </div>
-
         <br class="clear">
-
     </div>
     <!-- END Content -->
-
     <div id="footer"></div>
-
 </div>
 <!-- END Container -->
-
 </body>
 </html>
