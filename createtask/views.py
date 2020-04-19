@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
+from django.views import generic
 from .models import AnnotationTask
 from django.views.generic.edit import CreateView
 from django.views.generic import View
 from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm
-from .models import UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire
+from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire
 from django.forms import formset_factory
-
+from django import template
+from random import shuffle
 
 # class CreateTaskView(View):
 #     form_class = CreateTaskForm 
@@ -131,3 +133,35 @@ def AddQuestions(request):
         'Dq_formset': Dq_formset,
         'Mcq_formset': Mcq_formset,
     })
+
+class TaskView(generic.ListView):
+    template_name = 'createtask/Tasklits.html'
+    context_object_name = 'all_tasks'
+
+    def get_queryset(self):
+        return AnnotationTask.objects.all()
+
+def QuestionaireView(request,task_id):
+    #template_name = 'viewQuestions.html'
+    
+    if request.method == 'GET':
+        task = AnnotationTask.objects.get(pk=task_id)
+        questionaire = Questionaire.objects.get(taskID=task) #try required
+        question_list = questionaire.mcqquestion_set.all()
+        answers = []
+        for i in question_list:
+            a = i.mcqoption_set.all()
+            answers.append(a)
+            l=list(a)
+            shuffle(l)
+            i.add = l
+        lenght = len(question_list)
+        context = {'question_list':question_list,'answers':answers,'lenght':lenght}
+        return render(request,'createtask/viewQuestions.html',context)
+
+
+
+register = template.Library()
+@register.filter
+def index(sequence, position):
+    return sequence[position]

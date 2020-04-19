@@ -1,0 +1,14 @@
+<body>
+    <h1> Questionaire </h1>
+
+    <form action="" method='post'>
+    {%for q in question_list%}
+        <p> {{q.description}}</p>
+        {%for answer in q.add%}
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">{{answer.description}}</label><br>
+        {% endfor %}
+    {% endfor %}
+    </form>
+
+</body>
