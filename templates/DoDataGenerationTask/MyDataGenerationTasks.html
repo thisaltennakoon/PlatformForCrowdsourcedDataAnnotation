@@ -1,18 +1,55 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+
+<html lang="en-us" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Your Data Generation Tasks</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
 </head>
-<body>
-    <h1>Your Data Generation Tasks</h1>
-    {% for task in tasks %}
-     <a href="/DoDataGenerationTask/Task?task_id={{task.id}}">{{task.Title}}</a><br><br>
 
-    {% endfor %}
 
+<body class=" dashboard" data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/MyTasks/">My Tasks</a>
+        &rsaquo;My Data Generation Tasks
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1>My Tasks</h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                <table>
+                    <caption>
+                        Data Generation Tasks
+                    </caption>
+                    {% for task in tasks %}
+                    <tr class="{{task.id}}">
+                        <th scope="row"><a href="/DoDataGenerationTask/Task?task_id={{task.id}}">{{task.Title}}</a></th>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
 </body>
 </html>

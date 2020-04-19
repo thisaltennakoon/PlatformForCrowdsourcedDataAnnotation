@@ -1,41 +1,83 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-us" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        .button {
-          border: none;
-          color: white;
-          padding: 5px 10px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 16px;
-          margin: 4px 2px;
-          cursor: pointer;
-        }
+    <title>Data Generation Task</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
 
-        .SaveButtonStyle {background-color: #008CBA;} /* Blue */
-        .DeleteButtonStyle {background-color: #f44336;} /* Red */
-
-    </style>
+        <style>
+.button {
+  background-color:#D3D3D3; /* Grey */
+  border: none;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.button1 {background-color:#D00000;
+color: white;}
+</style>
 </head>
-<body>
 
-    <h3>Task Title : {{task_object.Title}}</h3>
-    <h3>Task Description : {{task_object.Description}}</h3>
-    <h4>Data Instance : {{ generated_data_instance.DataInstance }}</h4>
+
+<body class=" dashboard" data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+        <div id="user-tools">
+
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/MyTasks/"> My Tasks </a>
+        &rsaquo;<a href="/DoDataGenerationTask/"> My Data Generation Tasks </a>
+        &rsaquo; <a href="/DoDataGenerationTask/Task?task_id={{task_object.id}}">{{task_object.Title}}</a>
+        &rsaquo; <a href="/DoDataGenerationTask/ViewMyGenerations?task_id={{task_object.id}}">My Contributions</a>
+        &rsaquo; Generated Data Instance(id={{generated_data_instance.id}})
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1>Task Title : {{task_object.Title}}</h1>
+        <h1>Task Description : {{task_object.Description}}</h1>
+
+        <div id="content-main">
+            <div class="app-auth module">
+
+    <h1><strong>Data Instance : {{ generated_data_instance.DataInstance }}</strong></h1>
         <form action="Change" method="POST">
             {% csrf_token %}
             <input type="text"  name="modification_of_generated_data" value="{{generated_data_instance.GenerationResult}}"><br>
             <input type="hidden" name="generated_data_instance_id" value="{{generated_data_instance.id}}">
             <input class="button SaveButtonStyle" type="Submit" value="Save">
         </form>
-<button onclick="window.location.href = '/DoDataGenerationTask/ViewMyGenerations/Delete?generated_data_instance_id={{generated_data_instance.id}}'" class="button DeleteButtonStyle">Delete</button>
+                <button class="button button1" onclick="window.location.href = '/DoDataGenerationTask/ViewMyGenerations/Delete?generated_data_instance_id={{generated_data_instance.id}}'" class="button DeleteButtonStyle">Delete</button>
+            </div>
+        </div>
+
+        <br class="clear">
+
+    </div>
+    <!-- END Content -->
+
+    <div id="footer"></div>
+
+</div>
+<!-- END Container -->
+
 </body>
 </html>
-

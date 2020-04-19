@@ -1,29 +1,62 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-us" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Data Generation Task</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
 </head>
-<body>
-    <h3>Task Title : {{task_object.Title}}</h3>
-    <h3>Task Description : {{task_object.Description}}</h3>
-    {% if data_instance_available %}
-        <h4>Data Instance : {{ data_instance.DataInstance }}</h4>
-        <form action="Task" method="POST">
-            {% csrf_token %}
-            <input type="text"  name="generated_data" placeholder="Enter your answer here"><br>
-            <input type="hidden" name="DataInstance" value="{{data_instance.DataInstance}}">
-            <input type="hidden" name="task_id" value="{{task_id}}">
-            <input type="hidden" name="user_id" value="{{user_id}}"><br>
-            <input type="Submit" value="Submit Data Generation">
-        </form>
-    {% else %}
-        <h2>Congratulations!</h2> <h3><br>All the data instances in this task has been completed.Try another task</h3>
-    {% endif %}
-    <br><a href="/DoDataGenerationTask/ViewMyGenerations?task_id={{task_id}}">View My Contributions</a><br><br>
+<body class=" dashboard" data-admin-utc-offset="0">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+        <div id="user-tools">
+            {% if data_instance_available %}
+            <a href="/DoDataGenerationTask/ViewMyGenerations?task_id={{task_id}}"><strong>View My Contributions</strong></a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/MyTasks/"> My Tasks </a>
+        &rsaquo;<a href="/DoDataGenerationTask/"> My Data Generation Tasks </a>
+        &rsaquo; {{task_object.Title}}
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1>Task Title : {{task_object.Title}}</h1>
+        <h1>Task Description : {{task_object.Description}}</h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                {% if data_instance_available %}
+                <h1><strong>Data Instance : {{ data_instance.DataInstance }}</strong></h1>
+                <form action="Task" method="POST">
+                    {% csrf_token %}
+                    <input type="text"  name="generated_data" placeholder="Enter your answer here"><br>
+                    <input type="hidden" name="DataInstance" value="{{data_instance.DataInstance}}">
+                    <input type="hidden" name="task_id" value="{{task_id}}">
+                    <input type="hidden" name="user_id" value="{{user_id}}"><br>
+                    <input type="Submit" value="Submit Data Generation">
+                </form>
+                {% else %}
+                <h3>Congratulations!</h3> <h3>All the data instances in this task has been completed.Try another task</h3>
+                <button onclick="window.location.href = '/DoDataGenerationTask/ViewMyGenerations?task_id={{task_id}}'" class="button DeleteButtonStyle">View My Contributions</button>
+                {% endif %}
+            </div>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
 </body>
 </html>
 
