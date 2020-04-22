@@ -1,4 +1,5 @@
-<head>
+{% extends "base.html" %}
+{% comment %} <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,10 +9,12 @@
         .spacer{
             margin-top:25px;
         }
+    
     </style>
     {% block custom_css %}{% endblock %}
     <title>Create Task</title>
 </head>
+
 <h3>{{heading}}</h3>
 
 <form class="form-horizontal col-12" method="POST" action="">
@@ -136,4 +139,4 @@ $(document).on('click', '.remove-form-row', function(e){
 });
 
 </script>
-{% endblock %}
+{% endblock %} {% endcomment %}
