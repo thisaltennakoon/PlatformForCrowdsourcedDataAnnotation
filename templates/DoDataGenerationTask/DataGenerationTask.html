@@ -51,6 +51,25 @@
                 {% endif %}
             </div>
         </div>
+        <div id="content-related">
+            <div class="module" id="recent-actions-module">
+                <h2>My Contributions</h2>
+                {% if generated_data_instances_available %}
+                <!--h3>My actions</h3-->
+                <ul class="actionlist">
+                    {% for generated_data_instance in generated_data_instances %}
+                    <li class="addlink">
+                        <a href="/DoDataGenerationTask/ViewMyGenerations/Change?generated_data_instance_id={{generated_data_instance.id}}">Data Instance : {{generated_data_instance.DataInstance}}</a>
+                        <br>
+                        <span class="mini quiet">Your Answer : {{generated_data_instance.GenerationResult}}<br>Last Update : {{generated_data_instance.LastUpdate}}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <h3>You haven't done any generations</h3>
+                {% endif %}
+            </div>
+        </div>
         <br class="clear">
     </div>
     <!-- END Content -->

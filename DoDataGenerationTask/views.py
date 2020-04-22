@@ -30,22 +30,40 @@ def task(request):
         try:
             task_id = request.GET['task_id']
             user_id = 1
-            generated_data_instances = DataGenerationResult.objects.filter(TaskID_id=task_id, UserID=user_id)
+            generated_data_instances = DataGenerationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
             data_instances_to_exclude = []
             for i in generated_data_instances:
                 data_instances_to_exclude += [i.DataInstance]
             data_generation = DataGeneration.objects.filter(TaskID=task_id).exclude(DataInstance__in=data_instances_to_exclude)
             if len(data_generation) > 0:
                 data_instance = random.choice(data_generation)
-                return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': True,
-                                                                   'task_object': Task.objects.get(id=task_id),
-                                                                   'data_instance': data_instance,
-                                                                   'user_id': user_id,
-                                                                   'task_id': task_id}, )
+                if len(generated_data_instances) > 0:
+                    return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': True,
+                                                                                            'task_object': Task.objects.get(id=task_id),
+                                                                                            'data_instance': data_instance,
+                                                                                            'user_id': user_id,
+                                                                                            'task_id': task_id,
+                                                                                            'generated_data_instances_available': True,
+                                                                                            'generated_data_instances': generated_data_instances})
+                else:
+                    return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': True,
+                                                                                        'task_object': Task.objects.get(id=task_id),
+                                                                                        'data_instance': data_instance,
+                                                                                        'user_id': user_id,
+                                                                                        'task_id': task_id,
+                                                                                        'generated_data_instances_available': False,})
             else:
-                return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': False,
-                                                                   'task_object': Task.objects.get(id=task_id),
-                                                                   'task_id': task_id})
+                if len(generated_data_instances) > 0:
+                    return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': False,
+                                                                                        'task_object': Task.objects.get(id=task_id),
+                                                                                        'task_id': task_id,
+                                                                                        'generated_data_instances_available': True,
+                                                                                        'generated_data_instances': generated_data_instances})
+                else:
+                    return render(request, 'DoDataGenerationTask/DataGenerationTask.html', {'data_instance_available': False,
+                                                                                        'task_object': Task.objects.get(id=task_id),
+                                                                                        'task_id': task_id,
+                                                                                        'generated_data_instances_available': False,})
         except:
             return redirect('/DoDataGenerationTask/')
 

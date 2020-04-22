@@ -57,6 +57,25 @@
                 {% endif %}
             </div>
         </div>
+        <div id="content-related">
+            <div class="module" id="recent-actions-module">
+                <h2>My Contributions</h2>
+                {% if annotated_data_instances_available %}
+                <!--h3>My actions</h3-->
+                <ul class="actionlist">
+                    {% for annotated_data_instance in annotated_data_instances %}
+                    <li class="addlink">
+                        <a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}">Data Instance : {{annotated_data_instance.DataInstance}}</a>
+                        <br>
+                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassName}}<br>Last Update : {{annotated_data_instance.LastUpdate}}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <h3>You haven't done any annotations</h3>
+                {% endif %}
+            </div>
+        </div>
         <br class="clear">
     </div>
     <!-- END Content -->
