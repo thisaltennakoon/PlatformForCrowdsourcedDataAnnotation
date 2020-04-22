@@ -31,14 +31,14 @@
     </div>
     <!-- Content -->
     <div id="content" class="colMS">
-        <h1>Task Title : {{task_object.Title}}</h1>
-        <h1>Task Description : {{task_object.Description}}</h1>
+        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
         <div id="content-main">
             <div class="app-auth module">
                 {% if data_instance_available %}
                 <h1><strong>Data Instance</strong></h1>
                 {% load static %}
-                <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
+                <img max-width="420" max-height="420" src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
                 <h4>Data Classes</h4>
                 <form action="Task" method="POST">
                     {% csrf_token %}

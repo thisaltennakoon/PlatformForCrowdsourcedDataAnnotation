@@ -27,8 +27,8 @@
     </div>
     <!-- Content -->
     <div id="content" class="colMS">
-        <h1>Task Title : {{task_object.Title}}</h1>
-        <h1>Task Description : {{task_object.Description}}</h1>
+        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
         {% if generated_data_instances_available %}
         <div id="content-main">
             {% for generated_data_instance in generated_data_instances %}
