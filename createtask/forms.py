@@ -37,14 +37,16 @@ class CreateTaskForm(forms.ModelForm):
                 }
             ),
 
-            'description': forms.TextInput(attrs={
+            'description': forms.Textarea(attrs={
                 'class': 'form-control',
+                'style':'height: 100px',
                 #'placeholder': 'Enter Book Name here'
                 }
             ),
 
-            'instructions': forms.TextInput(attrs={
+            'instructions': forms.Textarea(attrs={
                 'class': 'form-control',
+                'style':'height: 100px',
                 #'placeholder': 'Enter Book Name here'
                 }
             )
