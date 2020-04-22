@@ -1,26 +1,25 @@
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style type="text/css">
+        .spacer{
+            margin-top:25px;
+        }
+    </style>
+    {% block custom_css %}{% endblock %}
+    <title>Django Library App</title>
+</head>
+
 <form class="form-horizontal" method="POST" action="">
     {% csrf_token %}
-{% comment %} {{ Dq_formset.management_form }}
-{% for form in Dq_formset %}
-<div class="row form-row spacer">
-    <div class="col-2">
-        <label>{{form.description.label}}</label>
-    </div>
-    <div class="col-4">
-        <div class="input-group">
-            {{form.description}}
-            <div class="input-group-append">
-                <button class="btn btn-success add-form-row">+</button>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}  {% endcomment %}
-
 
 {{ Mcq_formset.management_form }}
 {% for form in Mcq_formset %} 
-<div class="row form-row spacer">
+<div class="form1 col-12">
+<div class="row spacer">
     <div class="col-2">
         <label>{{form.description.label}}</label>
     </div>
@@ -32,6 +31,8 @@
             </div>
         </div>
     </div>
+    </div>
+    <div class="row spacer">
     <div class="col-2">
         <label>{{form.correctanswer.label}}</label>
     </div>
@@ -40,6 +41,8 @@
             {{form.correctanswer}}
         </div>
     </div>
+    </div>
+    <div class="row spacer">
     <div class="col-2">
         <label>{{form.option1.label}}</label>
     </div>
@@ -48,6 +51,8 @@
             {{form.option1}}
         </div>
     </div>
+    </div>
+    <div class="row spacer">
     <div class="col-2">
         <label>{{form.option2.label}}</label>
     </div>
@@ -56,6 +61,8 @@
             {{form.option2}}
         </div>
     </div>
+    </div>
+    <div class="row spacer">
     <div class="col-2">
         <label>{{form.option3.label}}</label>
     </div>
@@ -64,6 +71,8 @@
             {{form.option3}}
         </div>
     </div>
+    </div>
+    <div class="row spacer">
     <div class="col-2">
         <label>{{form.option4.label}}</label>
     </div>
@@ -71,6 +80,7 @@
         <div class="input-group">
             {{form.option4}}
         </div>
+    </div>
     </div>
     
 </div>
@@ -115,7 +125,7 @@ function cloneMore(selector, prefix) {
     total++;
     $('#id_' + prefix + '-TOTAL_FORMS').val(total);
     $(selector).after(newElement);
-    var conditionRow = $('.form-row:not(:last)');
+    var conditionRow = $('.form1:not(:last)');
     conditionRow.find('.btn.add-form-row')
     .removeClass('btn-success').addClass('btn-danger')
     .removeClass('add-form-row').addClass('remove-form-row')
@@ -125,8 +135,8 @@ function cloneMore(selector, prefix) {
 function deleteForm(prefix, btn) {
     var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
     if (total > 1){
-        btn.closest('.form-row').remove();
-        var forms = $('.form-row');
+        btn.closest('.form1').remove();
+        var forms = $('.form1');
         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
         for (var i=0, formCount=forms.length; i<formCount; i++) {
             $(forms.get(i)).find(':input').each(function() {
@@ -138,7 +148,7 @@ function deleteForm(prefix, btn) {
 }
 $(document).on('click', '.add-form-row', function(e){
     e.preventDefault();
-    cloneMore('.form-row:last', 'form');
+    cloneMore('.form1:last', 'form');
     return false;
 });
 $(document).on('click', '.remove-form-row', function(e){

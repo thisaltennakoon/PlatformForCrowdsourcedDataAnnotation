@@ -1,5 +1,20 @@
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style type="text/css">
+        .spacer{
+            margin-top:25px;
+        }
+    </style>
+    {% block custom_css %}{% endblock %}
+    <title>Create Task</title>
+</head>
 <h3>{{heading}}</h3>
-<form class="form-horizontal" method="POST" action="">
+
+<form class="form-horizontal col-12" method="POST" action="">
     {% csrf_token %}
 <div class="row spacer">
 <div class="col-2">
@@ -10,6 +25,7 @@
         {{taskform.title}}
     </div>
 </div>
+</div>
 <div class="row spacer">
 <div class="col-2">
     <label>{{taskform.description.label}}</label>
@@ -19,6 +35,7 @@
         {{taskform.description}}
     </div>
 </div>
+</div>
 <div class="row spacer">
 <div class="col-2">
     <label>{{taskform.instructions.label}}</label>
@@ -27,6 +44,7 @@
     <div class="input-group">
         {{taskform.instructions}}
     </div>
+</div>
 </div>
 
 </div>
