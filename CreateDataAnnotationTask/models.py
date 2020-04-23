@@ -4,6 +4,7 @@ from django.db import models
 class Task(models.Model):
     Title = models.CharField(max_length=200, blank=False)
     Description = models.TextField(max_length=256,blank=True)
+    DataInstanceAnnotationTimes = models.IntegerField(default = 1)
     def __str__(self):  # display book name in admin panel
         return self.Title
 
@@ -17,7 +18,8 @@ class DataClass(models.Model):
 
 class DataAnnotation(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
-    DataInstance = models.ImageField(upload_to='img',blank=False,  )
+    DataInstance = models.ImageField(upload_to='img',blank=False)
+    NumberOfAnnotations = models.IntegerField(default = 0)
     def __str__(self):  # display book name in admin panel
         return self.DataInstance.url
 
