@@ -7,8 +7,12 @@ from django.contrib import messages
 import random
 
 
+def test(request):
+    return render(request, 'test.html')
+
+
 def first(request):
-    return render(request, 'MyDataAnnotationTasks.html', {'tasks': Task.objects.all()}, )
+    return render(request, 'DoDataAnnotationTask/MyDataAnnotationTasks.html', {'tasks': Task.objects.all()}, )
 
 
 def task(request):
@@ -27,23 +31,42 @@ def task(request):
         try:
             task_id = request.GET['task_id']
             user_id = 1
-            annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id)
+            annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
             data_instances_to_exclude = []
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance]
             data_annotation = DataAnnotation.objects.filter(TaskID=task_id).exclude(DataInstance__in=data_instances_to_exclude)
             if len(data_annotation) > 0:
                 data_instance = random.choice(data_annotation)
-                return render(request, 'DataAnnotationTask.html', {'data_instance_available': True,
-                                                                   'task_object': Task.objects.get(id=task_id),
-                                                                   'data_classes': DataClass.objects.filter(TaskID=task_id),
-                                                                   'data_instance': data_instance,
-                                                                   'user_id': user_id,
-                                                                   'task_id': task_id}, )
+                if len(annotated_data_instances) > 0:
+                    return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
+                                                                                            'task_object': Task.objects.get(id=task_id),
+                                                                                            'data_classes': DataClass.objects.filter(TaskID=task_id),
+                                                                                            'data_instance': data_instance,
+                                                                                            'user_id': user_id,
+                                                                                            'task_id': task_id,
+                                                                                            'annotated_data_instances_available': True,
+                                                                                            'annotated_data_instances': annotated_data_instances})
+                else:
+                    return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
+                                                                                            'task_object': Task.objects.get(id=task_id),
+                                                                                            'data_classes': DataClass.objects.filter(TaskID=task_id),
+                                                                                            'data_instance': data_instance,
+                                                                                            'user_id': user_id,
+                                                                                            'task_id': task_id,
+                                                                                            'annotated_data_instances_available': False})
             else:
-                return render(request, 'DataAnnotationTask.html', {'data_instance_available': False,
-                                                                   'task_object': Task.objects.get(id=task_id),
-                                                                   'task_id': task_id})
+                if len(annotated_data_instances) > 0:
+                    return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
+                                                                                            'task_object': Task.objects.get(id=task_id),
+                                                                                            'task_id': task_id,
+                                                                                            'annotated_data_instances_available': True,
+                                                                                            'annotated_data_instances': annotated_data_instances})
+                else:
+                    return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
+                                                                                            'task_object': Task.objects.get(id=task_id),
+                                                                                            'task_id': task_id,
+                                                                                            'annotated_data_instances_available': False,})
         except:
             return redirect('/DoDataAnnotationTask/')
 
@@ -54,11 +77,11 @@ def view_my_annotations(request):
         user_id = 1
         annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
         if len(annotated_data_instances) > 0:
-            return render(request, 'ViewMyAnnotations.html', {'annotated_data_instances_available': True,
+            return render(request, 'DoDataAnnotationTask/ViewMyAnnotations.html', {'annotated_data_instances_available': True,
                                                                'task_object': Task.objects.get(id=task_id),
                                                                'annotated_data_instances':annotated_data_instances},)
         else:
-            return render(request, 'ViewMyAnnotations.html', {'annotated_data_instances_available': False,
+            return render(request, 'DoDataAnnotationTask/ViewMyAnnotations.html', {'annotated_data_instances_available': False,
                                                                'task_object': Task.objects.get(id=task_id), })
     except:
         return redirect('/DoDataAnnotationTask/')
@@ -78,21 +101,23 @@ def view_my_annotations_change(request):
         task_id = annotated_data_instance.TaskID_id
         data_instance = DataAnnotation.objects.get(TaskID= task_id ,
                                                    DataInstance = annotated_data_instance.DataInstance)
-        return render(request, 'ViewMyAnnotationsChange.html',{'annotated_data_instance':annotated_data_instance,
-                                                               'data_instance':data_instance,
-                                                               'task_object': Task.objects.get(id=task_id),
-                                                               'data_classes': DataClass.objects.filter(TaskID=task_id),})
+        return render(request, 'DoDataAnnotationTask/ViewMyAnnotationsChange.html',{'annotated_data_instance':annotated_data_instance,
+                                                                                    'annotated_data_instance_id':annotated_data_instance_id,
+                                                                                     'data_instance':data_instance,
+                                                                                    'task_object': Task.objects.get(id=task_id),
+                                                                                     'data_classes': DataClass.objects.filter(TaskID=task_id),})
 
-def view_my_annotations_delete(request):
+"""def view_my_annotations_delete(request):
     annotated_data_instance_id = request.GET['annotated_data_instance_id']
+    task_id = DataAnnotationResult.objects.get(id=annotated_data_instance_id).TaskID_id
     try:
         last_confirmation = request.GET['last_confirmation']
         if last_confirmation=="True":
-            task_id = DataAnnotationResult.objects.get(id=annotated_data_instance_id).TaskID_id
             DataAnnotationResult.objects.get(id=annotated_data_instance_id).delete()
             return redirect('/DoDataAnnotationTask/ViewMyAnnotations?task_id='+str(task_id))
         else:
             return redirect('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id=' + str(annotated_data_instance_id))
 
     except:
-        return render(request, 'ViewMyAnnotationsDelete.html', {'annotated_data_instance_id': annotated_data_instance_id})
+        return render(request, 'DoDataAnnotationTask/ViewMyAnnotationsDelete.html', {'annotated_data_instance_id': annotated_data_instance_id,
+                                                                                     'task_object':Task.objects.get(id=task_id)})"""

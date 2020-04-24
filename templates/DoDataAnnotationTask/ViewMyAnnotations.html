@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <title>My Data Annotation Contributions</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" dashboard" data-admin-utc-offset="0">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/MyTasks/"> My Tasks </a>
+        &rsaquo;<a href="/DoDataAnnotationTask/"> My Data Annotation Tasks </a>
+        &rsaquo; <a href="/DoDataAnnotationTask/Task?task_id={{task_object.id}}">{{task_object.Title}}</a>
+        &rsaquo; My Contributions
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
+        {% if annotated_data_instances_available %}
+        <div id="content-main">
+            {% for annotated_data_instance in annotated_data_instances %}
+            <div class="{{annotated_data_instance.DataInstance}} module">
+                <table>
+                    <caption>
+                        Data Instance : {{annotated_data_instance.DataInstance}}
+                    </caption>
+                    <tr class="Your Answer">
+                        <th scope="row">Your Answer : {{annotated_data_instance.ClassName}}</th>
+                        <td><a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}" class="addlink">Change answer</a></td>
+                        <!--td><a href="/DoDataAnnotationTask/ViewMyAnnotations/Delete?annotated_data_instance_id={{annotated_data_instance.id}}" class="deletelink">Delete</a></td-->
+                    </tr>
+                    <tr class="Last Update">
+                        <th scope="row">Last Update : {{annotated_data_instance.LastUpdate}}</th>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h3>You haven't done any annotations</h3>
+            {% endif %}
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>
