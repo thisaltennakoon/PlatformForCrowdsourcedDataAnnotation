@@ -9,8 +9,21 @@ from CreateDataGenerationTask.models import Task as DataGenerationTask
 from CreateDataAnnotationTask.models import Task as DataAnnotationTask
 
 
+def Sign_in(request):
+    if request.method == 'POST':
+        request.session['user_id'] = request.POST['user_id']
+        request.session['password'] = request.POST['password']
+        return redirect('/UserManagement/MyTasks')
+    else:
+        return render(request, 'UserManagement/Sign_in.html')
+
+
 def view_my_tasks(request):
-    return render(request, 'UserManagement/test.html' , {'data_generation_tasks': DataGenerationTask.objects.all(),
-                                                         'data_annotation_tasks':DataAnnotationTask.objects.all()})
+    if 'user_id' in request.session:
+        return render(request, 'UserManagement/test.html' , {'data_generation_tasks': DataGenerationTask.objects.all(),
+                                                         'data_annotation_tasks':DataAnnotationTask.objects.all(),
+                                                             'user_id':request.session['user_id']})
+    else:
+        return redirect('/UserManagement/SignIn')
 
 
