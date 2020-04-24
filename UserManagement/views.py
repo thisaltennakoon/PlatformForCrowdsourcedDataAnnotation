@@ -36,7 +36,7 @@ def sign_in(request):
                     request,
                     "Username or password is incorrect."
                 )
-    return render(request, 'UserManagement/sign_in.html', {'form': form})
+    return render(request, 'accounts/sign_in.html', {'form': form})
 
 def formView(request):
    if request.session.has_key('username'):
@@ -61,7 +61,7 @@ def sign_up(request):
                 "You're now a user! You've been signed in, too."
             )
             return HttpResponseRedirect(reverse('home'))  # TODO: go to profile
-    return render(request, 'UserManagement/sign_up.html', {'form': form})
+    return render(request, 'accounts/sign_up.html', {'form': form})
 
 
 def sign_out(request):
@@ -78,7 +78,7 @@ def sign_out(request):
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
-    return render(request, 'UserManagement/profile.html', {
+    return render(request, 'accounts/profile.html', {
         'profile': profile
     })
 
@@ -96,7 +96,7 @@ def edit_profile(request):
             messages.success(request, "Updated the Profile Successfully!")
             return HttpResponseRedirect(reverse('accounts:profile'))
 
-    return render(request, 'UserManagement/edit_profile.html', {
+    return render(request, 'accounts/edit_profile.html', {
         'form': form
     })
 
@@ -109,10 +109,10 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
-            return HttpResponseRedirect(reverse('UserManagement:profile'))
+            return HttpResponseRedirect(reverse('accounts:profile'))
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'UserManagement/change_password.html', {
+    return render(request, 'accounts/change_password.html', {
         'form': form
     })
 
