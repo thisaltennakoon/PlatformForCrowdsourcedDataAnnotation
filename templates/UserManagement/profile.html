@@ -28,9 +28,10 @@
         </div>
         {% endif %}
         <div class="col-md-2">
-        <button class="profile-edit-btn" name="btnAddMore"><a href="#">View task</a></button>
+        <button onclick="window.location.href = '/UserManagement/MyTasks/' "class="profile-edit-btn" name="btnAddMore">View task</button>
         </div>
         </div>
+
         {% if not profile.first_name %}
             <p>You have an empty profile.</p>
             <a href="{% url 'accounts:edit_profile' %}">Add some info</a>
@@ -48,6 +49,7 @@
                                     <h5>
                                         {{profile.bio}}
                                     </h5>
+
 
                                     <p class="proile-rating">Ratings:
                                             <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -11,6 +11,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from . import forms
 
+from CreateDataGenerationTask.models import Task as DataGenerationTask
+from CreateDataAnnotationTask.models import Task as DataAnnotationTask
+
 def sign_in(request):
     form = AuthenticationForm()
     username= 'not logged in'
@@ -21,6 +24,7 @@ def sign_in(request):
                 user = form.user_cache
                 username = form.cleaned_data['username']
                 request.session['username'] = username
+                request.session['user_id'] = user.id
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(
@@ -74,16 +78,17 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
+
     return render(request, 'UserManagement/profile.html', {
-        'profile': profile
+        'profile': profile,
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
@@ -101,7 +106,7 @@ def edit_profile(request):
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -116,14 +121,12 @@ def change_password(request):
         'form': form
     })
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):
-    if user.is_authenticated :
-        if 'user_id' in request.session:
-            return render(request, 'UserManagement/test.html' , {'data_generation_tasks': DataGenerationTask.objects.all(),
-                                                             'data_annotation_tasks':DataAnnotationTask.objects.all(),
-                                                                 'user_id':request.session['user_id']})
-        else:
-            return redirect('/UserManagement/SignIn')
+    if 'user_id' in request.session:
+        return render(request, 'UserManagement/test.html' , {'data_generation_tasks': DataGenerationTask.objects.all(),
+                                                         'data_annotation_tasks':DataAnnotationTask.objects.all(),
+                                                             'user_id':request.session['user_id']})
     else:
-        return HttpResponseRedirect("You have not signed in")
+        return redirect('/UserManagement/SignIn')
+
