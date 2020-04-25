@@ -116,5 +116,14 @@ def change_password(request):
         'form': form
     })
 
-
-
+@login_required
+def view_my_tasks(request):
+    if user.is_authenticated :
+        if 'user_id' in request.session:
+            return render(request, 'UserManagement/test.html' , {'data_generation_tasks': DataGenerationTask.objects.all(),
+                                                             'data_annotation_tasks':DataAnnotationTask.objects.all(),
+                                                                 'user_id':request.session['user_id']})
+        else:
+            return redirect('/UserManagement/SignIn')
+    else:
+        return HttpResponseRedirect("You have not signed in")

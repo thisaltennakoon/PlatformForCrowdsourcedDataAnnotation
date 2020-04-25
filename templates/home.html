@@ -8,7 +8,7 @@
     <h1>Welcome {{ profile.first_name }}!</h1>
     {% endif %}
     <a href="{% url 'accounts:profile' %}">My Profile</a>
-    <a href="{% url 'accounts:profile' %}">My Tasks</a>
+    <a href="/UserManagement/MyTasks/">My Tasks</a>
     {% else %}
     <h1>Welcome to CDAP !</h1>
     <p>Register and login to annotate and generate your data sets !!!</p>
