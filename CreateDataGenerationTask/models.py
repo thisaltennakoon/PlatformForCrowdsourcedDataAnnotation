@@ -10,7 +10,7 @@ class Task(models.Model):
 
 
 
-class DataGeneration(models.Model):
+class GenerationDataSet(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     DataInstance = models.CharField(max_length=400, blank=False , unique=True)
     NumberOfGenerations = models.IntegerField(default=0)

@@ -26,6 +26,7 @@
         <h1><strong>My Tasks</strong></h1>
         <h1><strong>user_id : {{user_id}}</strong></h1>
         <div id="content-main">
+            {% if data_annotation_tasks|length > 0 %}
             <div class="app-auth module">
                 <table>
                     <caption>
@@ -39,6 +40,8 @@
                     {% endfor %}
                 </table>
             </div>
+            {% endif %}
+            {% if data_generation_tasks|length > 0 %}
             <div class="app-CreateDataAnnotationTask module">
                 <table>
                     <caption>
@@ -52,6 +55,7 @@
                     {% endfor %}
                 </table>
             </div>
+            {% endif %}
         </div>
         <br class="clear">
     </div>

@@ -1,19 +1,29 @@
 from django.shortcuts import render,redirect,reverse
 from .models import DataGenerationResult
 from django.http import HttpResponse
-from CreateDataGenerationTask.models import Task,DataGeneration
+from CreateDataGenerationTask.models import Task,GenerationDataSet
 from .models import DataGenerationResult
 from django.contrib import messages
 import random
-
+from django.contrib.auth.decorators import login_required
+from UserManagement.models import ContributorTask
 
 def test(request):
     return render(request, 'DoDataGenerationTask/test.html' )
 
+
+@login_required(login_url='UserManagement:sign_in')
 def first(request):
-    return render(request, 'DoDataGenerationTask/MyDataGenerationTasks.html', {'tasks': Task.objects.all()}, )
+    all_user_generation_tasks = ContributorTask.objects.filter(UserID_id=request.session['user_id'],
+                                                               is_data_annotation_task=False,
+                                                               is_data_generation_task=True)
+    user_data_generation_tasks = []
+    for generation_task in all_user_generation_tasks:
+        user_data_generation_tasks += [generation_task.TaskID]
+    return render(request, 'DoDataGenerationTask/MyDataGenerationTasks.html', {'tasks': Task.objects.filter(id__in=user_data_generation_tasks)}, )
 
 
+@login_required(login_url='UserManagement:sign_in')
 def task(request):
     if request.method == 'POST':
         generated_data = request.POST['generated_data']
@@ -34,7 +44,7 @@ def task(request):
             data_instances_to_exclude = []
             for i in generated_data_instances:
                 data_instances_to_exclude += [i.DataInstance]
-            data_generation = DataGeneration.objects.filter(TaskID=task_id).exclude(DataInstance__in=data_instances_to_exclude)
+            data_generation = GenerationDataSet.objects.filter(TaskID=task_id).exclude(DataInstance__in=data_instances_to_exclude)
             if len(data_generation) > 0:
                 data_instance = random.choice(data_generation)
                 if len(generated_data_instances) > 0:
@@ -68,6 +78,7 @@ def task(request):
             return redirect('/DoDataGenerationTask/')
 
 
+@login_required(login_url='UserManagement:sign_in')
 def view_my_generations(request):
     try:
         task_id = request.GET['task_id']
@@ -84,6 +95,7 @@ def view_my_generations(request):
         return redirect('/DoDataGenerationTask/')
 
 
+@login_required(login_url='UserManagement:sign_in')
 def view_my_generations_change(request):
     if request.method == 'POST':
         generated_data_instance_id = request.POST['generated_data_instance_id']
@@ -101,7 +113,7 @@ def view_my_generations_change(request):
                                                                'task_object': Task.objects.get(id=task_id),})
 
 
-def view_my_generations_delete(request):
+"""def view_my_generations_delete(request):
     generated_data_instance_id = request.GET['generated_data_instance_id']
     task_id = DataGenerationResult.objects.get(id=generated_data_instance_id).TaskID_id
     try:
@@ -115,5 +127,5 @@ def view_my_generations_delete(request):
 
     except:
         return render(request, 'DoDataGenerationTask/ViewMyGenerationsDelete.html', {'generated_data_instance_id': generated_data_instance_id,
-                                                                                     'task_object':Task.objects.get(id=task_id)})
+                                                                                     'task_object':Task.objects.get(id=task_id)})"""
 
