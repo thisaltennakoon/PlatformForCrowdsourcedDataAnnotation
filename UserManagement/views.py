@@ -5,11 +5,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
                                        PasswordChangeForm)
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from . import models
 from . import forms
+from .models import ContributorTask
+from CreateDataGenerationTask.models import Task as DataGenerationTask
+from CreateDataAnnotationTask.models import Task as DataAnnotationTask
 
 def sign_in(request):
     form = AuthenticationForm()
@@ -21,6 +24,7 @@ def sign_in(request):
                 user = form.user_cache
                 username = form.cleaned_data['username']
                 request.session['username'] = username
+                request.session['user_id'] = user.id
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(
@@ -74,16 +78,17 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
+
     return render(request, 'UserManagement/profile.html', {
-        'profile': profile
+        'profile': profile,
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
@@ -101,7 +106,7 @@ def edit_profile(request):
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -115,6 +120,20 @@ def change_password(request):
     return render(request, 'UserManagement/change_password.html', {
         'form': form
     })
+
+@login_required(login_url='UserManagement:sign_in')
+def view_my_tasks(request):
+    all_user_tasks = ContributorTask.objects.filter(UserID_id=request.session['user_id'])
+    user_data_generation_tasks = []
+    user_data_annotation_tasks = []
+    for task in all_user_tasks:
+        if (task.is_data_annotation_task ) and not(task.is_data_generation_task ):
+            user_data_annotation_tasks += [task.TaskID]
+        elif not(task.is_data_annotation_task ) and (task.is_data_generation_task ):
+            user_data_generation_tasks += [task.TaskID]
+    return render(request, 'UserManagement/MyTasks.html' , {'data_generation_tasks': DataGenerationTask.objects.filter(id__in=user_data_generation_tasks),
+                                                         'data_annotation_tasks':DataAnnotationTask.objects.filter(id__in=user_data_annotation_tasks),
+                                                             'user_id':request.session['user_id']})
 
 
 

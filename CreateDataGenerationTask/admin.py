@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Task,DataGeneration
+from .models import Task,GenerationDataSet
 
 admin.site.register(Task)
-admin.site.register(DataGeneration)
+admin.site.register(GenerationDataSet)
 

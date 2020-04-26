@@ -16,7 +16,7 @@ class DataClass(models.Model):
         return self.ClassName
 
 
-class DataAnnotation(models.Model):
+class AnnotationDataSet(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     DataInstance = models.ImageField(upload_to='img',blank=False)
     NumberOfAnnotations = models.IntegerField(default = 0)
