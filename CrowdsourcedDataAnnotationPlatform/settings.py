@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+#Janani's database
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,7 +86,9 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
     }
 }"""
 
-DATABASES = {
+
+#Thisal's databsse
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CrowdsourcedDataAnnotationPlatform',
@@ -93,7 +96,7 @@ DATABASES = {
         'PASSWORD': '1234',
         'HOST':'localhost'
     }
-}
+}"""
 
 
 
