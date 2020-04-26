@@ -8,7 +8,6 @@ import random
 from django.contrib.auth.decorators import login_required
 from UserManagement.models import ContributorTask
 
-
 def test(request):
     return render(request, 'test.html')
 
@@ -21,8 +20,6 @@ def first(request):
     for annotation_task in all_user_annotation_tasks:
         user_data_annotation_tasks += [annotation_task.TaskID]
     return render(request, 'DoDataAnnotationTask/MyDataAnnotationTasks.html', {'tasks': Task.objects.filter(id__in=user_data_annotation_tasks)}, )
-
-
 
 
 @login_required(login_url='UserManagement:sign_in')
@@ -54,10 +51,6 @@ def task(request):
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance]
             data_annotation = AnnotationDataSet.objects.filter(TaskID=task_id,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(DataInstance__in=data_instances_to_exclude)
-            print(data_instance_annotation_times)
-            for i in data_annotation:
-                if i.NumberOfAnnotations==data_instance_annotation_times:
-                    print('wrong')
             if len(data_annotation) > 0:
                 data_instance = random.choice(data_annotation)
                 if len(annotated_data_instances) > 0:
