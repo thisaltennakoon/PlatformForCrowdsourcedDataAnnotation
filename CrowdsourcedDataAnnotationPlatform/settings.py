@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 
 
 #Thisal's databsse
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CrowdsourcedDataAnnotationPlatform',
@@ -96,9 +96,18 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
         'PASSWORD': '1234',
         'HOST':'localhost'
     }
-}"""
+}
 
+#MySQL event for release data instances
+"""SET GLOBAL event_scheduler = ON; -- enable event scheduler.
+SELECT @@event_scheduler;  -- check whether event scheduler is ON/OFF
+CREATE EVENT release_data_instances  -- create your event
+    ON SCHEDULE
+      EVERY 120 SECOND  -- run every 120 secs (2 Min)
+    DO
+      UPDATE CrowdsourcedDataAnnotationPlatform.CreateDataAnnotationTask_annotationdataset SET IsViewing=False,WhoIsViewing=0,LastUpdate=NOW() WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 2 MINUTE)-- update this table
 
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

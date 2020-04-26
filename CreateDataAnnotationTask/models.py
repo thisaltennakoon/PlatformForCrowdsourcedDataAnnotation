@@ -20,6 +20,9 @@ class AnnotationDataSet(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     DataInstance = models.ImageField(upload_to='img',blank=False)
     NumberOfAnnotations = models.IntegerField(default = 0)
+    IsViewing = models.BooleanField(default=False)
+    WhoIsViewing = models.IntegerField(default = 0,null=False,blank=False)
+    LastUpdate = models.DateTimeField(auto_now=True)
     def __str__(self):  # display book name in admin panel
         return self.DataInstance.url
 
