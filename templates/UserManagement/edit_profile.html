@@ -6,7 +6,7 @@
 {% block body %}
     <div class="grid-100">
         <h1>Profile</h1>
-        <form method="POST" actions="" enctype="multipart/form-data">
+        <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" class="button" value="save" />

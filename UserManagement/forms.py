@@ -28,8 +28,9 @@ class ProfileForm(forms.ModelForm):
             'bio',
             'is_contributor',
             'is_author',
+            'field',
             'country',
-            'avatar'
+
 
         ]
 

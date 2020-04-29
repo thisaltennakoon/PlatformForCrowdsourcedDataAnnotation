@@ -11,6 +11,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from . import forms
 
+from.filters import ProfileFilter
+from .models import Profile
+
+
 def sign_in(request):
     form = AuthenticationForm()
     username= 'not logged in'
@@ -20,7 +24,7 @@ def sign_in(request):
             if form. user_cache is not None:
                 user = form.user_cache
                 username = form.cleaned_data['username']
-                request.session['username'] = username
+                request.session['user_id'] = user.id
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect(
@@ -74,7 +78,7 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required
+@login_required (login_url='UserManagement:sign_in')
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
@@ -83,7 +87,7 @@ def profile(request):
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
@@ -101,7 +105,7 @@ def edit_profile(request):
     })
 
 
-@login_required
+@login_required(login_url='UserManagement:sign_in')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -117,4 +121,7 @@ def change_password(request):
     })
 
 
-
+def search (request):
+    profile_list = Profile.objects.all()
+    searchFilter = ProfileFilter(request.GET, queryset=profile_list)
+    return render(request, 'UserManagement/search.html', {'filter':searchFilter})
