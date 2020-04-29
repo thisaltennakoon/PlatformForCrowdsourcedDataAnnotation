@@ -160,6 +160,9 @@ def QuestionaireView(request,task_id):
         return render(request,'createtask/viewQuestions.html',context)
 
 
+def AddtestView(request):
+    return render(request,'createtask/addTest.html')
+
 
 register = template.Library()
 @register.filter

@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^create/$',views.createTask, name='Anno_task_add'),
     url(r'^new/$', views.test, name= 'test'),
     url(r'^create/addquestion$',views.AddQuestions, name='question_add'),
-    url(r'^questionaire/(?P<task_id>[0-9]+)/$',views.QuestionaireView, name='question_view')
+    url(r'^questionaire/(?P<task_id>[0-9]+)/$',views.QuestionaireView, name='question_view'),
+    url(r'^create/example',views.AddtestView, name='test_view')
 ]

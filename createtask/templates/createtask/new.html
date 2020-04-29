@@ -31,11 +31,26 @@
 <div class="col-2">
     <label>{{taskform.instructions.label}}</label>
 </div>
-<div class="col-4">
-    <div class="input-group">
-    {{taskform.instructions}}
+    <div class="col-4">
+        <div class="input-group">
+        {{taskform.instructions}}
     </div>
 </div>
+</div>
+
+{% comment %} not connected {% endcomment %}
+<div class="row spacer">           
+    <label for="exampleFormControlSelect1" class="col-2">Number of Annotations per data instance</label>
+    <div class="col-4">
+        <select class="form-control" id="exampleFormControlSelect1">
+        <option>1</option>
+        <option>3</option>
+        <option>5</option>
+        </select>
+    </div>
+
+</div>
+
 </div>
 
 
@@ -55,11 +70,24 @@
     </div>
 </div>
 {% endfor %}
+
+{% comment %} Not working {% endcomment %}
+<div class="row spacer">
+        <div class="col-2">
+            <label for="exampleFormControlFile1">Dataset (Add a zipfile containing images only without any subfolders)</label>
+        </div>
+        <div class="col-4">
+            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+    
+</div>
+    
 <div class="row spacer">
     <div class="col-4 offset-2">
-        <button type="submit" class="btn btn-block btn-primary">Create</button>
+        <button type="submit" class="btn btn-block btn-primary">Next</button>
     </div>
 </div>
+
 </form>
 
 

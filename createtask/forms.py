@@ -95,8 +95,8 @@ DQuestionFormSet = modelformset_factory(
 # )
 
 class McqForm(forms.Form):
-    description = forms.CharField(max_length=2000)
-    correctanswer = forms.CharField(max_length=1000)
+    description = forms.CharField(label="Enter your Question", widget=forms.Textarea)
+    correctanswer = forms.CharField(max_length=1000, label="correct answer")
     option1 = forms.CharField(max_length=1000)
     option2 = forms.CharField(max_length=1000)
     option3 = forms.CharField(max_length=1000)
