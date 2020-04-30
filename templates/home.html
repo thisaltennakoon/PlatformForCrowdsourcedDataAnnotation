@@ -1,6 +1,33 @@
-{% extends 'layout.html' %}
-{% block body %}
 
+{% extends 'layout.html' %}
+{% load static %}
+
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Consulting HTML-5 Template </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="manifest" href="site.webmanifest">
+		<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+		<!-- CSS here -->
+            <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/slicknav.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+   </head>
+<body>
+{% block body %}
 <img src = https://www.1designshop.com/wp-content/uploads/2016/01/1dsp-20160108-people010.png>
     <div class="{% if user.is_authenticated %}grid-75{% else %}grid-100{% endif %}">
         {% if user.is_authenticated %}
@@ -9,8 +36,25 @@
             {% endif %}
             <a href="{% url 'UserManagement:profile' %}">My Profile</a>
         {% else %}
+        <div class="single-slider slider-height d-flex align-items-center" data-background="assets/img/hero/h1_hero.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-8">
+                                <div class="hero__caption">
+                                    <p data-animation="fadeInLeft" data-delay=".4s">Welcome to Buson</p>
+                                    <h1 data-animation="fadeInLeft" data-delay=".6s" >We help you to grow your  business</h1>
+                                    <!-- Hero-btn -->
+                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s">
+                                        <a href="industries.html" class="btn hero-btn">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <h1>Welcome to CDAP !</h1>
             <p>Register and login to annotate and generate your data sets !!!</p>
         {% endif %}
     </div>
 {% endblock %}
+</body>
