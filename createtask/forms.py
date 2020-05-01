@@ -1,5 +1,5 @@
 from django import forms
-from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption
+from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,GenerationClass,GenerationTask
 from django.forms import formset_factory,modelformset_factory
 
 # class CreateTaskForm(forms.ModelForm):
@@ -106,3 +106,63 @@ McqFormSet = formset_factory(
     McqForm,
     extra=1,
 )
+
+# class zipFile(forms.Form):
+#     file = forms.FileField()
+
+# class DataSetForm(forms.Form):
+#     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+# class ExampleImagesForm(forms.Form):
+#     image_filed = forms.FileField()
+
+class CreateGenerationTaskForm(forms.ModelForm):
+    class Meta:
+        model = GenerationTask
+        fields = ('title', 'description', 'instructions',)
+        labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                #'placeholder': 'Enter Book Name here'
+                }
+            ),
+
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style':'height: 100px',
+                #'placeholder': 'Enter Book Name here'
+                }
+            ),
+
+            'instructions': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style':'height: 100px',
+                #'placeholder': 'Enter Book Name here'
+                }
+            )
+        }
+DATA_CHOICES = [
+    ('T', 'Text'),
+    ('I', 'Images'),
+]
+class CustomForm1(forms.Form):
+    dataType = forms.ChoiceField(choices=DATA_CHOICES, required=True, label="Data Type need to generate")
+
+
+GenerationClassFormSet = modelformset_factory(
+    GenerationClass,
+    fields=('classtitle',),
+    extra=1,
+    widgets={
+        'classtitle': forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                #'placeholder': 'Enter Author Name here'
+            }
+        ),
+    }
+)
+
+class AddTextExample(forms.ModelForm):
+    
