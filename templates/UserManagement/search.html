@@ -1,25 +1,28 @@
 {% extends 'layout.html' %}
+{% load static %}
 {% block body %}
-<link rel="stylesheet" href="assets/css/circle/search.css"
+<!link rel="stylesheet" href="{% static 'assets/css/circle/search.css' %}">
   <form method="get">
     {{ filter.form.as_p }}
     <button type="submit">Search</button>
   </form>
 <ul>
-  {% for user in filter.qs %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  {% if filter.qs %}
+    {% for user in filter.qs %}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div class="card">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="John" style="width:100%">
-  <h1>{{user.first_name}} {{user.last_name}}</h1>
-    {% if user.is_author %}
-        <p class="title">Author in {{user.field}} field</p>
-    {% else %}
-        <p class="title">Contributor in {{user.field}} field</p>
-    {% endif %}
-  <p><button>Contact</button></p>
-</div>
-  {% endfor %}
-  </ul>
+    <div class="card">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="John" style="width:10%">
+        <h1>{{user.first_name}} {{user.last_name}}</h1>
+        {% if user.is_author %}
+          <p class="title">Author in {{user.field}} field</p>
+        {% else %}
+          <p class="title">Contributor in {{user.field}} field</p>
+        {% endif %}
+    <p><button>View profile</button></p>
+    </div>
+    {% endfor %}
+  {% endif %}
+    </ul>
 
 {% endblock %}

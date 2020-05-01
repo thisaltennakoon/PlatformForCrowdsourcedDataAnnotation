@@ -28,7 +28,7 @@
    </head>
 <body>
 {% block body %}
-<img src = https://www.1designshop.com/wp-content/uploads/2016/01/1dsp-20160108-people010.png>
+<! img src = https://www.1designshop.com/wp-content/uploads/2016/01/1dsp-20160108-people010.png>
     <div class="{% if user.is_authenticated %}grid-75{% else %}grid-100{% endif %}">
         {% if user.is_authenticated %}
             {% if profile.first_name %}
@@ -36,17 +36,12 @@
             {% endif %}
             <a href="{% url 'UserManagement:profile' %}">My Profile</a>
         {% else %}
-        <div class="single-slider slider-height d-flex align-items-center" data-background="assets/img/hero/h1_hero.jpg">
+        <div class="single-slider slider-height d-flex align-items-center" data-background="{% static 'assets/img/hero/h1_hero.jpg' %}">
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-6 col-lg-6 col-md-8">
                                 <div class="hero__caption">
-                                    <p data-animation="fadeInLeft" data-delay=".4s">Welcome to Buson</p>
-                                    <h1 data-animation="fadeInLeft" data-delay=".6s" >We help you to grow your  business</h1>
-                                    <!-- Hero-btn -->
-                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s">
-                                        <a href="industries.html" class="btn hero-btn">Learn More</a>
-                                    </div>
+                                    <h1 data-animation="fadeInLeft" data-delay=".6s" >We help you to meet your data annotators</h1>
                                 </div>
                             </div>
                         </div>

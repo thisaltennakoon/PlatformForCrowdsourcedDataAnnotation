@@ -47,6 +47,7 @@
                         <li><a href="{% url 'home' %}">Home</a></li>
                         {% if user.is_authenticated %}
                             <li><a href="{% url 'UserManagement:profile' %}">Profile</a></li>
+                            <li><a href=" {% url 'UserManagement:search' %}">Search</a></li>
                         {% endif %}
                     </ul>
                 </nav>
