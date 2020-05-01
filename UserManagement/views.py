@@ -12,6 +12,7 @@ from . import models
 from . import forms
 
 from.filters import ProfileFilter
+from .forms import ProfileForm
 from .models import Profile
 
 
@@ -91,14 +92,14 @@ def profile(request):
 def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
-    form = forms.ProfileForm(instance=profile)
+    form = ProfileForm(instance=profile)
 
     if request.method == 'POST':
-        form = forms.ProfileForm(instance=profile, data=request.POST)
+        form = ProfileForm(request.POST, request.FILES, instance=profile  )
         if form.is_valid():
             form.save()
             messages.success(request, "Updated the Profile Successfully!")
-            return HttpResponseRedirect(reverse('accounts:profile'))
+            return HttpResponseRedirect(reverse('UserManagement:profile'))
 
     return render(request, 'UserManagement/edit_profile.html', {
         'form': form

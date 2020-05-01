@@ -2,27 +2,42 @@
 {% load static %}
 {% block body %}
 <!link rel="stylesheet" href="{% static 'assets/css/circle/search.css' %}">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .card {
+        width: 50%;
+        height:50%;
+        border: 2px;
+    }
+    .container{
+       justify-items: center;
+    }
+</style>
   <form method="get">
     {{ filter.form.as_p }}
     <button type="submit">Search</button>
   </form>
-<ul>
-  {% if filter.qs %}
-    {% for user in filter.qs %}
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <div class="card">
+
+  {% if filter.qs %}
+<div class = "container">
+    {% for user in filter.qs %}
+
+    <div class="item">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="John" style="width:10%">
-        <h1>{{user.first_name}} {{user.last_name}}</h1>
+        <h3>{{user.first_name}} {{user.last_name}}</h3>
         {% if user.is_author %}
           <p class="title">Author in {{user.field}} field</p>
-        {% else %}
+        {% elif user.is_contributor %}
           <p class="title">Contributor in {{user.field}} field</p>
         {% endif %}
     <p><button>View profile</button></p>
     </div>
+
     {% endfor %}
+        </div>
+    {% else %}
+        <p>Sorry, No matches found!</p>
   {% endif %}
-    </ul>
 
 {% endblock %}

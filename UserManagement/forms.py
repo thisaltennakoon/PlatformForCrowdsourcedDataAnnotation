@@ -1,8 +1,6 @@
 from django_countries.data import COUNTRIES
 from django import forms
-
 from . import models
-
 
 class ProfileForm(forms.ModelForm):
     field_choices = [
