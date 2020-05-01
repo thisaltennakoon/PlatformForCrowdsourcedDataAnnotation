@@ -33,7 +33,7 @@
         </div>
         {% if not profile.first_name %}
             <p>You have an empty profile.</p>
-            <a href="{% url 'accounts:edit_profile' %}">Add some info</a>
+            <a href="{% url 'UserManagement:edit_profile' %}">Add some info</a>
         {% else %}
         <div class="grid-80">
             <div class="container emp-profile">

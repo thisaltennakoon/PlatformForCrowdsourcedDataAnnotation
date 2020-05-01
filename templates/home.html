@@ -1,13 +1,17 @@
 {% extends 'layout.html' %}
 {% load static %}
 
+<style>
+    image { background-size: 100% 50%;}
+</style>
+
 <body>
 {% block body %}
 
 {% if user.is_authenticated %}
 <img src = "{% static 'img/user1.png' %}">
 {% else %}
-<img src = "{% static 'img/start1.jpg' %}">
+<img class = "image" src = "{% static 'img/start1.jpg' %}">
 {% endif %}
     <div class="{% if user.is_authenticated %}grid-75{% else %}grid-100{% endif %}">
         {% if user.is_authenticated %}
