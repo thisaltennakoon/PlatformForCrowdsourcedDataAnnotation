@@ -1,5 +1,5 @@
 from django import forms
-from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,GenerationClass,GenerationTask
+from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,GenerationClass,GenerationTask,TextCateogary,TextAnnotationTask
 from django.forms import formset_factory,modelformset_factory
 
 # class CreateTaskForm(forms.ModelForm):
@@ -24,6 +24,22 @@ CateogaryFormSet = modelformset_factory(
         )
     }
 )
+
+TextCateogaryFormSet = modelformset_factory(
+    TextCateogary,
+    fields=('cateogaryName',),
+    extra=1,
+    widgets={
+        'cateogaryName': forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                #'placeholder': 'Enter Author Name here'
+            }
+        )
+    }
+)
+
+
 
 class CreateTaskForm(forms.ModelForm):
     class Meta:
@@ -51,6 +67,36 @@ class CreateTaskForm(forms.ModelForm):
                 }
             )
         }
+
+
+class CreateTextTaskForm(forms.ModelForm):
+    class Meta:
+        model = TextAnnotationTask
+        fields = ('title', 'description', 'instructions',)
+        labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                #'placeholder': 'Enter Book Name here'
+                }
+            ),
+
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style':'height: 100px',
+                #'placeholder': 'Enter Book Name here'
+                }
+            ),
+
+            'instructions': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style':'height: 100px',
+                #'placeholder': 'Enter Book Name here'
+                }
+            )
+        }
+
+
 
 DQuestionFormSet = modelformset_factory(
     DescrptiveQuestion,
@@ -164,5 +210,4 @@ GenerationClassFormSet = modelformset_factory(
     }
 )
 
-class AddTextExample(forms.ModelForm):
     

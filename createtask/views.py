@@ -88,6 +88,34 @@ def createTask(request):
         'formset': formset,
     })
 
+def createTextTask(request):
+    template_name = 'createtask/new.html'
+    if request.method == 'GET':
+        taskform = CreateTaskForm(request.GET or None)
+        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
+        #print(taskform.name.label)
+
+    elif request.method == 'POST':
+        taskform = CreateTaskForm(request.POST)
+        formset = CateogaryFormSet(request.POST)
+        if taskform.is_valid() and formset.is_valid():
+            task = taskform.save(commit=False)
+            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.save()
+            request.session['task'] = task.id
+            for form in formset:
+                # so that `book` instance can be attached.
+                cateogary = form.save(commit=False)
+                cateogary.taskID = task
+                cateogary.save()
+            # return render(request, 'createtask/success.html')
+            return redirect('createtask:question_add')
+    
+    return render(request, template_name, {
+        'taskform': taskform,
+        'formset': formset,
+    })
+
 
 def AddQuestions(request):
     template_name = 'createtask/addQuestions.html'
@@ -247,11 +275,11 @@ def createGenerationTask(request):
             for form in formset:
                 # so that `book` instance can be attached.
                 generationClass = form.save(commit=False)
-                generationClass.taskID = task
+                generationClass.TaskID = task
                 generationClass.requiredDataType = dataType
                 generationClass.save()
             # return render(request, 'createtask/success.html')
-            return redirect('createtask:question_add')
+            return redirect('createtask:Gen_example_add')
     
     return render(request, template_name, {
         'taskform': taskform,
@@ -261,11 +289,16 @@ def createGenerationTask(request):
 
 
 def AddGenExample(request):
-    #template_name = 'viewQuestions.html'
-    
+    task = GenerationTask.objects.get(id=request.session['task'])
+    #questionaire = Questionaire.objects.get(taskID=task) #try required
+    class_list = task.generationclass_set.all()
+
     if request.method == 'GET':
-        task = GenerationTask.objects.get(id=request.session['task'])
-        #questionaire = Questionaire.objects.get(taskID=task) #try required
-        class_list = task.generationclass_set.all()
-        for i in class_list:
-            
+        context = {'class_list':class_list}
+        return render(request,'createtask/addGenExamples.html',context)
+    
+    if request.method == 'POST':
+        # for i in range(len(class_list)):
+        #     input1 = request.POST['class'+i]
+        #     exampleEntry = 
+        return render(request,'createtask/success.html')

@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^questionaire/(?P<task_id>[0-9]+)/$',views.QuestionaireView, name='question_view'),
     #url(r'^create/example',views.upload_file, name='test_view'),
     url(r'^createGen/$',views.createGenerationTask, name='Gen_task_add'),
+    url(r'^createGen/addexample$',views.AddGenExample, name='Gen_example_add'),
 ]
