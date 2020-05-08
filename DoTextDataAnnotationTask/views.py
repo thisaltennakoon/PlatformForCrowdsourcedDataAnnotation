@@ -30,9 +30,6 @@ def task(request):
         data_class_id = request.POST['data_class_id']
         data_instance_id = request.POST['DataInstanceID']
         task_id = request.POST['task_id']
-        print(data_class_id)
-        print(data_instance_id)
-        print(task_id)
         try:
             with transaction.atomic():
                 annotating_data_instance = AnnotationDataSet.objects.get(TaskID=task_id, id=data_instance_id)
@@ -55,9 +52,7 @@ def task(request):
         try:
             task_id = request.GET['task_id']
             data_instance_annotation_times = int(Task.objects.get(id=task_id).DataInstanceAnnotationTimes)
-            print("data_instance_annotation_times")
             annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
-            print(1111)
             data_instances_to_exclude = []
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance.id]
@@ -67,20 +62,16 @@ def task(request):
                 skip_instance_request =True
             except:
                 skip_instance_request =False
-            print('data_instances_to_exclude')
             try:
                 with transaction.atomic():
                     data_annotation = AnnotationDataSet.objects.filter(TaskID=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude)
-                    print(2)
                     if len(data_annotation) > 0:
                         data_instance = random.choice(data_annotation)
-                        print(3)
                         data_instance_about_to_annotate = data_instance #AnnotationDataSet.objects.get(TaskID=task_id, DataInstance=data_instance.DataInstance)
                         data_instance_about_to_annotate.IsViewing=True
                         data_instance_about_to_annotate.WhoIsViewing=user_id
                         data_instance_about_to_annotate.save()
                         sub_data_instances = AnnotationSubDataSet.objects.filter(DataInstanceID=data_instance_about_to_annotate.id)
-                        print(4)
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -229,17 +220,14 @@ def view_my_annotations_change(request):
         return redirect('/DoTextDataAnnotationTask/ViewMyAnnotations?task_id=' + str(task_id))
     else:
         annotated_data_instance_id = request.GET['annotated_data_instance_id']
-        #print(annotated_data_instance_id)
         annotated_data_instance = DataAnnotationResult.objects.get(id=annotated_data_instance_id)
         task_id = annotated_data_instance.TaskID_id
-        #print(1234)
         try:
             viewing_data_instance = request.GET['viewing_data_instance']
             stop_viewing(request, task_id, viewing_data_instance)
         except:
             pass
         data_instance = AnnotationDataSet.objects.get(TaskID= task_id ,id = annotated_data_instance.DataInstance.id)
-        print(AnnotationSubDataSet.objects.filter(DataInstanceID=data_instance)[0].DataInstance)
         return render(request, 'DoTextDataAnnotationTask/ViewMyAnnotationsChange.html',{'annotated_data_instance':annotated_data_instance,
                                                                                         'annotated_data_instance_id':annotated_data_instance_id,
                                                                                         'data_instance':data_instance,
