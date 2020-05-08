@@ -3,8 +3,8 @@ from django.views import generic
 from .models import AnnotationTask
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic import View
-from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CreateGenerationTaskForm,GenerationClassFormSet,CustomForm1
-from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask
+from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CreateGenerationTaskForm,GenerationClassFormSet,CustomForm1,TextCateogaryFormSet,CreateTextTaskForm,CsvForm
+from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -89,18 +89,22 @@ def createTask(request):
     })
 
 def createTextTask(request):
-    template_name = 'createtask/new.html'
+    template_name = 'createtask/addtextAnno.html'
     if request.method == 'GET':
-        taskform = CreateTaskForm(request.GET or None)
-        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
+        taskform = CreateTextTaskForm(request.GET or None)
+        formset = TextCateogaryFormSet(queryset=TextCateogary.objects.none())
+        csvform = CsvForm()
         #print(taskform.name.label)
 
     elif request.method == 'POST':
-        taskform = CreateTaskForm(request.POST)
-        formset = CateogaryFormSet(request.POST)
-        if taskform.is_valid() and formset.is_valid():
+        taskform = CreateTextTaskForm(request.POST)
+        formset = TextCateogaryFormSet(request.POST)
+        csvform = CsvForm(request.POST, request.FILES)
+        if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
+            csvFile = request.FILES['data']
+            task.csvFile = csvFile
             task.save()
             request.session['task'] = task.id
             for form in formset:
@@ -114,6 +118,7 @@ def createTextTask(request):
     return render(request, template_name, {
         'taskform': taskform,
         'formset': formset,
+        'csvform':csvform,
     })
 
 

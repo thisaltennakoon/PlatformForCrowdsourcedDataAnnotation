@@ -93,9 +93,13 @@ class CreateTextTaskForm(forms.ModelForm):
                 'style':'height: 100px',
                 #'placeholder': 'Enter Book Name here'
                 }
-            )
+            ),
+
+            #'csvFile': forms.FileField(required=True),
         }
 
+class CsvForm(forms.Form):
+    data = forms.FileField( required=True)
 
 
 DQuestionFormSet = modelformset_factory(

@@ -4,7 +4,7 @@
 
 <h3>{{heading}}</h3>
 
-<form class="form-horizontal col-12" method="POST" action="">
+<form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
 <div class="row spacer">
 <div class="col-2">
@@ -74,10 +74,10 @@
 {% comment %} Not working {% endcomment %}
 <div class="row spacer">
         <div class="col-2">
-            <label for="exampleFormControlFile1">Dataset (Add a zipfile containing images only without any subfolders)</label>
+            <label for="exampleFormControlFile1">Dataset </label>
         </div>
         <div class="col-4">
-            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            {{csvform.data}}
         </div>
     
 </div>

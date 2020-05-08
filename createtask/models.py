@@ -86,6 +86,7 @@ class TextAnnotationTask(models.Model):
     description = models.CharField(max_length=1000)
     status = models.CharField(max_length=60, default='new')    #new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
+    csvFile = models.FileField(upload_to='new')
 
 class TextCateogary(models.Model):
     taskID = models.ForeignKey(TextAnnotationTask, on_delete=models.CASCADE)
