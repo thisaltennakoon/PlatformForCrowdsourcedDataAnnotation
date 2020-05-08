@@ -4,7 +4,7 @@ from .models import AnnotationTask
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic import View
 from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CreateGenerationTaskForm,GenerationClassFormSet,CustomForm1,TextCateogaryFormSet,CreateTextTaskForm,CsvForm
-from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary
+from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary,TextFile,TextDataInstance,TextData
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -14,7 +14,7 @@ from zipfile import ZipFile
 import sys
 import os
 from PIL import Image
-
+import csv
 # class CreateTaskView(View):
 #     form_class = CreateTaskForm 
 #     template_name = 'createtask/annotationtask_form.html'
@@ -104,8 +104,15 @@ def createTextTask(request):
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
             csvFile = request.FILES['data']
-            task.csvFile = csvFile
+            newFileModel = TextFile()
             task.save()
+            newFileModel.taskID = task
+            newFileModel.csvFile = csvFile
+            newFileModel.save()
+            #print(newFileModel.csvFile.path)
+            print(newFileModel.csvFile.url)
+            filename = './'+newFileModel.csvFile.url
+            ProcessCsvNew(filename,task)
             request.session['task'] = task.id
             for form in formset:
                 # so that `book` instance can be attached.
@@ -120,6 +127,63 @@ def createTextTask(request):
         'formset': formset,
         'csvform':csvform,
     })
+
+
+def ProcessCsv(filename,task):
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        instancelist = []
+        datalist = []
+        for i, line in enumerate(reader):
+            if i==0:
+                continue
+            else:
+                datainstance = TextDataInstance(taskID=task)
+                instancelist.append(datainstance)
+        real_object=TextDataInstance.objects.bulk_create(instancelist)
+        print('Helllloooo')
+        print(real_object[0])
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        for i, line in enumerate(reader):
+            #print(instancelist[i-1])
+            if i==0:
+                continue
+            else:
+                #print ('line[{}] = {}'.format(i, line))
+                #datainstance = TextDataInstance(taskID=task)
+                #instancelist.append(datainstance)
+                #datainstance.save()
+                #print(line)
+                for word in line:
+                    data = TextData(Data=word,InstanceID=instancelist[i-1])
+                    datalist.append(data)
+                    #data.save()
+        
+                #print(line)
+        #TextDataInstance.objects.bulk_create(instancelist)
+        TextData.objects.bulk_create(datalist)
+
+def ProcessCsvNew(filename,task):
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        instancelist = []
+        datalist = []
+        for i, line in enumerate(reader):
+            if i==0:
+                continue
+            else:
+                #print ('line[{}] = {}'.format(i, line))
+                datainstance = TextDataInstance(taskID=task)
+                #instancelist.append(datainstance)
+                datainstance.save()
+                for word in line:
+                    data = TextData(Data=word,InstanceID=datainstance)
+                    datalist.append(data)
+                    #data.save()
+                #print(line)
+        #TextDataInstance.objects.bulk_create(instancelist)
+        TextData.objects.bulk_create(datalist)
 
 
 def AddQuestions(request):

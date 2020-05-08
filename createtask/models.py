@@ -79,14 +79,19 @@ class GenerationExamplesText(models.Model):
 
 
 #TEXT DATA ANNOTATION
-
+def directory_path(instance,filename):
+    return 'TextAnno/task_{0}/{1}'.format(instance.taskID.id, filename)
 class TextAnnotationTask(models.Model):
     creatorID = models.ForeignKey(UserNew2,on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
     status = models.CharField(max_length=60, default='new')    #new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
-    csvFile = models.FileField(upload_to='new')
+    #csvFile = models.FileField(upload_to=directory_path)
+
+class TextFile(models.Model):
+    taskID = models.ForeignKey(TextAnnotationTask,on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path)
 
 class TextCateogary(models.Model):
     taskID = models.ForeignKey(TextAnnotationTask, on_delete=models.CASCADE)
