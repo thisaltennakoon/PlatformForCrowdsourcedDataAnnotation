@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'DoDataAnnotationTask',
     'DoDataGenerationTask',
     'UserManagement',
+    'CreateTextDataAnnotationTask',
+    'DoTextDataAnnotationTask'
 ]
 
 MIDDLEWARE = [

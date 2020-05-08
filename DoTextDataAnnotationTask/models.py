@@ -1,10 +1,10 @@
 from django.db import models
-from CreateDataAnnotationTask.models import Task,DataClass
+from CreateTextDataAnnotationTask.models import Task,DataClass,AnnotationDataSet
 
 
 class DataAnnotationResult(models.Model):
     TaskID = models.ForeignKey(Task , on_delete=models.CASCADE)
-    DataInstance = models.CharField(max_length=30, blank=False)
+    DataInstance = models.ForeignKey(AnnotationDataSet , on_delete=models.CASCADE)
     ClassID = models.IntegerField(default=0, null=False, blank=False)
     #ClassName = models.CharField(max_length=100, blank=False)
     #ClassName = models.ForeignKey(DataClass , on_delete=models.CASCADE)
