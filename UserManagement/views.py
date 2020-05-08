@@ -123,6 +123,12 @@ def change_password(request):
 
 
 def search (request):
-    profile_list = Profile.objects.all()
+    profile_list = Profile.objects.all().exclude(first_name = '')
     searchFilter = ProfileFilter(request.GET, queryset=profile_list)
     return render(request, 'UserManagement/search.html', {'filter':searchFilter})
+
+def profiles(request):
+    profiles = Profile.objects.all().exclude(first_name = '')
+    return render(request,'UserManagement/profile_list.html', {'profiles':profiles})
+
+

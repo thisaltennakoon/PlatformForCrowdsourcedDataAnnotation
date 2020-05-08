@@ -22,7 +22,9 @@
         {% else %}
 
             <h1>Welcome to CDAP !</h1>
-            <p>Register and login to annotate and generate your data sets !!!</p>
+            {% if not user.is_super %}
+                <p>Register and login to annotate and generate your data sets !!!</p>
+            {% endif %}
         {% endif %}
                 <div class="services-area section-padding2">
             <div class="container">
