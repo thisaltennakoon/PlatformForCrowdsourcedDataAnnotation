@@ -13,7 +13,7 @@ urlpatterns = [
     path('DoDataAnnotationTask/', include('DoDataAnnotationTask.urls')),
     path('DoDataGenerationTask/', include('DoDataGenerationTask.urls')),
     path('DoTextDataAnnotationTask/', include('DoTextDataAnnotationTask.urls')),
-    #path('CreateTextDataAnnotationTask/', include('CreateTextDataAnnotationTask.urls')),
+    path('CreateTextDataAnnotationTask/', include('CreateTextDataAnnotationTask.urls')),
 ]
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
