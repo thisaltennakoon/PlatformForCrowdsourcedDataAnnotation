@@ -1,7 +1,7 @@
 # PlatformForCrowdsourcedDataAnnotation
 
 Thisal
-
+pip install xlrd
 
 
 Janani
