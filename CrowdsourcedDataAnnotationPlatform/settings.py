@@ -81,16 +81,16 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 #Janani's database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}"""
+}
 
 
 #Thisal's databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CrowdsourcedDataAnnotationPlatform',
@@ -98,7 +98,7 @@ DATABASES = {
         'PASSWORD': '1234',
         'HOST':'localhost'
     }
-}
+}"""
 
 #MySQL event for release data instances
 """SET GLOBAL event_scheduler = ON; -- enable event scheduler.
