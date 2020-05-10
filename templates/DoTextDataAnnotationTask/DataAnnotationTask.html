@@ -44,11 +44,7 @@ tr:nth-child(even) {
         </div>
     </div>
     <!-- END Header -->
-    <div class="breadcrumbs">
-        <a href="/UserManagement/MyTasks/"> My Tasks </a>
-        &rsaquo;<a href="/DoDataAnnotationTask/"> My Data Annotation Tasks </a>
-        &rsaquo; {{task_object.Title}}
-    </div>
+
     <!-- Content -->
     <div id="content" class="colMS">
         <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
@@ -80,11 +76,11 @@ tr:nth-child(even) {
                     <input type="hidden" name="user_id" value="{{user_id}}">
                     <input type="Submit" value="Submit Data Annotation" >
                 </form>
-                <button onclick="window.location.href = '/DoDataAnnotationTask/SkipDataInstance?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}'" class="button DeleteButtonStyle">Skip This Data Instance</button>
-                <button onclick="window.location.href = '/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}'" class="button DeleteButtonStyle">Stop Annotating</button>
+                <button onclick="window.location.href = '/DoTextDataAnnotationTask/SkipDataInstance?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}'" class="button DeleteButtonStyle">Skip This Data Instance</button>
+                <button onclick="window.location.href = '/DoTextDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}'" class="button DeleteButtonStyle">Stop Annotating</button>
                 {% else %}
                 <h3>Congratulations!</h3> <h3>All the data instances in this task has been annotated.Try another task</h3>
-                <button onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}'" class="button DeleteButtonStyle">View My Contributions</button>
+                <button onclick="window.location.href = '/DoTextDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}'" class="button DeleteButtonStyle">View My Contributions</button>
                 {% endif %}
             </div>
         </div>

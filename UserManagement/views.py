@@ -13,6 +13,7 @@ from . import forms
 from .models import ContributorTask
 from CreateDataGenerationTask.models import Task as DataGenerationTask
 from CreateDataAnnotationTask.models import Task as DataAnnotationTask
+from CreateTextDataAnnotationTask.models import Task as TextDataAnnotationTask
 
 def sign_in(request):
     form = AuthenticationForm()
@@ -132,7 +133,7 @@ def view_my_tasks(request):
         elif not(task.is_data_annotation_task ) and (task.is_data_generation_task ):
             user_data_generation_tasks += [task.TaskID]
     return render(request, 'UserManagement/MyTasks.html' , {'data_generation_tasks': DataGenerationTask.objects.filter(id__in=user_data_generation_tasks),
-                                                         'data_annotation_tasks':DataAnnotationTask.objects.filter(id__in=user_data_annotation_tasks),
+                                                         'data_annotation_tasks':TextDataAnnotationTask.objects.filter(id__in=user_data_annotation_tasks),
                                                              'user_id':request.session['user_id']})
 
 
