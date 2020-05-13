@@ -112,7 +112,7 @@ def createTextTask(request):
             #print(newFileModel.csvFile.path)
             print(newFileModel.csvFile.url)
             filename = './'+newFileModel.csvFile.url
-            ProcessCsvNew(filename,task)
+            ProcessCsv(filename,task)
             request.session['task'] = task.id
             for form in formset:
                 # so that `book` instance can be attached.
@@ -140,9 +140,10 @@ def ProcessCsv(filename,task):
             else:
                 datainstance = TextDataInstance(taskID=task)
                 instancelist.append(datainstance)
-        real_object=TextDataInstance.objects.bulk_create(instancelist)
+        TextDataInstance.objects.bulk_create(instancelist)
+        real_objects = TextDataInstance.objects.filter(taskID = task)
         print('Helllloooo')
-        print(real_object[0])
+        print(real_objects)
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
         for i, line in enumerate(reader):
@@ -156,7 +157,7 @@ def ProcessCsv(filename,task):
                 #datainstance.save()
                 #print(line)
                 for word in line:
-                    data = TextData(Data=word,InstanceID=instancelist[i-1])
+                    data = TextData(Data=word,InstanceID=real_objects[i-1])
                     datalist.append(data)
                     #data.save()
         

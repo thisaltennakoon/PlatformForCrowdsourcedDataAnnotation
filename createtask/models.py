@@ -9,6 +9,8 @@ class UserNew2(models.Model):
     name = models.CharField(max_length=250)
     email = models.CharField(max_length=64)
 
+#
+
 class AnnotationTask(models.Model):
     creatorID = models.ForeignKey(UserNew2,on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
@@ -19,6 +21,8 @@ class AnnotationTask(models.Model):
 class Cateogary(models.Model):
     taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
     cateogaryName = models.CharField(max_length= 250)
+
+
 
 class Questionaire(models.Model):
     taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
