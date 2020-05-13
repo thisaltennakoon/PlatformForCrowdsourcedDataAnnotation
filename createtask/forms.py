@@ -68,6 +68,9 @@ class CreateTaskForm(forms.ModelForm):
             )
         }
 
+# class ImageFolderForm(forms.Form):
+#     images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
 
 class CreateTextTaskForm(forms.ModelForm):
     class Meta:

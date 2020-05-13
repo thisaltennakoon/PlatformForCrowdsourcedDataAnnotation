@@ -4,7 +4,7 @@ from .models import AnnotationTask
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic import View
 from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CreateGenerationTaskForm,GenerationClassFormSet,CustomForm1,TextCateogaryFormSet,CreateTextTaskForm,CsvForm
-from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary,TextFile,TextDataInstance,TextData
+from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary,TextFile,TextDataInstance,TextData,ImageInstance
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -81,12 +81,26 @@ def createTask(request):
                 cateogary.taskID = task
                 cateogary.save()
             # return render(request, 'createtask/success.html')
+            files = request.FILES.getlist('file_field')
+            print (files)
+            processImages(files,task)
             return redirect('createtask:question_add')
     
     return render(request, template_name, {
         'taskform': taskform,
         'formset': formset,
     })
+
+def processImages(files,task):
+    images = []
+    for image in files:
+        if image.content_type[:5] == 'image':
+            imgObj = ImageInstance(taskID=task,image = image)
+            images.append(imgObj)
+        else:
+            pass
+    ImageInstance.objects.bulk_create(images)
+
 
 def createTextTask(request):
     template_name = 'createtask/addtextAnno.html'
@@ -264,63 +278,6 @@ def QuestionaireView(request,task_id):
         return render(request,'createtask/viewQuestions.html',context)
 
 
-# def process_zip(request):
-#     if request.method == 'POST':
-#         form = zipFile(request.POST, request.FILES)
-#         if form.is_valid():
-#             handle_uploaded_file(request.FILES['file'],request)
-#     else:
-#         form = zipFile()
-#     return render(request, 'upload.html', {'form': form})
-
-
-# def  handle_uploaded_file(request,f):
-   
-#     task = AnnotationTask.objects.get(id=request.session['task'])
-#     file1 = ZipFile(f)
-#     for name in file1.namelist():
-#         data = file1.read(name)
-#         try:
-#             from PIL import Image
-#             image = Image.open(BytesIO(data))
-#             image.load()
-#             image = Image.open(BytesIO(data))
-#             image.verify()
-#         except ImportError:
-#             pass
-#         except:
-#             continue
-#         name = os.path.split(name)[1]
-#         # You now have an image which you can save
-#         path = os.path.join(settings.MEDIA_ROOT, "uploads", native(str(name, errors="ignore")))
-#         saved_path = default_storage.save(path, ContentFile(data))
-#         self.images.create(file=saved_path)
-
-# def upload_file(request):
-#     if request.method == 'POST':
-#         form = zipFile(request.POST, request.FILES)
-#         if form.is_valid():
-#             handle_uploaded_file(request.FILES['file'])
-            
-#     else:
-#         form = zipFile()
-#     return render(request, 'upload.html', {'form': form})
-
-# def handle_uploaded_file(f):
-#     with open('some/file/name.txt', 'wb+') as destination:
-#         for chunk in f.chunks():
-#             destination.write(chunk)
-
-
-# def upload_file(request):
-#     if request.method == 'POST':
-#         form = ExampleImagesForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             handle_uploaded_file(request.FILES['file'])
-#             #return HttpResponseRedirect('/success/url/')
-#     else:
-#         form = ExampleImagesForm()
-#     return render(request, 'createtask/addTest.html', {'form': form})
 
 def createGenerationTask(request):
     template_name = 'createtask/genarationtask_form.html'

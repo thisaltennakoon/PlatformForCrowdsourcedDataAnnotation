@@ -9,7 +9,7 @@ class UserNew2(models.Model):
     name = models.CharField(max_length=250)
     email = models.CharField(max_length=64)
 
-#
+#IMAGE ANNOTATION
 
 class AnnotationTask(models.Model):
     creatorID = models.ForeignKey(UserNew2,on_delete=models.CASCADE)
@@ -23,7 +23,16 @@ class Cateogary(models.Model):
     cateogaryName = models.CharField(max_length= 250)
 
 
+def directory_path2(instance,filename):
+    return 'ImageAnno/task_{0}/{1}'.format(instance.taskID.id, filename)
+class ImageInstance(models.Model):
+    taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
+    image = models.FileField(upload_to=directory_path2)
 
+
+
+
+#QUIZ
 class Questionaire(models.Model):
     taskID = models.ForeignKey(AnnotationTask, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, default='Active')  #ative,#notactive
