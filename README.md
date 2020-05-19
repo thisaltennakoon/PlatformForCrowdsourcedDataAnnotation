@@ -1,6 +1,9 @@
 # PlatformForCrowdsourcedDataAnnotation
 
 Thisal
+
+pip install mysqlclient
+
 MySQL event
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
 SELECT @@event_scheduler;  -- check whether event scheduler is ON/OFF
