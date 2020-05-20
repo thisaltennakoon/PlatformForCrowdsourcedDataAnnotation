@@ -1,0 +1,184 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSDA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+</head>
+<style>
+.row{
+  padding-left: 175px; 
+  padding-top:50px;
+}
+.card{
+  border:2px solid #28a745!important;
+}
+.card-header{
+  background-color: #28a745!important; 
+  color: #fff!important; 
+  font-size:20;
+
+}
+.card-body{
+  background-color: rgb(160, 207, 160);
+}
+#container{
+  width:525px; 
+  padding-left:200; 
+  padding-top:20px;
+}
+#textanalyse{
+  border:2px solid  #28a745!important;
+}
+.card1{
+  height:10px;
+}
+.card text-white bg-success mb-4{
+  max-width: 45rem;
+}
+#body{
+  height:598px;
+}
+#inner-body{
+  background-color: white;
+  border:2px solid  #28a745!important;
+  padding-top:10px;
+  border-radius: 5px;
+  
+}
+.card2{
+  width: 22rem;
+}
+
+.card-text{
+  color: black;
+
+}
+#int{
+  height:144px; padding-top:50px
+}
+.text{
+  text-align:center; 
+  font-weight:bold;
+}
+#last{
+  padding-top:10px;
+}
+/* Popup container */
+.popup {
+  
+  color: black;
+}
+
+</style>
+<body>
+    <div class="row" >
+        <div class="col-sm-7">
+          <div class="card" >
+            <div class="card-header" >Annotation Analysis Pie Chart for {{r}} number of details</div>
+            <div class="card-body" >
+                <div id="container">
+                  <canvas id="textanalyse" width="100%" height="100%" ></canvas>
+                </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-sm-4">
+          <div class="card1" >
+            <div class="card text-white bg-success mb-4" >
+                <div class="card-header">Inter Annotator Agreement for Task</div>
+                <div class="card-body" id = "body" >
+                    <div class="card2"  >
+                        <div class="card-body" id= "inner-body">
+                          <h5 class="popup"  >Inter-rater reliability(Kappa)</h5>
+                          
+                          <p class="card-text">{{k}}</p>
+                          
+                        </div>
+                      </div>
+                      <br>
+                      <div class="card2"  >
+                        <div class="card-body" id= "inner-body">
+                          <h5 class="popup" >Statistical measure for agreement(Fleiss)</h5>
+                          
+                          <p class="card-text">{{f}} </p>
+                          
+                        </div>
+                      </div>
+                      <br>
+                      <div class="card2"  >
+                        <div class="card-body" id= "inner-body">
+                          <h5 class="popup" >Versatile statistic for agreement(Alpha)</h5>
+                          
+                          <p class="card-text">{{a}} </p>
+                          
+                        </div>
+                      </div>
+                      <br>
+                      <div class="card2"  >
+                        <div class="card-body" id= "inner-body">
+                          <h5 class="popup" >statistic for measuring inter-rater reliability for nominal data(Scotts)</h5>
+                          
+                          <p class="card-text">{{s}}</p>
+                          
+                        </div>
+                      </div>
+
+                
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-7" id="last">
+            <div class="card"  >
+              <div class="card-header" >Process Progress for Annotation Task</div>
+              <div class="card-body" id="int">
+                <div class="progress" >
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{process}}%;  " aria-valuenow="{{process}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> 
+                <br>
+                <p class ="text">Task Done Now :{{process}}%  </p>
+              </div>
+            </div>
+          </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+  var config = {
+    type: 'pie',
+    data: {
+      datasets: [{
+        data: {{ data|safe }},
+        backgroundColor: [
+        '#28a745', '#56c570','#8be09f'
+        ],
+        label: 'Analysis'
+      }],
+      labels: {{ labels|safe }}
+    },
+    options: {
+      responsive: true
+    }
+  };
+
+  window.onload = function() {
+    var ctx = document.getElementById('textanalyse').getContext('2d');
+    window.myPie = new Chart(ctx, config);
+  };
+</script>
+<script>
+  // When the user clicks on <div>, open the popup
+  function myFunction() {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+  }
+  </script> 
+
+</body>
+</html>
+
+   
