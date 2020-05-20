@@ -10,10 +10,8 @@ class UserNew2(models.Model):
     email = models.CharField(max_length=64)
 
 
-# Task = Task,GenerationTask,TextTask
-# Cateogary =GenerationClass,TextCateogary
-# MediaDataInstance = MediaInstance
-#IMAGE ANNOTATION
+
+#IMAGE ANNOTATION AND 'DATA GENARATION'
 
 class Task(models.Model):
     creatorID = models.ForeignKey(UserNew2,on_delete=models.CASCADE)
@@ -35,6 +33,8 @@ class MediaDataInstance(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     media = models.FileField(upload_to=directory_path2)
 
+
+#TEXT ANNOTATIONS
 def directory_path(instance,filename):
     return 'TextAnno/task_{0}/{1}'.format(instance.taskID.id, filename)
 class TextFile(models.Model):
