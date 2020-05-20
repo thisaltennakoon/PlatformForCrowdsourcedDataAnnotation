@@ -1,10 +1,9 @@
 from django.shortcuts import render,redirect
 from django.views import generic
-from .models import AnnotationTask
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic import View
-from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CreateGenerationTaskForm,GenerationClassFormSet,CustomForm1,TextCateogaryFormSet,CreateTextTaskForm,CsvForm
-from .models import AnnotationTask,UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,GenerationTask,TextCateogary,TextFile,TextDataInstance,TextData,ImageInstance
+from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CustomForm1,CsvForm
+from .models import UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,TextFile,TextDataInstance,TextData,MediaDataInstance,Task
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -15,45 +14,6 @@ import sys
 import os
 from PIL import Image
 import csv
-# class CreateTaskView(View):
-#     form_class = CreateTaskForm 
-#     template_name = 'createtask/annotationtask_form.html'
-
-#     def get(self, request):
-#         form = self.form_class(None)
-#         return render(request, self.template_name,{'form': form})
-    
-#     def post(self, request):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             task = form.save(commit=False)
-#             task.creatorID = UserNew2.objects.get(name='kasun')
-#             title = form.cleaned_data['title']
-#             description = form.cleaned_data['description']
-#             instructions = form.cleaned_data['instructions']
-
-#             task.save()
-#             catoegary = Cateogary()
-#             catoegary.taskID = task
-#             catoegary.cateogaryName = request.POST.get('Cateogary')
-#             catoegary.save()
-#             return render(request, 'createtask/success.html')
-            
-            
-                
-
-# def formset_view(request):
-#     context = {}
-#     CateogaryFormSet = formset_factory(AddCateogariesForm, extra=2)
-#     formset = CateogaryFormSet(request.POST or None)
-#     if formset.is_valid():
-#         for i in formset:
-#             print(i.cleaned_data)
-#             #catoegary = Cateogary()
-#             #cateogary = i.save()
-    
-#     context['formset'] = formset
-#     return render(request, 'createtask/home.html', context)
 
 def test(request,task):
     print(task)
@@ -73,13 +33,20 @@ def createTask(request):
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
+            task.taskType = "ImageAnno"
+            numAnnos = request.POST['NumAnnotations']
+            #print(numAnnos)
+            task.requiredNumofAnnotations = numAnnos
             task.save()
             request.session['task'] = task.id
+            tag = 0
             for form in formset:
                 # so that `book` instance can be attached.
                 cateogary = form.save(commit=False)
                 cateogary.taskID = task
+                cateogary.cateogaryTag = tag
                 cateogary.save()
+                tag += 1
             # return render(request, 'createtask/success.html')
             files = request.FILES.getlist('file_field')
             print (files)
@@ -95,30 +62,31 @@ def processImages(files,task):
     images = []
     for image in files:
         if image.content_type[:5] == 'image':
-            imgObj = ImageInstance(taskID=task,image = image)
+            imgObj = MediaDataInstance(taskID=task,media = image)
             images.append(imgObj)
         else:
             pass
-    ImageInstance.objects.bulk_create(images)
+    MediaDataInstance.objects.bulk_create(images)
 
 
 def createTextTask(request):
     template_name = 'createtask/addtextAnno.html'
     if request.method == 'GET':
-        taskform = CreateTextTaskForm(request.GET or None)
-        formset = TextCateogaryFormSet(queryset=TextCateogary.objects.none())
+        taskform = CreateTaskForm(request.GET or None)
+        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
         csvform = CsvForm()
         #print(taskform.name.label)
 
     elif request.method == 'POST':
-        taskform = CreateTextTaskForm(request.POST)
-        formset = TextCateogaryFormSet(request.POST)
+        taskform = CreateTaskForm(request.POST)
+        formset = CateogaryFormSet(request.POST)
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
             csvFile = request.FILES['data']
             newFileModel = TextFile()
+            task.taskType = "TextAnno"
             task.save()
             newFileModel.taskID = task
             newFileModel.csvFile = csvFile
@@ -128,13 +96,16 @@ def createTextTask(request):
             filename = './'+newFileModel.csvFile.url
             ProcessCsv(filename,task)
             request.session['task'] = task.id
+            tag = 0
             for form in formset:
                 # so that `book` instance can be attached.
                 cateogary = form.save(commit=False)
                 cateogary.taskID = task
+                cateogary.cateogaryTag = tag
                 cateogary.save()
+                tag += 1
             # return render(request, 'createtask/success.html')
-            return redirect('createtask:question_add')
+            return redirect('createtask:TextAnno_example_add')
     
     return render(request, template_name, {
         'taskform': taskform,
@@ -165,41 +136,27 @@ def ProcessCsv(filename,task):
             if i==0:
                 continue
             else:
-                #print ('line[{}] = {}'.format(i, line))
-                #datainstance = TextDataInstance(taskID=task)
-                #instancelist.append(datainstance)
-                #datainstance.save()
-                #print(line)
                 for word in line:
                     data = TextData(Data=word,InstanceID=real_objects[i-1])
                     datalist.append(data)
-                    #data.save()
-        
-                #print(line)
-        #TextDataInstance.objects.bulk_create(instancelist)
+                   
         TextData.objects.bulk_create(datalist)
 
-def ProcessCsvNew(filename,task):
-    with open(filename, "r") as f:
-        reader = csv.reader(f, delimiter=",")
-        instancelist = []
-        datalist = []
-        for i, line in enumerate(reader):
-            if i==0:
-                continue
-            else:
-                #print ('line[{}] = {}'.format(i, line))
-                datainstance = TextDataInstance(taskID=task)
-                #instancelist.append(datainstance)
-                datainstance.save()
-                for word in line:
-                    data = TextData(Data=word,InstanceID=datainstance)
-                    datalist.append(data)
-                    #data.save()
-                #print(line)
-        #TextDataInstance.objects.bulk_create(instancelist)
-        TextData.objects.bulk_create(datalist)
 
+def AddTextAnnoExamples(request):
+    template_name = 'createtask/addTextAnnoExamples.html'
+    task = Task.objects.get(id=request.session['task'])
+    print(task)
+    cateogary_list = task.cateogary_set.all()
+    if request.method == 'GET':
+        context = {'cateogary_list':cateogary_list}
+        return render(request,template_name,context)
+        #get task,get cateogaries print them in template form
+    # if request.method == 'POST':
+    #     pass
+        #save models,
+        #test object create if needed
+    
 
 def AddQuestions(request):
     template_name = 'createtask/addQuestions.html'
@@ -213,7 +170,7 @@ def AddQuestions(request):
         Mcq_formset = McqFormSet(request.POST)
         if Dq_formset.is_valid() and Mcq_formset.is_valid(): 
             questionaire = Questionaire()
-            task = AnnotationTask.objects.get(id=request.session['task'])
+            task = Task.objects.get(id=request.session['task'])
             questionaire.taskID = task
             questionaire.save()
             for form in Dq_formset:
@@ -257,13 +214,13 @@ class TaskView(generic.ListView):
     context_object_name = 'all_tasks'
 
     def get_queryset(self):
-        return AnnotationTask.objects.all()
+        return Task.objects.all()
 
 def QuestionaireView(request,task_id):
     #template_name = 'viewQuestions.html'
     
     if request.method == 'GET':
-        task = AnnotationTask.objects.get(pk=task_id)
+        task = Task.objects.get(pk=task_id)
         questionaire = Questionaire.objects.get(taskID=task) #try required
         question_list = questionaire.mcqquestion_set.all()
         answers = []
@@ -283,28 +240,34 @@ def createGenerationTask(request):
     template_name = 'createtask/genarationtask_form.html'
     if request.method == 'GET':
         customform = CustomForm1()
-        taskform = CreateGenerationTaskForm(request.GET or None)
-        formset = GenerationClassFormSet(queryset=Cateogary.objects.none())
+        taskform = CreateTaskForm(request.GET or None)
+        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
         
         #print(taskform.name.label)
 
     elif request.method == 'POST':
-        taskform = CreateGenerationTaskForm(request.POST)
-        formset = GenerationClassFormSet(request.POST)
+        taskform = CreateTaskForm(request.POST)
+        formset = CateogaryFormSet(request.POST)
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
-            task.save()
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
+            if dataType == 'T':
+                task.taskType = "TextGen"
+            elif dataType == 'I':
+                task.taskType = "ImageGen"
+            task.save()
             request.session['task'] = task.id      #task id session created
+            tag = 0
             for form in formset:
                 # so that `book` instance can be attached.
                 generationClass = form.save(commit=False)
-                generationClass.TaskID = task
-                generationClass.requiredDataType = dataType
+                generationClass.taskID = task
+                generationClass.cateogaryTag = tag
                 generationClass.save()
+                tag += 1
             # return render(request, 'createtask/success.html')
             return redirect('createtask:Gen_example_add')
     
@@ -316,9 +279,9 @@ def createGenerationTask(request):
 
 
 def AddGenExample(request):
-    task = GenerationTask.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=request.session['task'])
     #questionaire = Questionaire.objects.get(taskID=task) #try required
-    class_list = task.generationclass_set.all()
+    class_list = task.cateogary_set.all()
 
     if request.method == 'GET':
         context = {'class_list':class_list}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import AnnotationTask,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,GenerationClass,GenerationTask,TextCateogary,TextAnnotationTask
+from .models import Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Task
 from django.forms import formset_factory,modelformset_factory
 
 # class CreateTaskForm(forms.ModelForm):
@@ -25,25 +25,25 @@ CateogaryFormSet = modelformset_factory(
     }
 )
 
-TextCateogaryFormSet = modelformset_factory(
-    TextCateogary,
-    fields=('cateogaryName',),
-    extra=1,
-    widgets={
-        'cateogaryName': forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                #'placeholder': 'Enter Author Name here'
-            }
-        )
-    }
-)
+# TextCateogaryFormSet = modelformset_factory(
+#     TextCateogary,
+#     fields=('cateogaryName',),
+#     extra=1,
+#     widgets={
+#         'cateogaryName': forms.TextInput(
+#             attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Author Name here'
+#             }
+#         )
+#     }
+# )
 
 
 
 class CreateTaskForm(forms.ModelForm):
     class Meta:
-        model = AnnotationTask
+        model = Task
         fields = ('title', 'description', 'instructions',)
         labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
         widgets = {
@@ -72,34 +72,34 @@ class CreateTaskForm(forms.ModelForm):
 #     images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
 
-class CreateTextTaskForm(forms.ModelForm):
-    class Meta:
-        model = TextAnnotationTask
-        fields = ('title', 'description', 'instructions',)
-        labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
-        widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'form-control',
-                #'placeholder': 'Enter Book Name here'
-                }
-            ),
+# class CreateTextTaskForm(forms.ModelForm):
+#     class Meta:
+#         model = TextAnnotationTask
+#         fields = ('title', 'description', 'instructions',)
+#         labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
+#         widgets = {
+#             'title': forms.TextInput(attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             ),
 
-            'description': forms.Textarea(attrs={
-                'class': 'form-control',
-                'style':'height: 100px',
-                #'placeholder': 'Enter Book Name here'
-                }
-            ),
+#             'description': forms.Textarea(attrs={
+#                 'class': 'form-control',
+#                 'style':'height: 100px',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             ),
 
-            'instructions': forms.Textarea(attrs={
-                'class': 'form-control',
-                'style':'height: 100px',
-                #'placeholder': 'Enter Book Name here'
-                }
-            ),
+#             'instructions': forms.Textarea(attrs={
+#                 'class': 'form-control',
+#                 'style':'height: 100px',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             ),
 
-            #'csvFile': forms.FileField(required=True),
-        }
+#             #'csvFile': forms.FileField(required=True),
+#         }
 
 class CsvForm(forms.Form):
     data = forms.FileField( required=True)
@@ -169,32 +169,32 @@ McqFormSet = formset_factory(
 # class ExampleImagesForm(forms.Form):
 #     image_filed = forms.FileField()
 
-class CreateGenerationTaskForm(forms.ModelForm):
-    class Meta:
-        model = GenerationTask
-        fields = ('title', 'description', 'instructions',)
-        labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
-        widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'form-control',
-                #'placeholder': 'Enter Book Name here'
-                }
-            ),
+# class CreateGenerationTaskForm(forms.ModelForm):
+#     class Meta:
+#         model = GenerationTask
+#         fields = ('title', 'description', 'instructions',)
+#         labels = {'title':'Title', 'description':'Description', 'instructions':'Instructions'}
+#         widgets = {
+#             'title': forms.TextInput(attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             ),
 
-            'description': forms.Textarea(attrs={
-                'class': 'form-control',
-                'style':'height: 100px',
-                #'placeholder': 'Enter Book Name here'
-                }
-            ),
+#             'description': forms.Textarea(attrs={
+#                 'class': 'form-control',
+#                 'style':'height: 100px',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             ),
 
-            'instructions': forms.Textarea(attrs={
-                'class': 'form-control',
-                'style':'height: 100px',
-                #'placeholder': 'Enter Book Name here'
-                }
-            )
-        }
+#             'instructions': forms.Textarea(attrs={
+#                 'class': 'form-control',
+#                 'style':'height: 100px',
+#                 #'placeholder': 'Enter Book Name here'
+#                 }
+#             )
+#         }
 DATA_CHOICES = [
     ('T', 'Text'),
     ('I', 'Images'),
@@ -203,18 +203,18 @@ class CustomForm1(forms.Form):
     dataType = forms.ChoiceField(choices=DATA_CHOICES, required=True, label="Data Type need to generate")
 
 
-GenerationClassFormSet = modelformset_factory(
-    GenerationClass,
-    fields=('classtitle',),
-    extra=1,
-    widgets={
-        'classtitle': forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                #'placeholder': 'Enter Author Name here'
-            }
-        ),
-    }
-)
+# GenerationClassFormSet = modelformset_factory(
+#     GenerationClass,
+#     fields=('classtitle',),
+#     extra=1,
+#     widgets={
+#         'classtitle': forms.TextInput(
+#             attrs={
+#                 'class': 'form-control',
+#                 #'placeholder': 'Enter Author Name here'
+#             }
+#         ),
+#     }
+# )
 
     

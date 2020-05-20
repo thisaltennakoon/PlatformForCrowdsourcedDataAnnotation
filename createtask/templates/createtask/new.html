@@ -42,7 +42,7 @@
 <div class="row spacer">           
     <label for="exampleFormControlSelect1" class="col-2">Number of Annotations per data instance</label>
     <div class="col-4">
-        <select class="form-control" id="exampleFormControlSelect1">
+        <select class="form-control" id="exampleFormControlSelect1" name = "NumAnnotations">
         <option>1</option>
         <option>3</option>
         <option>5</option>
@@ -71,7 +71,7 @@
 </div>
 {% endfor %}
 
-{% comment %} Not working {% endcomment %}
+{% comment %} Working {% endcomment %}
 <div class="row spacer">
         <div class="col-2">
             <label for="exampleFormControlFile1">Dataset (Add a zipfile containing images only without any subfolders)</label>

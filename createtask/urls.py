@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^createGen/$',views.createGenerationTask, name='Gen_task_add'),
     url(r'^createGen/addexample$',views.AddGenExample, name='Gen_example_add'),
     url(r'^createTextAnno/$',views.createTextTask, name='TextAnno_task_add'),
+    url(r'^TextAnnoExampleAdd/$',views.AddTextAnnoExamples, name='TextAnno_example_add'),
 ]
