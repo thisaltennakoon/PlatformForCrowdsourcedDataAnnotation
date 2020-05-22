@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<p>Are you sure you want to delete "{{profile}}" ?</p>
+
+<form action = "" method = "POST">
+    {% csrf_token %}
+    <a href="url 'home'">cancel</a>
+    <input type="submit" name = "confirm">
+</form>
+
+{% endblock %}

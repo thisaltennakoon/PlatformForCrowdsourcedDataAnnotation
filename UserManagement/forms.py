@@ -1,13 +1,17 @@
 from django_countries.data import COUNTRIES
 from django import forms
 from . import models
+from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+
 
 class ProfileForm(forms.ModelForm):
     field_choices = [
-        ('engineering', 'Engineering'),
-        ('medicine', 'Medicine'),
-        ('psychology', 'Psychology'),
-        ('art', 'Art and Culture')
+        ('Engineering', 'Engineering'),
+        ('Medicine', 'Medicine'),
+        ('Psychology', 'Psychology'),
+        ('Art and Culture', 'Art and Culture')
     ]
     email=forms.EmailField(widget=forms.EmailInput())
     confirm_email=forms.EmailField(widget=forms.EmailInput())
@@ -47,3 +51,20 @@ class ProfileForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Bio must be 10 characters or longer!"
             )
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+    username = forms.CharField(label='username', widget=forms.TextInput(attrs={'placeholder': 'username', 'class':'form-control'}))
+    password1 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'password','class':'form-control'}))
+    password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'password confirmation','class':'form-control'}))
+
+class SigInForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    username = forms.CharField(label='username', widget=forms.TextInput(attrs={'placeholder': 'username','class':'form-control'}))
+    password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'password','class':'form-control'}))

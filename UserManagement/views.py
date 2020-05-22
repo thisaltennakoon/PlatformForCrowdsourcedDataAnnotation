@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 from . import models
-from . import forms
+from .forms import CreateUserForm, SigInForm
 
 from.filters import ProfileFilter
 from .forms import ProfileForm
@@ -17,12 +17,12 @@ from .models import Profile
 
 
 def sign_in(request):
-    form = AuthenticationForm()
-    username= 'not logged in'
+    form = SigInForm()
+    username = 'not logged in'
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            if form. user_cache is not None:
+            if form.user_cache is not None:
                 user = form.user_cache
                 username = form.cleaned_data['username']
                 request.session['user_id'] = user.id
@@ -51,9 +51,9 @@ def formView(request):
       return render(request, 'sign_in.html', {})
 
 def sign_up(request):
-    form = UserCreationForm()
+    form = CreateUserForm()
     if request.method == 'POST':
-        form = UserCreationForm(data=request.POST)
+        form = CreateUserForm(data=request.POST)
         if form.is_valid():
             form.save()
             user = authenticate(
@@ -131,4 +131,13 @@ def profiles(request):
     profiles = Profile.objects.all().exclude(first_name = '')
     return render(request,'UserManagement/profile_list.html', {'profiles':profiles})
 
+def view_profile(request):
+    return render(request, 'UserManagement/view_profile.html')
 
+def delete_profile(request, pk):
+    profile = Profile.objects.get(user_id=pk)
+    if request.method == "POST":
+        profile.delete()
+        return redirect('/')
+    context = {'profile':profile}
+    return render(request, 'UserManagement/delete_profile.html', context)

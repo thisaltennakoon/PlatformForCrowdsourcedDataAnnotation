@@ -793,11 +793,27 @@ a {
 a:hover {
   color: #537d7b;
 }
+btn{
+	display: block;
+	width: 100%;
+	height: 50px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
+	background-size: 200%;
+	font-size: 1.2rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+}
 
 /* line 4, ../sass/circle/core/buttons.sass */
 .button,
 button,
-input[type="submit"],
 input[type="reset"],
 input[type="button"] {
   font-family: "Work Sans", sans-serif;
@@ -812,7 +828,7 @@ input[type="button"] {
   box-sizing: border-box;
   line-height: 1;
   text-decoration: none;
-  color: #689b98;
+  color: #fff;
   background: none;
   box-shadow: 0 0 0 2px #689b98 inset;
   position: relative;
@@ -1436,7 +1452,7 @@ li:only-child .circle--clone--remove {
 
 /* line 2, ../sass/circle/components/headers.sass */
 .circle--header {
-  background: #537d7b;
+  background: #9900cc;
   padding: 20px 0;
   margin-bottom: 30px;
 }
