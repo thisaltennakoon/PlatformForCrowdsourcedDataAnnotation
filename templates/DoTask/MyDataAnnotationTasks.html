@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <title>Your Data Annotation Tasks</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" dashboard" data-admin-utc-offset="0">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/UserManagement/MyTasks/">My Tasks</a>
+        &rsaquo;My Data Annotation Tasks
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1><strong>My Tasks</strong></h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                <table>
+                    <caption>
+                        Data Annotation Tasks
+                    </caption>
+                    {% for task in tasks %}
+                    <tr class="{{task.id}}">
+                        <th scope="row"><a href="/DoDataAnnotationTask/Task?task_id={{task.id}}">{{task.Title}}</a></th>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>

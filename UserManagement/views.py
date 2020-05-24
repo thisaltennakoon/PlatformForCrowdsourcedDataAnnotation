@@ -123,17 +123,17 @@ def change_password(request):
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):
-    all_user_tasks = ContributorTask.objects.filter(UserID_id=request.session['user_id'])
+    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
     user_data_generation_tasks = []
     user_data_annotation_tasks = []
-    for task in all_user_tasks:
-        if (task.is_data_annotation_task ) and not(task.is_data_generation_task ):
-            user_data_annotation_tasks += [task.TaskID]
-        elif not(task.is_data_annotation_task ) and (task.is_data_generation_task ):
-            user_data_generation_tasks += [task.TaskID]
-    return render(request, 'UserManagement/MyTasks.html' , {'data_generation_tasks': DataGenerationTask.objects.filter(id__in=user_data_generation_tasks),
-                                                         'data_annotation_tasks':DataAnnotationTask.objects.filter(id__in=user_data_annotation_tasks),
-                                                             'user_id':request.session['user_id']})
+    for user_task in all_user_tasks:
+        if user_task.Task.taskType=='TextAnno' or user_task.Task.taskType=='ImageAnno':
+            user_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType=='TextGen' or user_task.Task.taskType=='ImgGen':
+            user_data_generation_tasks += [user_task.Task]
+    return render(request, 'UserManagement/MyTasks.html', {'data_generation_tasks': user_data_generation_tasks,
+                                                            'data_annotation_tasks':user_data_annotation_tasks,
+                                                            'user_id':request.session['user_id']})
 
 
 

@@ -1,0 +1,63 @@
+{% extends "createtask/base.html" %}
+{% block container %}
+<h2>   Add the number tag(0,1,2..) relative to each cateogary</h2>
+<form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+     <div class="row spacer">
+            <div class="col-2">
+                <label><h6>cateogary Names</h6></label>
+            </div>
+            <div class="col-4">
+                <label><h6>cateogary tag</h6></label>
+            </div>
+        </div>
+    {% for cateogary in cateogary_list %}
+        <div class="row spacer">
+            <div class="col-2">
+                <label>{{cateogary.cateogaryName}}</label>
+            </div>
+            <div class="col-4">
+                <div class="input-group">
+                    <input type="text" id="cateogary{{forloop.counter}}" name="{{cateogary.id}}">
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="row spacer">
+        <div class="col-2">
+            <label for="exampleFormControlFile1">Example Annotation Dataset </label>
+        </div>
+        <div class="col-4">
+             <input type="file" id="file" name="file">
+        </div>
+    </div> 
+
+    <div class="row spacer">
+        <div class="col-8">
+        <input type="checkbox" id="checktest" name="checktest" value="">
+        <label for="checktest"> Make these example annotations a test and automaticly approve annotators with</label>
+        <select  class="" id="exampleFormControlSelect1">
+            <option>90%</option>
+            <option>80%</option>
+            <option>75%</option>
+            <option>70%</option>
+            <option>60%</option>
+            <option>50%</option>
+        </select>
+        accuaracy
+        </div>
+
+    </div> 
+
+    <div class="row spacer">
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Next</button>
+        </div>
+        {% comment %} <div class="col-4">
+            <button type="submit" class="btn btn-primary">Skip This Step</button>
+        </div> {% endcomment %}
+    </div>
+
+
+{% endblock container %}

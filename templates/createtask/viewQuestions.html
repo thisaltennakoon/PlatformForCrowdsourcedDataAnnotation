@@ -1,0 +1,23 @@
+{% extends 'createtask/base.html' %}
+{% block container %}
+
+<body>
+    <h1> Questionaire </h1>
+
+    <form action="" method='post'>
+    {%for q in question_list%}
+        <div class="card col-10">
+            <div class="card-body">
+                {{q.description}}
+            </div>
+        </div>
+        {%for answer in q.add%}
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">{{answer.description}}</label><br>
+        {% endfor %}
+        <br>
+    {% endfor %}
+    </form>
+<button type="submit" class="btn btn-primary col-2">Submit</button>
+</body>
+{% endblock container %}

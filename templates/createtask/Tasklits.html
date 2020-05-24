@@ -1,0 +1,5 @@
+<ul>
+    {% for task in all_tasks%}
+        <li><a href="{%url 'createtask:question_view' task.id %}">{{task.title}}</a></li>
+    {%endfor%}
+</ul>

@@ -45,7 +45,7 @@ def task(request):
                     annotating_data_instance.save()
                     return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
                 else:
-                    return HttpResponse('error')
+                    return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
         except DatabaseError:
             return HttpResponse("DatabaseError")
     else:
@@ -136,11 +136,7 @@ def skip_data_instance(request):
         user_id = request.session['user_id']
         try:
             with transaction.atomic():
-                annotating_data_instance = AnnotationDataSet.objects.get(TaskID=task_id,DataInstance=viewing_data_instance)
-                if (annotating_data_instance.WhoIsViewing == user_id) and (annotating_data_instance.IsViewing == True):
-                    annotating_data_instance.IsViewing = False
-                    annotating_data_instance.WhoIsViewing = 0
-                    annotating_data_instance.save()
+                if stop_viewing(request,task_id,viewing_data_instance):
                     return redirect('/DoDataAnnotationTask/Task?skip_instance='+viewing_data_instance+'&task_id=' + str(task_id))
                 else:
                     return HttpResponse('error')
@@ -171,10 +167,11 @@ def stop_viewing(request,task_id,viewing_data_instance):
         try:
             with transaction.atomic():
                 annotating_data_instance = AnnotationDataSet.objects.get(TaskID=task_id,DataInstance=viewing_data_instance)
-                annotating_data_instance.IsViewing = False
-                annotating_data_instance.WhoIsViewing = 0
-                annotating_data_instance.save()
-                return True
+                if (annotating_data_instance.WhoIsViewing == user_id) and (annotating_data_instance.IsViewing == True):
+                    annotating_data_instance.IsViewing = False
+                    annotating_data_instance.WhoIsViewing = 0
+                    annotating_data_instance.save()
+                    return True
         except DatabaseError:
             return False
     except:

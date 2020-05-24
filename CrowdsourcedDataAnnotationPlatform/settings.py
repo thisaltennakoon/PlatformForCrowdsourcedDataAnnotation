@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'DoDataGenerationTask',
     'UserManagement',
     'CreateTextDataAnnotationTask',
-    'DoTextDataAnnotationTask'
+    'DoTextDataAnnotationTask',
+    'CreateTask',
+    'DoTask'
 ]
 
 MIDDLEWARE = [
@@ -89,7 +91,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 
-#Thisal's databsse
+#Thisal's Postgres databsse
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -99,6 +101,18 @@ DATABASES = {
         'HOST':'localhost'
     }
 }
+
+#Thisal's Postgres databsse
+"""DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'crowdsourceddataannotationplatform',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST':'127.0.0.1',
+        'PORT':'3308'
+    }
+}"""
 
 #MySQL event for release data instances
 """SET GLOBAL event_scheduler = ON; -- enable event scheduler.
