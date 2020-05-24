@@ -58,5 +58,5 @@ def resultanalyse(request):
         lenth.append(len(titt))
         task.append(titt)
           
-    context = {'categories':annotator_name,'values':result ,'task':task,'le':lenth}
+    context = {'categories':annotator_name,'values':result ,'task':task}
     return render(request,'analyse/index.html',context=context)
