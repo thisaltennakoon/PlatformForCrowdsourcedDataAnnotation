@@ -6,87 +6,87 @@
 
 <form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
-<div class="row spacer">
-<div class="col-2">
-    <label>{{taskform.title.label}}</label>
-</div>
-<div class="col-4">
-    <div class="input-group">
-        {{taskform.title}}
-    </div>
-</div>
-</div>
-<div class="row spacer">
-<div class="col-2">
-    <label>{{taskform.description.label}}</label>
-</div>
-<div class="col-4">
-    <div class="input-group">
-    {{taskform.description}}
-    </div>
-</div>
-</div>
-
-<div class="row spacer">
-<div class="col-2">
-    <label>{{taskform.instructions.label}}</label>
-</div>
-    <div class="col-4">
-        <div class="input-group">
-        {{taskform.instructions}}
-    </div>
-</div>
-</div>
-
-{% comment %} not connected {% endcomment %}
-<div class="row spacer">           
-    <label for="exampleFormControlSelect1" class="col-2">Number of Annotations per data instance</label>
-    <div class="col-4">
-        <select class="form-control" id="exampleFormControlSelect1">
-        <option>1</option>
-        <option>3</option>
-        <option>5</option>
-        </select>
-    </div>
-
-</div>
-
-</div>
-
-
-{{ formset.management_form }}
-{% for form in formset %}
-<div class="row form-row spacer">
+    <div class="row spacer">
     <div class="col-2">
-        <label>{{form.cateogaryName.label}}</label>
+        <label>{{taskform.title.label}}</label>
     </div>
     <div class="col-4">
         <div class="input-group">
-            {{form.cateogaryName}}
-            <div class="input-group-append">
-                <button class="btn btn-success add-form-row">+</button>
+            {{taskform.title}}
+        </div>
+    </div>
+    </div>
+    <div class="row spacer">
+    <div class="col-2">
+        <label>{{taskform.description.label}}</label>
+    </div>
+    <div class="col-4">
+        <div class="input-group">
+        {{taskform.description}}
+        </div>
+    </div>
+    </div>
+
+    <div class="row spacer">
+    <div class="col-2">
+        <label>{{taskform.instructions.label}}</label>
+    </div>
+        <div class="col-4">
+            <div class="input-group">
+            {{taskform.instructions}}
+        </div>
+    </div>
+    </div>
+
+    {% comment %} not connected {% endcomment %}
+    <div class="row spacer">           
+        <label for="exampleFormControlSelect1" class="col-2">Number of Annotations per data instance</label>
+        <div class="col-4">
+            <select class="form-control" id="exampleFormControlSelect1">
+            <option>1</option>
+            <option>3</option>
+            <option>5</option>
+            </select>
+        </div>
+
+    </div>
+
+    </div>
+
+
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="row form-row spacer">
+        <div class="col-2">
+            <label>{{form.cateogaryName.label}}</label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                {{form.cateogaryName}}
+                <div class="input-group-append">
+                    <button class="btn btn-success add-form-row">+</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 
-{% comment %} Not working {% endcomment %}
-<div class="row spacer">
-        <div class="col-2">
-            <label for="exampleFormControlFile1">Dataset </label>
-        </div>
-        <div class="col-4">
-            {{csvform.data}}
-        </div>
-    
-</div>
-    
-<div class="row spacer">
-    <div class="col-4 offset-2">
-        <button type="submit" class="btn btn-block btn-primary">Next</button>
+    {% comment %} Not working {% endcomment %}
+    <div class="row spacer">
+            <div class="col-2">
+                <label for="exampleFormControlFile1">Dataset </label>
+            </div>
+            <div class="col-4">
+                {{csvform.data}}
+            </div>
+        
     </div>
-</div>
+        
+    <div class="row spacer">
+        <div class="col-4 offset-2">
+            <button type="submit" class="btn btn-block btn-primary">Next</button>
+        </div>
+    </div>
 
 </form>
 

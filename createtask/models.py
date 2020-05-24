@@ -127,7 +127,7 @@ class McqOption(models.Model):
 
 
 
-#TEXT DATA EXAMPLE AND TEST
+#TEXT AND MEDIA DATA EXAMPLE AND TEST
 class CateogaryTag(models.Model):
     CateogaryID = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
     TagNumber = models.IntegerField(max_length=2)
@@ -135,6 +135,12 @@ class CateogaryTag(models.Model):
 class AnnotationTest(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
+class TestResult(models.Model):
+    testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
+    annotatorID = models.ForeignKey(UserNew2, on_delete=models.CASCADE) #user janani's user table
+    score = models.DecimalField(max_digits=5,decimal_places=2)  #score out of 100
+
+#TEXT
 class ExampleTextDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
 
@@ -146,3 +152,23 @@ class ExampleTextAnnoResult(models.Model):
     ExampleTextDataInstanceID = models.ForeignKey(ExampleTextDataInstance, on_delete=models.CASCADE)
     resultCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
     
+class TextAnnoAnswers(models.Model):
+    userID = models.ForeignKey(UserNew2, on_delete=models.CASCADE) 
+    textInstance = models.ForeignKey(ExampleTextDataInstance,on_delete=models.CASCADE)
+    answerCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
+
+#MEDIA
+def directory_path3(instance,filename):
+    return 'MediaAnno/test/task_{0}/{1}'.format(instance.testID.id, filename)
+class ExampleMediaDataInstance(models.Model):
+    testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
+    mediaData = models.FileField(upload_to=directory_path2)
+
+class ExampleMediaAnnoResult(models.Model):
+    ExampleMediaDataInstanceID = models.ForeignKey(ExampleMediaDataInstance, on_delete=models.CASCADE)
+    resultCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
+
+class MediaAnnoAnswers(models.Model):
+    userID = models.ForeignKey(UserNew2, on_delete=models.CASCADE) 
+    mediaInstance = models.ForeignKey(ExampleMediaDataInstance,on_delete=models.CASCADE)
+    answerCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
