@@ -5,7 +5,8 @@ from CreateDataAnnotationTask.models import Task,DataClass
 class DataAnnotationResult(models.Model):
     TaskID = models.ForeignKey(Task , on_delete=models.CASCADE)
     DataInstance = models.CharField(max_length=30, blank=False)
-    ClassName = models.CharField(max_length=100, blank=False)
+    ClassID = models.IntegerField(default=0, null=False, blank=False)
+    #ClassName = models.CharField(max_length=100, blank=False)
     #ClassName = models.ForeignKey(DataClass , on_delete=models.CASCADE)
     UserID = models.IntegerField(null=False,blank=False)
     LastUpdate = models.DateTimeField(auto_now=True)

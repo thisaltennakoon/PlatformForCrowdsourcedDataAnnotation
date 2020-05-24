@@ -1,0 +1,27 @@
+{% extends 'createtask/base.html' %}
+{% block container %}
+
+<body>
+    <h1> Add Examples </h1>
+
+    <form action="" method='post'>
+    {% csrf_token %}
+    {%for class in class_list%}
+    <label for="class{{forloop.counter}}">
+        {{class.classtitle}}
+        {% if class.requiredDataType == 'T' %}
+            <input type='text' id="class{{forloop.counter}}" name="class{{forloop.counter}}" />
+        {% elif class.requiredDataType == 'I' %}
+            <input type='file' id="class{{forloop.counter}}" name="class{{forloop.counter}}" />
+        <br>
+        {% endif %}
+    {% endfor %}
+    </form>
+    <br>
+<button type="submit" class="btn btn-primary col-2">Submit</button>
+</body>
+{% endblock container %}
+
+
+<label for="class{{forloop.counter}}">
+        {{class.classtitle}}

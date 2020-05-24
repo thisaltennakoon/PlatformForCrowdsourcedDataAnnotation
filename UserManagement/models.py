@@ -1,12 +1,8 @@
-from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from CreateDataGenerationTask.models import Task as DataGenerationTask
-from CreateDataAnnotationTask.models import Task as DataAnnotationTask
+from CreateTask.models import Task
 
 
 # Create your models here.
@@ -40,9 +36,7 @@ post_save.connect(create_profile, sender=User)
 
 
 class ContributorTask(models.Model):
-    TaskID = models.IntegerField(null=False,blank=False)
-    UserID = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    is_data_annotation_task = models.BooleanField(default=False)
-    is_data_generation_task = models.BooleanField(default=False)
+    Task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    User = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 

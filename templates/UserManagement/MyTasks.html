@@ -30,11 +30,11 @@
             <div class="app-auth module">
                 <table>
                     <caption>
-                        <a href="/DoDataAnnotationTask/">Data Annotation Tasks</a>
+                        Data Annotation Tasks
                     </caption>
                     {% for data_annotation_task in data_annotation_tasks %}
                     <tr class="{{data_annotation_task.id}}">
-                        <th scope="row"><a href="/DoDataAnnotationTask/Task?task_id={{data_annotation_task.id}}">{{data_annotation_task.Title}}</a></th>
+                        <th scope="row"><a href="/DoTask/Task?task_id={{data_annotation_task.id}}">{{data_annotation_task.title}}</a></th>
                         <td></td>
                     </tr>
                     {% endfor %}
@@ -45,11 +45,11 @@
             <div class="app-CreateDataAnnotationTask module">
                 <table>
                     <caption>
-                        <a href="/DoDataGenerationTask/">Data Generation Tasks</a>
+                        Data Generation Tasks
                     </caption>
                     {% for data_generation_task in data_generation_tasks %}
                     <tr class="{{data_generation_task.id}}">
-                        <th scope="row"><a href="/DoDataGenerationTask/Task?task_id={{data_generation_task.id}}">{{data_generation_task.Title}}</a></th>
+                        <th scope="row"><a href="/DoTask/Task?task_id={{data_generation_task.id}}">{{data_generation_task.title}}</a></th>
                         <td></td>
                     </tr>
                     {% endfor %}

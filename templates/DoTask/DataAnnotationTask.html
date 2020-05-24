@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <title>Data Annotation Task</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" dashboard" data-admin-utc-offset="0" >
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+        <div id="user-tools">
+            {% if data_instance_available %}
+            <a href="/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}"><strong>View My Contributions</strong></a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/UserManagement/MyTasks/"> My Tasks </a>
+        &rsaquo;<a href="/DoDataAnnotationTask/"> My Data Annotation Tasks </a>
+        &rsaquo; {{task_object.Title}}
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                {% if data_instance_available %}
+                COMPLETE WITHIN : <p id="time_left"></p>
+                <h1><strong>Data Instance</strong></h1>
+                {% load static %}
+                <img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"><br>
+                <h4>Data Classes</h4>
+                <form action="Task" method="POST">
+                    {% csrf_token %}
+                    {% for data_class in data_classes %}
+                    <input type="radio" id="{{data_class.ClassName}}" name="data_class_id" value="{{data_class.ClassID}}" required>
+                    <lable for="{{data_class.ClassName}}">{{data_class.ClassName}}</lable><br>
+                    {% endfor %}
+                    <input type="hidden" name="DataInstance" value="{{data_instance.DataInstance}}">
+                    <input type="hidden" name="task_id" value="{{task_id}}">
+                    <input type="hidden" name="user_id" value="{{user_id}}">
+                    <input type="Submit" value="Submit Data Annotation" >
+                </form>
+                <button onclick="window.location.replace('/DoDataAnnotationTask/SkipDataInstance?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}')" class="button DeleteButtonStyle">Skip This Data Instance</button>
+                <button onclick="window.location.replace('/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}')" class="button DeleteButtonStyle">Stop Annotating</button>
+                {% else %}
+                <h3>Congratulations!</h3> <h3>All the data instances in this task has been annotated.Try another task</h3>
+                <button onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}')" class="button DeleteButtonStyle">View My Contributions</button>
+                {% endif %}
+            </div>
+        </div>
+        <div id="content-related">
+            <div class="module" id="recent-actions-module">
+                <h2>My Contributions</h2>
+                {% if annotated_data_instances_available %}
+                <!--h3>My actions</h3-->
+                <ul class="actionlist">
+                    {% for annotated_data_instance in annotated_data_instances %}
+                    <li class="addlink">
+                        <!--a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}">Data Instance : {{annotated_data_instance.DataInstance}}</a-->
+                        <a onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}')" >Data Instance : {{annotated_data_instance.DataInstance}}</a>
+                        <br>
+                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <h3>You haven't done any annotations</h3>
+                {% endif %}
+            </div>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+<script>
+var msec = Date.parse(new Date())+302000;
+var a = new Date(msec)
+var countDownDate = a.getTime();
+
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("time_left").innerHTML = minutes + "m " + seconds + "s ";
+
+  if (distance < 1000) {
+    clearInterval(x);
+    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}");
+  }
+
+    if (distance < 10000) {
+    document.getElementById("time_left").style.color = "red";
+  }
+}, 1000);
+
+</script>
+</body>
+</html>

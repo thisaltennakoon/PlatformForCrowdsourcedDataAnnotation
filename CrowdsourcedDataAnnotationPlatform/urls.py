@@ -12,6 +12,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('DoDataAnnotationTask/', include('DoDataAnnotationTask.urls')),
     path('DoDataGenerationTask/', include('DoDataGenerationTask.urls')),
+    path('DoTextDataAnnotationTask/', include('DoTextDataAnnotationTask.urls')),
+    path('CreateTextDataAnnotationTask/', include('CreateTextDataAnnotationTask.urls')),
+    path('DoTask/', include('DoTask.urls')),
+    path('task/', include('CreateTask.urls'))
 ]
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
