@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 from . import models
-from .forms import CreateUserForm, SigInForm
+from .forms import CreateUserForm, SigInForm, PWChangeForm
 
 from.filters import ProfileFilter
 from .forms import ProfileForm
@@ -109,14 +109,14 @@ def edit_profile(request):
 @login_required(login_url='UserManagement:sign_in')
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = PWChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your password was successfully updated!')
             return HttpResponseRedirect(reverse('UserManagement:profile'))
     else:
-        form = PasswordChangeForm(request.user)
+        form = PWChangeForm(request.user)
     return render(request, 'UserManagement/change_password.html', {
         'form': form
     })

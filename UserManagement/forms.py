@@ -2,26 +2,14 @@ from django_countries.data import COUNTRIES
 from django import forms
 from . import models
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
-    field_choices = [
-        ('Engineering', 'Engineering'),
-        ('Medicine', 'Medicine'),
-        ('Psychology', 'Psychology'),
-        ('Art and Culture', 'Art and Culture')
-    ]
-    email=forms.EmailField(widget=forms.EmailInput())
-    confirm_email=forms.EmailField(widget=forms.EmailInput())
-    bio = forms.Textarea()
-    field = forms.CharField(label="Select your specialized field",
-                            widget=forms.Select(choices=field_choices))
-    country=forms.ChoiceField(choices = sorted(COUNTRIES.items()))
-
     class Meta:
-        model = models.Profile
+        model = Profile
         fields = [
             'avatar',
             'first_name',
@@ -32,25 +20,23 @@ class ProfileForm(forms.ModelForm):
             'is_author',
             'field',
             'country',
-
-
         ]
 
-    def clean(self):
-        cleaned_data = super(ProfileForm, self).clean()
-        email = cleaned_data.get("email")
-        confirm_email = cleaned_data.get("confirm_email")
-        bio = cleaned_data.get("bio")
-
-        if email != confirm_email:
-            raise forms.ValidationError(
-                "Emails must match!"
-            )
-
-        if len(bio) < 10:
-            raise forms.ValidationError(
-                "Bio must be 10 characters or longer!"
-            )
+    field_choices = [
+        ('Engineering', 'Engineering'),
+        ('Medicine', 'Medicine'),
+        ('Psychology', 'Psychology'),
+        ('Art and Culture', 'Art and Culture')
+    ]
+    avatar = forms.ImageField(label='avatar', widget=forms.FileInput(attrs={'class':''}))
+    first_name = forms.CharField(label='first_name',widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
+    last_name = forms.CharField(label='last_name', required=False, widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control'}))
+    email = forms.EmailField(label='email', widget=forms.EmailInput(attrs={'placeholder': 'email', 'class':'form-control'}))
+    bio = forms.CharField(label='about',widget=forms.TextInput(attrs={'placeholder': 'About', 'class': 'form-control'}))
+    field = forms.CharField(label="Select your specialized field",widget=forms.Select(choices=field_choices, attrs={'placeholder':'field', 'class':'form-control'}))
+    country = forms.CharField (label="country",widget=forms.Select(choices=sorted(COUNTRIES.items()), attrs={'placeholder':'field', 'class':'form-control'}))
+    is_author = forms.BooleanField(label='is_author', required=False, widget=forms.CheckboxInput())
+    is_contributor = forms.BooleanField(label='is_contributor', required=False, widget=forms.CheckboxInput())
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -68,3 +54,14 @@ class SigInForm(AuthenticationForm):
 
     username = forms.CharField(label='username', widget=forms.TextInput(attrs={'placeholder': 'username','class':'form-control'}))
     password = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'password','class':'form-control'}))
+
+class PWChangeForm(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password1', 'new_password2']
+
+    old_password = forms.CharField(label='username',widget=forms.TextInput(attrs={'placeholder': 'current password', 'class': 'form-control'}))
+    new_password1 = forms.CharField(label='password',widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
+    new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
+
+

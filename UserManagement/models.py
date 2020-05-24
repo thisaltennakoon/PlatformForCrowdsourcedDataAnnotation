@@ -14,7 +14,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='/static/img/avatar.png')
     first_name = models.CharField(max_length=255, default='')
-    last_name = models.CharField(max_length=255, default='')
+    last_name = models.CharField(max_length=255, default='', null=True)
     email = models.EmailField(default='none@email.com')
     bio = models.TextField(default='')
     is_contributor = models.BooleanField(default=False)
