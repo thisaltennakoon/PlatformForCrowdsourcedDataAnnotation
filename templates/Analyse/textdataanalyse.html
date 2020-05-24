@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSDA</title>
+    <title> Text Data Task Analyse</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
@@ -10,9 +10,54 @@
     
 </head>
 <style>
+    
+ body{
+  border:5px solid  #28a745!important;
+ }   
+    
+    
+    #popup-1 {
+        display: none;
+        background-color: rgba(0,0,0,0.5);
+        position: absolute;
+    
+    }
+    #popup-2 {
+      display: none;
+      background-color: rgba(0,0,0,0.5);
+      position: absolute;
+    }
+    #popup-3 {
+    display: none;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+  }
+  #popup-4 {
+  display: none;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  
+  }
+    
+    .popup-content {
+        position: relative;
+        padding: 20px;
+        margin: 0 auto;
+        background-color: rgb(152, 226, 216);
+        width: 700px;
+        top: 0vh;
+        border:4px solid  #28a745!important;
+        border-radius: 8px;
+    }
+    button{
+      border:2px ;
+    }
+    button:active{
+      background-color:darkseagreen;
+    }
 .row{
   padding-left: 175px; 
-  padding-top:50px;
+  padding-top:5px;
 }
 .card{
   border:2px solid #28a745!important;
@@ -41,7 +86,7 @@
   max-width: 45rem;
 }
 #body{
-  height:598px;
+  height:580px;
 }
 #inner-body{
   background-color: white;
@@ -53,13 +98,22 @@
 .card2{
   width: 22rem;
 }
-
+.card-title{
+  color: black;
+  cursor: pointer;
+  pointer-events: visible;
+  
+}
+.card-title:active{
+  color: rgb(82, 82, 170);
+}
 .card-text{
   color: black;
 
 }
 #int{
-  height:144px; padding-top:50px
+  height:125px; padding-top:50px;
+  padding-bottom: 20px;
 }
 .text{
   text-align:center; 
@@ -68,14 +122,29 @@
 #last{
   padding-top:10px;
 }
-/* Popup container */
-.popup {
-  
-  color: black;
+.navbar {
+  background-color:#28a745!important; height:50px; padding-top:0px;
 }
-
+.navbar-brand{
+  color: white!important; line-height:40px; padding-left: 50px; padding-top:0px; font-size:25px;
+}
+.form-inline{
+  padding-top:7px;
+}
+.btn{
+  background-color: white!important; 
+}
+.btn:active{color:#28a745!important;
+}
 </style>
-<body>
+<body >
+  <nav class="navbar navbar-light bg-light justify-content-between " >
+    <a class="navbar-brand" >CDAP</a>
+    <form class="form-inline">
+      <a href="###" class="btn btn-outline-success mr-sm-2"  > View My Task </a>
+      <a href="###" class="btn btn-outline-success my-2 my-sm-0" >SignOut</a>
+    </form>
+  </nav>
     <div class="row" >
         <div class="col-sm-7">
           <div class="card" >
@@ -95,8 +164,7 @@
                 <div class="card-body" id = "body" >
                     <div class="card2"  >
                         <div class="card-body" id= "inner-body">
-                          <h5 class="popup"  >Inter-rater reliability(Kappa)</h5>
-                          
+                          <h5 class="card-title" id="open-popup-1">Inter-rater reliability(Kappa)</h5>
                           <p class="card-text">{{k}}</p>
                           
                         </div>
@@ -104,8 +172,7 @@
                       <br>
                       <div class="card2"  >
                         <div class="card-body" id= "inner-body">
-                          <h5 class="popup" >Statistical measure for agreement(Fleiss)</h5>
-                          
+                          <h5 class="card-title" id="open-popup-2" >Statistical measure for agreement(Fleiss)</h5>
                           <p class="card-text">{{f}} </p>
                           
                         </div>
@@ -113,8 +180,7 @@
                       <br>
                       <div class="card2"  >
                         <div class="card-body" id= "inner-body">
-                          <h5 class="popup" >Versatile statistic for agreement(Alpha)</h5>
-                          
+                          <h5 class="card-title" id="open-popup-3" >Versatile statistic for agreement(Alpha)</h5>
                           <p class="card-text">{{a}} </p>
                           
                         </div>
@@ -122,8 +188,7 @@
                       <br>
                       <div class="card2"  >
                         <div class="card-body" id= "inner-body">
-                          <h5 class="popup" >statistic for measuring inter-rater reliability for nominal data(Scotts)</h5>
-                          
+                          <h5 class="card-title" id="open-popup-4" >statistic for measuring inter-rater reliability for nominal data(Scotts)</h5>
                           <p class="card-text">{{s}}</p>
                           
                         </div>
@@ -170,15 +235,112 @@
     window.myPie = new Chart(ctx, config);
   };
 </script>
+<div id="popup-1">
+	<div class="popup-content">
+		<h3>Inter-rater reliability(Kappa)</h3>
+		<p>A measure that is standardly used is κ (kappa), defined for two annotator as follows. We want to compare the amount of agreement that we're actually getting between the two annotator to the amount of agreement that we would get purely by chance. In estimating the amount we would get by chance, We fix the fractions of documents that each annotator is labelling as relevant. So:
+      <br>
+      Let N be the number of documents.<br>
+      Let R1 be the set of documents that annotator 1 considers relevant, and let I1 be the set of documents that annotator 1 considers irrelevant.<br>
+      Let R2 be the set of documents that annotator 2 considers relevant, and let I2 be the set of documents that annotator 2 considers irrelevant.<br>
+      The set of documents where the two annotator agree is<br><br>
+      A = (R1 ∩ R2) ∪ (I1 ∩ I2)<br>
+      Let P(A) = |A|/N.<br><br>
+      
+      The fraction of agreement expected by chance would be (R1/N)(R2/N) + (I1/N)(I2/N). Call that P(E).
+      <br>
+      Then κ is defined as (P(A)−P(E))/(1−P(E)).
+      <br>
+      So: If the annotator agree perfectly, then P(A) = 1 and κ=1.<br>
+      If the annotators' agreement is no better than chance, then κ=0.<br>
+      values ≤ 0 as indicating no agreement and 0.01–0.20 as none to slight, 0.21–0.40 as fair, 0.41– 0.60 as moderate, 0.61–0.80 as substantial, and 0.81–1.00 as almost perfect agreement.<a href="https://en.wikipedia.org/wiki/Cohen%27s_kappa" style="color: mediumblue;">more...</a><br></p>
+		<button id="close-popup-1">Close</button>
+	</div>
+</div> 
+<div id="popup-2">
+	<div class="popup-content">
+		<h3>Statistical measure for agreement(Fleiss)</h3>
+		<p>Fleiss' kappa (named after Joseph L. Fleiss) is a statistical measure for assessing the reliability of agreement between a fixed number of raters when assigning categorical ratings to a number of items or classifying items. This contrasts with other kappas such as Cohen's kappa, which only work when assessing the agreement between not more than two raters or the interrater reliability for one appraiser versus themself. The measure calculates the degree of agreement in classification over that which would be expected by chance.
+      <br>
+      Fleiss' kappa can be used with binary or nominal-scale. It can also be applied to Ordinal data (ranked data): the MiniTab online documentation [1] gives an example. However, this document notes: "When you have ordinal ratings, such as defect severity ratings on a scale of 1–5, Kendall's coefficients, which account for ordering, are usually more appropriate statistics to determine association than kappa alone."<a href="https://www.wikiwand.com/en/Fleiss%27_kappa" style="color: mediumblue;">more...</a><br>
+      <br>values greater than 0.75 or so may be taken to represent excellent agreement beyond chance,
+      <br>values below 0.40 or so may be taken to represent poor agreement beyond chance, and
+      <br>values between 0.40 and 0.75 may be taken to represent fair to good agreement beyond chance.</p>
+		<button id="close-popup-2">Close</button>
+	</div>
+</div> 
+<div id="popup-3">
+	<div class="popup-content">
+		<h3>Versatile statistic for agreement(Alpha)</h3>
+    <p>Reliability of measurements is a prerequisite of medical research. For nominal data, Fleiss’ kappa (in the following labelled as Fleiss’ K) and Krippendorff’s alpha provide the highest flexibility of the available reliability measures with respect to number of raters and categories. Our aim was to investigate which measures and which confidence intervals provide the best statistical properties for the assessment of inter-rater reliability in different situations.<a href="https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-016-0200-9" style="color: mediumblue;">more...</a><br>
+      The strength of agreement (low, moderate and high), represented by Fleiss’ K and Krippendorff’s alpha ∈ [0.4,0.93]<br> </p>
+		<button id="close-popup-3">Close</button>
+	</div>
+</div> 
+<div id="popup-4">
+	<div class="popup-content">
+		<h3>statistic for measuring inter-rater reliability for nominal data(Scotts)</h3>
+		<p>Scott's pi (named after William A. Scott) is a statistic for measuring inter-rater reliability for nominal data in communication studies. Textual entities are annotated with categories by different annotators, and various measures are used to assess the extent of agreement between the annotators, one of which is Scott's pi. Since automatically annotating text is a popular problem in natural language processing, and the goal is to get the computer program that is being developed to agree with the humans in the annotations it creates, assessing the extent to which humans agree with each other is important for establishing a reasonable upper limit on computer performance.<a href="https://en.wikipedia.org/wiki/Scott%27s_Pi" style="color: mediumblue;">more...</a><br></p>
+		<button id="close-popup-4">Close</button>
+	</div>
+</div> 
 <script>
-  // When the user clicks on <div>, open the popup
-  function myFunction() {
-    var popup = document.getElementById("myPopup");
-    popup.classList.toggle("show");
-  }
-  </script> 
 
+  popup1 = document.getElementById("popup-1")
+   var openPopup1 = document.getElementById("open-popup-1")
+   var closePopup1 = document.getElementById('close-popup-1')
+   
+   openPopup1.addEventListener('click', () => {
+       popup1.style.display = "block";
+   })
+   
+   closePopup1.addEventListener('click', () => {
+       popup1.style.display = "none";
+   })
+</script>
+<script>
+
+  popup2 = document.getElementById("popup-2")
+ var openPopup2 = document.getElementById("open-popup-2")
+ var closePopup2 = document.getElementById('close-popup-2')
+ 
+ openPopup2.addEventListener('click', () => {
+     popup2.style.display = "block";
+ })
+ 
+ closePopup2.addEventListener('click', () => {
+     popup2.style.display = "none";
+ })
+</script>
+<script>
+
+popup3 = document.getElementById("popup-3")
+ var openPopup3= document.getElementById("open-popup-3")
+ var closePopup3 = document.getElementById('close-popup-3')
+ 
+ openPopup3.addEventListener('click', () => {
+     popup3.style.display = "block";
+ })
+ 
+ closePopup3.addEventListener('click', () => {
+ popup3.style.display = "none";
+ })
+</script>
+<script>
+
+popup4 = document.getElementById("popup-4")
+ var openPopup4 = document.getElementById("open-popup-4")
+ var closePopup4 = document.getElementById('close-popup-4')
+ 
+ openPopup4.addEventListener('click', () => {
+     popup4.style.display = "block";
+ })
+ 
+ closePopup4.addEventListener('click', () => {
+ popup4.style.display = "none";
+ })
+</script>
 </body>
 </html>
 
-   
+ 
