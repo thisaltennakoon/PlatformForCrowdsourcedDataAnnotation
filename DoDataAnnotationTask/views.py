@@ -158,16 +158,17 @@ def skip_data_instance(request):
 
 @login_required(login_url='UserManagement:sign_in')
 def stop_annotating(request):
+    print(132213231312)
     try:
         task_id = request.GET['task_id']
         viewing_data_instance = request.GET['viewing_data_instance']
         user_id = request.session['user_id']
         if stop_viewing(request,task_id,viewing_data_instance):
-            return redirect('/DoDataAnnotationTask/')
+            return redirect('/UserManagement/MyTasks/')
         else:
             return HttpResponse('error')
     except:
-        return redirect('/DoDataAnnotationTask/')
+        return redirect('/UserManagement/MyTasks/')
 
 @login_required(login_url='UserManagement:sign_in')
 def stop_viewing(request,task_id,viewing_data_instance):
@@ -177,11 +178,15 @@ def stop_viewing(request,task_id,viewing_data_instance):
         user_id = request.session['user_id']
         try:
             with transaction.atomic():
+                print(1)
                 annotating_data_instance = MediaDataInstance.objects.get(taskID_id=task_id,media=viewing_data_instance)
+                print(2)
                 if (annotating_data_instance.WhoIsViewing == user_id) and (annotating_data_instance.IsViewing == True):
+                    print(3)
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.save()
+                    print(4)
                     return True
         except DatabaseError:
             return False

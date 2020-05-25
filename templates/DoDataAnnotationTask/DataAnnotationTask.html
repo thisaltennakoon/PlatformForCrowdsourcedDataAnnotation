@@ -103,7 +103,7 @@ var x = setInterval(function() {
 
   if (distance < 1000) {
     clearInterval(x);
-    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.DataInstance}}");
+    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}");
   }
 
     if (distance < 10000) {
