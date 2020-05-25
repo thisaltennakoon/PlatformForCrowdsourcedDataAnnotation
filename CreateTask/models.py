@@ -56,6 +56,10 @@ class TextFile(models.Model):
 
 class TextDataInstance(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    NumberOfAnnotations = models.IntegerField(default = 0)
+    IsViewing = models.BooleanField(default=False)
+    WhoIsViewing = models.IntegerField(default = 0,null=False,blank=False)
+    LastUpdate = models.DateTimeField(auto_now=True)
 
 
 class TextData(models.Model):
