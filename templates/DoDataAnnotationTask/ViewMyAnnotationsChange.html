@@ -47,23 +47,25 @@ color: white;}
     </div>
     <!-- Content -->
     <div id="content" class="colMS">
-        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
-        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
+        <h1><strong>Task Title : {{task_object.title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.description}}</strong></h1>
+        <h1><strong>Instructions : {{task_object.instructions}}</strong></h1>
+        <h1><strong>Task Type : {{task_object.taskType}}</strong></h1>
         <div id="content-main">
             <div class="app-auth module">
                 <h1><strong>Data Instance</strong></h1>
                 {% load static %}
-                <img src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
+                <img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"><br>
                 <h4>Data Classes</h4>
                 <form action="Change" method="POST">
                     {% csrf_token %}
                     {% for data_class in data_classes %}
-                    {% if annotated_data_instance.ClassID == data_class.ClassID %}
-                    <input id="{{data_class.ClassName}}" type="radio"  value="{{data_class.ClassID}}" name="data_class_id"  checked>
+                    {% if annotated_data_instance.ClassID == data_class.cateogaryTag %}
+                    <input id="{{data_class.cateogaryName}}" type="radio"  value="{{data_class.cateogaryTag}}" name="data_class_id"  checked>
                     {% else %}
-                    <input id="{{data_class.ClassName}}" type="radio"  value="{{data_class.ClassID}}" name="data_class_id" unchecked>
+                    <input id="{{data_class.cateogaryName}}" type="radio"  value="{{data_class.cateogaryTag}}" name="data_class_id" unchecked>
                     {% endif %}
-                    <lable for="{{data_class.ClassName}}">{{data_class.ClassName}}</lable><br>
+                    <lable for="{{data_class.cateogaryName}}">{{data_class.cateogaryName}}</lable><br>
                     {% endfor %}
                     <input type="hidden" name="annotated_data_instance_id" value="{{annotated_data_instance.id}}">
                     <input class="button SaveButtonStyle" type="Submit" value="Save">
