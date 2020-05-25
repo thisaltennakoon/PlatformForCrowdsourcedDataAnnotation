@@ -26,30 +26,60 @@
         <h1><strong>My Tasks</strong></h1>
         <h1><strong>user_id : {{user_id}}</strong></h1>
         <div id="content-main">
-            {% if data_annotation_tasks|length > 0 %}
+            {% if user_text_data_annotation_tasks|length > 0 %}
             <div class="app-auth module">
                 <table>
                     <caption>
-                        Data Annotation Tasks
+                        Text Data Annotation Tasks
                     </caption>
-                    {% for data_annotation_task in data_annotation_tasks %}
-                    <tr class="{{data_annotation_task.id}}">
-                        <th scope="row"><a href="/DoTask/Task?task_id={{data_annotation_task.id}}">{{data_annotation_task.title}}</a></th>
+                    {% for text_data_annotation_task in user_text_data_annotation_tasks %}
+                    <tr class="{{text_data_annotation_task.id}}">
+                        <th scope="row"><a href="/DoTextDataAnnotationTask/Task?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></th>
                         <td></td>
                     </tr>
                     {% endfor %}
                 </table>
             </div>
             {% endif %}
-            {% if data_generation_tasks|length > 0 %}
+            {% if user_image_data_annotation_tasks|length > 0 %}
+            <div class="app-auth module">
+                <table>
+                    <caption>
+                        Image Data Annotation Tasks
+                    </caption>
+                    {% for image_data_annotation_task in user_image_data_annotation_tasks %}
+                    <tr class="{{image_data_annotation_task.id}}">
+                        <th scope="row"><a href="/DoDataAnnotationTask/Task?task_id={{image_data_annotation_task.id}}">{{image_data_annotation_task.title}}</a></th>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+            {% if user_text_data_generation_tasks|length > 0 %}
             <div class="app-CreateDataAnnotationTask module">
                 <table>
                     <caption>
-                        Data Generation Tasks
+                        Text Data Generation Tasks
                     </caption>
-                    {% for data_generation_task in data_generation_tasks %}
-                    <tr class="{{data_generation_task.id}}">
-                        <th scope="row"><a href="/DoTask/Task?task_id={{data_generation_task.id}}">{{data_generation_task.title}}</a></th>
+                    {% for text_data_generation_task in user_text_data_generation_tasks %}
+                    <tr class="{{text_data_generation_task.id}}">
+                        <th scope="row"><a href="/DoDataGenerationTask/Task?task_id={{text_data_generation_task.id}}">{{text_data_generation_task.title}}</a></th>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+            {% if user_image_data_generation_tasks|length > 0 %}
+            <div class="app-CreateDataAnnotationTask module">
+                <table>
+                    <caption>
+                        Image Data Generation Tasks
+                    </caption>
+                    {% for image_data_generation_task in user_image_data_generation_tasks %}
+                    <tr class="{{image_data_generation_task.id}}">
+                        <th scope="row"><a href="/DoImageDataGenerationTask/Task?task_id={{image_data_generation_task.id}}">{{image_data_generation_task.title}}</a></th>
                         <td></td>
                     </tr>
                     {% endfor %}

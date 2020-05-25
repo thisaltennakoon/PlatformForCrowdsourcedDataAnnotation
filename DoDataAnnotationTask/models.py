@@ -1,5 +1,5 @@
 from django.db import models
-from CreateDataAnnotationTask.models import Task,DataClass
+from CreateTask.models import Task
 
 
 class DataAnnotationResult(models.Model):

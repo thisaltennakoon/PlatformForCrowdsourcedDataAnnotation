@@ -124,15 +124,23 @@ def change_password(request):
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):
     all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
-    user_data_generation_tasks = []
-    user_data_annotation_tasks = []
+    user_text_data_generation_tasks = []
+    user_image_data_generation_tasks = []
+    user_text_data_annotation_tasks = []
+    user_image_data_annotation_tasks = []
     for user_task in all_user_tasks:
-        if user_task.Task.taskType=='TextAnno' or user_task.Task.taskType=='ImageAnno':
-            user_data_annotation_tasks += [user_task.Task]
-        elif user_task.Task.taskType=='TextGen' or user_task.Task.taskType=='ImgGen':
-            user_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/MyTasks.html', {'data_generation_tasks': user_data_generation_tasks,
-                                                            'data_annotation_tasks':user_data_annotation_tasks,
+        if user_task.Task.taskType=='TextAnno':
+            user_text_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType=='ImageAnno':
+            user_image_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'TextGen':
+            user_text_data_generation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImgGen':
+            user_image_data_generation_tasks += [user_task.Task]
+    return render(request, 'UserManagement/MyTasks.html', {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                            'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
+                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
                                                             'user_id':request.session['user_id']})
 
 
