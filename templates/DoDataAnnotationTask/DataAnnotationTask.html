@@ -41,9 +41,6 @@
                 COMPLETE WITHIN : <p id="time_left"></p>
                 <h1><strong>Data Instance</strong></h1>
                 {% load static %}
-                <img max-width="420" max-height="420" src="{{ data_instance.DataInstance.url }}" alt="{{ data_instance.DataInstance.url }}"><br>
-                <h4>Data Classes</h4>
-                {% load static %}
                 <img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"><br>
                 <h4>Data Classes</h4>
                 <form action="Task" method="POST">

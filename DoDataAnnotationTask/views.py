@@ -229,8 +229,7 @@ def view_my_annotations_change(request):
             stop_viewing(request, task_id, viewing_data_instance)
         except:
             pass
-        data_instance = MediaDataInstance.objects.get(taskID_id= task_id ,
-                                                   media = annotated_data_instance.media)
+        data_instance = MediaDataInstance.objects.get(taskID_id= task_id ,media = annotated_data_instance.DataInstance)
         return render(request, 'DoDataAnnotationTask/ViewMyAnnotationsChange.html',{'annotated_data_instance':annotated_data_instance,
                                                                                     'annotated_data_instance_id':annotated_data_instance_id,
                                                                                      'data_instance':data_instance,
