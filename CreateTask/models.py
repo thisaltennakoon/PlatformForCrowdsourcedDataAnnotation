@@ -41,7 +41,7 @@ class MediaDataInstance(models.Model):
     NumberOfAnnotations = models.IntegerField(default = 0)
     IsViewing = models.BooleanField(default=False)
     WhoIsViewing = models.IntegerField(default = 0,null=False,blank=False)
-    LastUpdate = models.DateTimeField(auto_now=True)
+    LastUpdate = models.DateTimeField()
 
 
 # TEXT ANNOTATIONS
@@ -59,7 +59,7 @@ class TextDataInstance(models.Model):
     NumberOfAnnotations = models.IntegerField(default = 0)
     IsViewing = models.BooleanField(default=False)
     WhoIsViewing = models.IntegerField(default = 0,null=False,blank=False)
-    LastUpdate = models.DateTimeField(auto_now=True)
+    LastUpdate = models.DateTimeField()
 
 
 class TextData(models.Model):

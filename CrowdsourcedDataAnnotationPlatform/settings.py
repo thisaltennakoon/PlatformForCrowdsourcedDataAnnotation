@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 #Janani's database
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+}"""
 
 
 #Thisal's Postgres databsse
@@ -103,7 +103,7 @@ DATABASES = {
 }"""
 
 #Thisal's Postgres databsse
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -112,16 +112,47 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}"""
+}
 
 #MySQL event for release data instances
-"""SET GLOBAL event_scheduler = ON; -- enable event scheduler.
+"""
+drop database crowdsourceddataannotationplatform;
+
+create database crowdsourceddataannotationplatform;
+
+use crowdsourceddataannotationplatform;
+
+show tables;
+
+select * from createtask_mediadatainstance;  
+
+SET GLOBAL event_scheduler = ON; -- enable event scheduler.
 SELECT @@event_scheduler;  -- check whether event scheduler is ON/OFF
 CREATE EVENT release_data_instances  -- create your event
     ON SCHEDULE
-      EVERY 120 SECOND  -- run every 120 secs (2 Min)
+      EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE CrowdsourcedDataAnnotationPlatform.CreateDataAnnotationTask_annotationdataset SET IsViewing=False,WhoIsViewing=0,LastUpdate=NOW() WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 2 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+
+delimiter //
+CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
+    BEFORE UPDATE ON createtask_mediadatainstance
+    FOR EACH ROW
+    BEGIN
+    SET NEW.LastUpdate = NOW();
+    END; // 
+    delimiter ;
+
+    
+delimiter //
+CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
+    BEFORE INSERT ON createtask_mediadatainstance
+    FOR EACH ROW
+    BEGIN
+    SET NEW.LastUpdate = NOW();
+    END; // 
+    delimiter ;
+
 
 """
 

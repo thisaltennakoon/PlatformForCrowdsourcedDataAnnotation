@@ -73,7 +73,7 @@
                         <!--a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}">Data Instance : {{annotated_data_instance.DataInstance}}</a-->
                         <a onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}')" >Data Instance : {{annotated_data_instance.DataInstance}}</a>
                         <br>
-                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}</span>
+                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</span>
                     </li>
                     {% endfor %}
                 </ul>
