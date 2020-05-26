@@ -81,7 +81,7 @@ def task(request):
                         data_instance_about_to_annotate.IsViewing=True
                         data_instance_about_to_annotate.WhoIsViewing=user_id
                         data_instance_about_to_annotate.save()
-                        print(Cateogary.objects.filter(taskID_id=task_id))
+                        #print(Cateogary.objects.filter(taskID_id=task_id))
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
                                                                                                     'task_object': Task.objects.get(id=task_id),
