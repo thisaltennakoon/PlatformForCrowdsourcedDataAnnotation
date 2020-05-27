@@ -28,12 +28,13 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
-          <<img src="{{profile.avatar.url}}" style="width:420px; height:300px" alt="{% static 'img/avatar2.png' %}">
+          <<img src="{{profile.avatar.url}}" style="width:420px; height:300px; size = relative" alt="{% static 'img/avatar2.png' %}">
         </div><br>
         <div class="w3-container">
             {% if profile.is_author %}
           <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Author</p>
-            {% elif profile.is_contributor %}
+          {% endif %}
+            {% if profile.is_contributor %}
             <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Contributor</p>
           {% endif %}
             <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-black"></i>{{profile.country}}</p>

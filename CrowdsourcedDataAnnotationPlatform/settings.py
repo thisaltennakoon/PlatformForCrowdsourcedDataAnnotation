@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'DoDataGenerationTask',
     'UserManagement',
     'django_filters',  #search filter in user management
-    'crispy_forms'
+
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
@@ -158,5 +158,5 @@ EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = 'true'
-EMAIL_HOST_USER = 'jananisudeeptha.@gmail.com'
-EMAIL_HOST_PASSWORD = 'Jana@96ni'
+EMAIL_HOST_USER = 'cdapmanager@gmail.com'
+EMAIL_HOST_PASSWORD = 'cdap@admin'
