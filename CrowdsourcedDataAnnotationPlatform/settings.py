@@ -126,13 +126,22 @@ show tables;
 
 select * from createtask_mediadatainstance;  
 
+select * from createtask_textdatainstance; 
+
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
 SELECT @@event_scheduler;  -- check whether event scheduler is ON/OFF
-CREATE EVENT release_data_instances  -- create your event
+CREATE EVENT release_data_instances_mediadatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
       UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      
+CREATE EVENT release_data_instances_textdatainstance  -- create your event
+    ON SCHEDULE
+      EVERY 300 SECOND  -- run every 300 secs (5 Min)
+    DO
+      UPDATE crowdsourceddataannotationplatform.createtask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+
 
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
@@ -153,6 +162,24 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
     END; // 
     delimiter ;
 
+delimiter //
+CREATE TRIGGER set_last_update_time_textdatainstance_on_update
+    BEFORE UPDATE ON createtask_textdatainstance
+    FOR EACH ROW
+    BEGIN
+    SET NEW.LastUpdate = NOW();
+    END; // 
+    delimiter ;
+
+    
+delimiter //
+CREATE TRIGGER set_last_update_time_textdatainstance_on_insert
+    BEFORE INSERT ON createtask_textdatainstance
+    FOR EACH ROW
+    BEGIN
+    SET NEW.LastUpdate = NOW();
+    END; // 
+    delimiter ;
 
 """
 
