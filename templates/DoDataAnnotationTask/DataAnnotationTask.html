@@ -19,7 +19,7 @@
         </div>
         <div id="user-tools">
             {% if data_instance_available %}
-            <a href="/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}"><strong>View My Contributions</strong></a>
+            <a href='/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}'><strong>View My Contributions</strong></a>
             {% endif %}
         </div>
     </div>
@@ -70,10 +70,10 @@
                 <ul class="actionlist">
                     {% for annotated_data_instance in annotated_data_instances %}
                     <li class="addlink">
-                        <!--a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}">Data Instance : {{annotated_data_instance.DataInstance}}</a-->
-                        <a onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}')" >Data Instance : {{annotated_data_instance.media}}</a>
+                        <a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}">Data Instance : {{annotated_data_instance.DataInstance}}</a>
+                        <!--a onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}')" >Data Instance : {{annotated_data_instance.DataInstance}}</a-->
                         <br>
-                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}</span>
+                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</span>
                     </li>
                     {% endfor %}
                 </ul>
@@ -110,6 +110,16 @@ var x = setInterval(function() {
     document.getElementById("time_left").style.color = "red";
   }
 }, 1000);
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
 
 </script>
 </body>

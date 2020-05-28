@@ -4,7 +4,7 @@ from django.db import models
 class Task(models.Model):
     Title = models.CharField(max_length=200, blank=False)
     Description = models.TextField(max_length=255, blank=True)
-    DataInstanceGenerationTimes = models.IntegerField(default=1)
+    requiredNumofAnnotations = models.IntegerField(default=1)
     def __str__(self):  # display book name in admin panel
         return self.Title
 
