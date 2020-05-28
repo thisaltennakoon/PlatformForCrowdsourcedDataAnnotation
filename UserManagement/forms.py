@@ -4,7 +4,7 @@ from . import models
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile #Rating
 
 
 class ProfileForm(forms.ModelForm):
@@ -64,4 +64,7 @@ class PWChangeForm(PasswordChangeForm):
     new_password1 = forms.CharField(label='password',widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
     new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
 
-
+"""class RateForm (forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['star']"""

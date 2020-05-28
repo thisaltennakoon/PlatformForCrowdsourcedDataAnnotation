@@ -33,3 +33,11 @@ def create_profile(sender, **kwargs):
         profile = Profile.objects.create(user=kwargs['instance'])
 
 post_save.connect(create_profile, sender=User)
+
+"""class Rating(models.Model):
+    from_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    to_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    star = models.IntegerField(max(5),min(0))"""
+
+
+

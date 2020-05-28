@@ -4,6 +4,7 @@ from django.contrib.auth import (authenticate, login, logout,
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
                                        PasswordChangeForm)
+from django.contrib.auth.models import Group
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,7 +13,7 @@ from . import models
 from .forms import CreateUserForm, SigInForm, PWChangeForm
 
 from.filters import ProfileFilter
-from .forms import ProfileForm
+from .forms import ProfileForm # RateForm
 from .models import Profile
 
 
@@ -55,11 +56,13 @@ def sign_up(request):
     if request.method == 'POST':
         form = CreateUserForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save()
             user = authenticate(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1']
             )
+            group = Group.objects.get(name='crowd_user')
+            new_user.groups.add(group)
             login(request, user)
             messages.success(
                 request,
@@ -141,3 +144,9 @@ def delete_profile(request, pk):
         return redirect('/')
     context = {'profile':profile}
     return render(request, 'UserManagement/delete_profile.html', context)
+
+"""def rate(request):
+    if request.method == "POST":
+        form = RateForm()
+        if form.is_valid():
+            rate = form.save()"""
