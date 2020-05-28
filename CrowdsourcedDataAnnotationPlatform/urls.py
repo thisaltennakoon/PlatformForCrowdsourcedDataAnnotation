@@ -15,7 +15,10 @@ urlpatterns = [
     path('DoTextDataAnnotationTask/', include('DoTextDataAnnotationTask.urls')),
     path('CreateTextDataAnnotationTask/', include('CreateTextDataAnnotationTask.urls')),
     path('DoTask/', include('DoTask.urls')),
-    path('task/', include('CreateTask.urls'))
+    path('task/', include('CreateTask.urls')),
+    path('TextDataAnalyse/', include('TextDataAnalyse.urls')),
+    path('ImageDataAnalyse/', include('ImageDataAnalyse.urls')),
+    path('ResultAnalyse/', include('testresultrank.urls')),
 ]
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

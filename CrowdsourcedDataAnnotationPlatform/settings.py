@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'CreateTextDataAnnotationTask',
     'DoTextDataAnnotationTask',
     'CreateTask',
-    'DoTask'
+    'DoTask',
+    'ImageDataAnalyse',
+    'TextDataAnalyse',
+    'testresultrank',
 ]
 
 MIDDLEWARE = [
@@ -102,7 +105,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
     }
 }"""
 
-#Thisal's Postgres databsse
+#Thisal's Mysql databsse
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -135,13 +138,14 @@ CREATE EVENT release_data_instances_mediadatainstance  -- create your event
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
       UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+;
       
 CREATE EVENT release_data_instances_textdatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
       UPDATE crowdsourceddataannotationplatform.createtask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
-
+;
 
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
