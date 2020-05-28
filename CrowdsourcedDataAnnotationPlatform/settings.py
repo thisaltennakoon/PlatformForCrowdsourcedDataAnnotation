@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'CreateTextDataAnnotationTask',
     'DoTextDataAnnotationTask',
     'CreateTask',
-    'DoTask'
+    'DoTask',
+    'TextDataAnalyse',
+    'ImageDataAnalyse',
+    'Testresultrank',
 ]
 
 MIDDLEWARE = [
