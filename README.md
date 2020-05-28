@@ -26,3 +26,4 @@ Kasun
 
 
 Abi
+pip install nltk
