@@ -5,16 +5,13 @@ from django.dispatch import receiver
 from CreateTask.models import Task
 
 
+
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(
-        upload_to = 'assets/images',
-        default = 'no-img.jpg',
-        blank=True
-    )
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='/static/img/avatar.png')
     first_name = models.CharField(max_length=255, default='')
-    last_name = models.CharField(max_length=255, default='')
+    last_name = models.CharField(max_length=255, default='', null=True)
     email = models.EmailField(default='none@email.com')
     bio = models.TextField(default='')
     is_contributor = models.BooleanField(default=False)
@@ -27,16 +24,17 @@ class Profile(models.Model):
         return self.user.username
 
 
+
 def create_profile(sender, **kwargs):
     if kwargs['created']:
         profile = Profile.objects.create(user=kwargs['instance'])
 
 post_save.connect(create_profile, sender=User)
 
+"""class Rating(models.Model):
+    from_user = models.ManyToManyField(User)
+    to_user = models.ManyToManyField(User)
+    star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])"""
 
-
-class ContributorTask(models.Model):
-    Task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    User = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 
