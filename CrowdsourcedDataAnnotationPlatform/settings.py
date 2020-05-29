@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
     }
 }"""
 
-#Thisal's Postgres databsse
+#Thisal's Mysql databsse
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -229,3 +229,23 @@ STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Janani's part
+#MEDIA_URL = '/images/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
+DJANGORESIZED_DEFAULT_QUALITY = 75
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
+
+#   SMTP configuration
+
+EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = 'true'
+EMAIL_HOST_USER = 'cdapmanager@gmail.com'
+EMAIL_HOST_PASSWORD = 'cdap@admin'
