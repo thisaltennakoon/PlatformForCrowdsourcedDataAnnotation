@@ -17,12 +17,16 @@ body {font-family: "Lato", sans-serif}
 <body>
 {% block body %}
 
+{% for m in messages %}
+    <p>{{m}}</p>
+{% endfor %}
+
 <!-- Page content -->
 <div class="w3-content" style="max-width:2000px;margin-top:46px">
 
   <!-- Automatic Slideshow Images -->
   <div class="w3-display-container w3-center">
-    <img src="{% static 'img/home2.jpg' %}" style="width:50%">
+    <img src="{% static 'img/img1.jpg' %}" style="width:80%">
   </div>
 
   <!-- The Band Section -->

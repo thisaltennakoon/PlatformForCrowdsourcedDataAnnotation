@@ -5,7 +5,7 @@
 
 <form action = "" method = "POST">
     {% csrf_token %}
-    <a href="url 'home'">cancel</a>
+    <a href="{% url 'UserManagement:profile_list' %}">cancel</a>
     <input type="submit" name = "confirm">
 </form>
 

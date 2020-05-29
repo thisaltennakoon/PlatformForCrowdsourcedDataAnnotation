@@ -1,5 +1,6 @@
 from tkinter import Image
 
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 # Create your models here.
@@ -7,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 
 
 # Create your models here.
@@ -35,9 +37,9 @@ def create_profile(sender, **kwargs):
 post_save.connect(create_profile, sender=User)
 
 """class Rating(models.Model):
-    from_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    to_user = models.OneToOneField(User, on_delete=models.CASCADE)
-    star = models.IntegerField(max(5),min(0))"""
+    from_user = models.ManyToManyField(User)
+    to_user = models.ManyToManyField(User)
+    star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])"""
 
 
 

@@ -25,6 +25,7 @@
                 <!--img src="assets/images/logo.svg" alt="logo" class="logo"-->
               </div>
               <p class="login-card-description">Sign up to create your account</p>
+              <p style="font_color:red">{{form.errors}}</p>
               <form method="POST" action="{% url 'UserManagement:sign_up' %}">
                 {% csrf_token %}
                 <div class="i">

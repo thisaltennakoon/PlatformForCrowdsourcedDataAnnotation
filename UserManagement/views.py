@@ -1,20 +1,17 @@
 from django.contrib import messages
-from django.contrib.auth import (authenticate, login, logout,
-                                 update_session_auth_hash)
+from django.contrib.auth import (authenticate, login, logout,update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
-                                       PasswordChangeForm)
-from django.contrib.auth.models import Group
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,PasswordChangeForm)
+from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-
 from . import models
 from .forms import CreateUserForm, SigInForm, PWChangeForm
-
 from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
 from .models import Profile
+from django.contrib import messages
 
 
 def sign_in(request):
@@ -64,10 +61,7 @@ def sign_up(request):
             group = Group.objects.get(name='crowd_user')
             new_user.groups.add(group)
             login(request, user)
-            messages.success(
-                request,
-                "You're now a user! You've been signed in, too."
-            )
+            messages.success(request,"Congradulations! Your account was created successfully")
             return HttpResponseRedirect(reverse('home'))  # TODO: go to profile
     return render(request, 'UserManagement/sign_up.html', {'form': form})
 
@@ -134,15 +128,19 @@ def profiles(request):
     profiles = Profile.objects.all().exclude(first_name = '')
     return render(request,'UserManagement/profile_list.html', {'profiles':profiles})
 
-def view_profile(request):
-    return render(request, 'UserManagement/view_profile.html')
+def view_profile(request, pk):
+    profile = Profile.objects.get(user=pk)
+    context = {'profile': profile}
+    return render(request, 'UserManagement/view_profile.html',context)
 
 def delete_profile(request, pk):
-    profile = Profile.objects.get(user_id=pk)
+    profile = Profile.objects.get(user=pk)
+    user = User.objects.get(id=pk)
+    context = {'profile': profile}
     if request.method == "POST":
         profile.delete()
-        return redirect('/')
-    context = {'profile':profile}
+        user.delete()
+        #return redirect('UserManagement/profile_list.html')
     return render(request, 'UserManagement/delete_profile.html', context)
 
 """def rate(request):

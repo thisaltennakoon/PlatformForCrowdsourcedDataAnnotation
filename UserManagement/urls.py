@@ -18,7 +18,7 @@ urlpatterns = [
     #path ('rate/', views.rate, name='rate'),
 
     path ('profile_list/', views.profiles, name='profile_list'),
-    path ('profile_list/view_profile/', views.view_profile, name='view_profile'),
+    path ('profile_list/view_profile/<str:pk>', views.view_profile, name='view_profile'),
     path ('profile_list/delete_profile/<str:pk>',views.delete_profile, name="delete_profile"),
 
     path('reset_password/', auth_views.PasswordResetView.as_view(),name='reset_password'),
