@@ -48,6 +48,18 @@ class TextData(models.Model):
     InstanceID = models.ForeignKey(TextDataInstance, on_delete=models.CASCADE)
     Data = models.CharField(max_length=3000)
 
+#TEXT Genaration
+def directory_path4(instance,filename):
+    return 'TextGen/task_{0}/{1}'.format(instance.taskID.id, filename)
+
+class GenTextFile(models.Model):
+    taskID = models.ForeignKey(Task,on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path)
+
+class GenCateogary(models.Model):
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    cateogaryName = models.CharField(max_length= 250)
+    cateogaryTag = models.IntegerField(default=0) #0,1,2,..
 
 #QUIZ
 class Questionaire(models.Model):
@@ -162,7 +174,7 @@ def directory_path3(instance,filename):
     return 'MediaAnno/test/task_{0}/{1}'.format(instance.testID.id, filename)
 class ExampleMediaDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
-    mediaData = models.FileField(upload_to=directory_path2)
+    mediaData = models.FileField(upload_to=directory_path3)
 
 class ExampleMediaAnnoResult(models.Model):
     ExampleMediaDataInstanceID = models.ForeignKey(ExampleMediaDataInstance, on_delete=models.CASCADE)
