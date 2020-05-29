@@ -36,5 +36,9 @@ post_save.connect(create_profile, sender=User)
     to_user = models.ManyToManyField(User)
     star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])"""
 
+class ContributorTask(models.Model):
+    Task=models.ForeignKey(Task, on_delete=models.CASCADE)
+    User=models.ForeignKey(Profile, on_delete=models.CASCADE)
+
 
 

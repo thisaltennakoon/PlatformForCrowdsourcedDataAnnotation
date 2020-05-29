@@ -149,7 +149,7 @@ def delete_profile(request, pk):
         if form.is_valid():
             rate = form.save()"""
 
-"""@login_required(login_url='UserManagement:sign_in')
+@login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):
     all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
     user_text_data_generation_tasks = []
@@ -169,7 +169,7 @@ def view_my_tasks(request):
                                                             'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
                                                            'user_text_data_generation_tasks': user_text_data_generation_tasks,
                                                            'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                            'user_id':request.session['user_id']})"""
+                                                            'user_id':request.session['user_id']})
 
 """def rate(request):
     if request.method == "POST":

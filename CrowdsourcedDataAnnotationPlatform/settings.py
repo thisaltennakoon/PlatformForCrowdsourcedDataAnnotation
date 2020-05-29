@@ -37,20 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'UserManagement',
+    'CreateTask',
     'CreateDataAnnotationTask',
     'CreateDataGenerationTask',
     'DoDataAnnotationTask',
     'DoDataGenerationTask',
-    'UserManagement',
+    'django_filters',
     'CreateTextDataAnnotationTask',
     'DoTextDataAnnotationTask',
-    'CreateTask',
     'DoTask',
     'ImageDataAnalyse',
     'TextDataAnalyse',
     'testresultrank',
-]
-
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
@@ -88,7 +87,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 #Janani's database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cdap_usermanagement',
@@ -97,7 +96,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
         'HOST': 'localhost',
         'PORT': '3306'
     }
-}"""
+}
 
 
 #Thisal's Postgres databsse
@@ -112,7 +111,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -121,7 +120,7 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}
+}"""
 
 #MySQL event for release data instances
 """
