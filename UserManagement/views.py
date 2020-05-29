@@ -4,13 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,PasswordChangeForm)
 from django.contrib.auth.models import Group, User
 from django.urls import reverse
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models
-from . import forms
-from .models import ContributorTask
-from CreateDataGenerationTask.models import Task as DataGenerationTask
-from CreateDataAnnotationTask.models import Task as DataAnnotationTask
+from .forms import CreateUserForm, SigInForm, PWChangeForm
+from.filters import ProfileFilter
+from .forms import ProfileForm # RateForm
+from .models import Profile
+from django.contrib import messages
+#from .models import ContributorTask
 
 def sign_in(request):
     form = SigInForm()
@@ -21,7 +23,6 @@ def sign_in(request):
             if form.user_cache is not None:
                 user = form.user_cache
                 username = form.cleaned_data['username']
-                request.session['username'] = username
                 request.session['user_id'] = user.id
                 if user.is_active:
                     login(request, user)
@@ -75,13 +76,12 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required(login_url='UserManagement:sign_in')
+@login_required (login_url='UserManagement:sign_in')
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
-
     return render(request, 'UserManagement/profile.html', {
-        'profile': profile,
+        'profile': profile
     })
 
 
@@ -118,28 +118,6 @@ def change_password(request):
         'form': form
     })
 
-@login_required(login_url='UserManagement:sign_in')
-def view_my_tasks(request):
-    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
-    user_text_data_generation_tasks = []
-    user_image_data_generation_tasks = []
-    user_text_data_annotation_tasks = []
-    user_image_data_annotation_tasks = []
-    for user_task in all_user_tasks:
-        if user_task.Task.taskType=='TextAnno':
-            user_text_data_annotation_tasks += [user_task.Task]
-        elif user_task.Task.taskType=='ImageAnno':
-            user_image_data_annotation_tasks += [user_task.Task]
-        elif user_task.Task.taskType == 'TextGen':
-            user_text_data_generation_tasks += [user_task.Task]
-        elif user_task.Task.taskType == 'ImgGen':
-            user_image_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/MyTasks.html', {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
-                                                            'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
-                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
-                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                            'user_id':request.session['user_id']})
-
 
 def search (request):
     profile_list = Profile.objects.all().exclude(first_name = '')
@@ -164,6 +142,34 @@ def delete_profile(request, pk):
         user.delete()
         #return redirect('UserManagement/profile_list.html')
     return render(request, 'UserManagement/delete_profile.html', context)
+
+"""def rate(request):
+    if request.method == "POST":
+        form = RateForm()
+        if form.is_valid():
+            rate = form.save()"""
+
+"""@login_required(login_url='UserManagement:sign_in')
+def view_my_tasks(request):
+    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
+    user_text_data_generation_tasks = []
+    user_image_data_generation_tasks = []
+    user_text_data_annotation_tasks = []
+    user_image_data_annotation_tasks = []
+    for user_task in all_user_tasks:
+        if user_task.Task.taskType=='TextAnno':
+            user_text_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType=='ImageAnno':
+            user_image_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'TextGen':
+            user_text_data_generation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImgGen':
+            user_image_data_generation_tasks += [user_task.Task]
+    return render(request, 'UserManagement/MyTasks.html', {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                            'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
+                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                                                            'user_id':request.session['user_id']})"""
 
 """def rate(request):
     if request.method == "POST":
