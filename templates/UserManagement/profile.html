@@ -1,134 +1,96 @@
 {% extends "layout.html" %}
 {% load static %}
 
-
 {% block title %}Profile | {{ user }} {{ super }}{% endblock %}
 
+{% block style %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+</style>
+{% endblock %}
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<Style>
-    .col-md-2 {
-        float:right
-
-</Style>
 {% block body %}
-    <h1>{{profile.first_name}} {{profile.last_name}}</h1>
-    <div class="grid-20">
-    <div class="col-md-2">
-        <button class="profile-edit-btn" name="btnAddMore"><a href="{% url 'accounts:edit_profile' %}">Edit Profile</a></button>
-    </div>
-    <div class="col-md-2">
-        <button class="profile-edit-btn" name="btnAddMore"><a href="{% url 'accounts:change_password' %}">Change Password</a></button>
-    </div>
-        {% if profile.is_author %}
-        <div class="col-md-2">
-        <button class="profile-edit-btn" name="btnAddMore"><a href="#">Add task</a></button>
-        </div>
-        {% endif %}
-        <div class="col-md-2">
-        <button onclick="window.location.href = '/UserManagement/MyTasks/' "class="profile-edit-btn" name="btnAddMore">View task</button>
-        </div>
-        </div>
-
-        {% if not profile.first_name %}
+{% if not profile.first_name %}
             <p>You have an empty profile.</p>
-            <a href="{% url 'accounts:edit_profile' %}">Add some info</a>
-        {% else %}
-        <div class="grid-80">
-            <div class="container emp-profile">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="profile-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="profile-head">
-                                    <h5>
-                                        {{profile.bio}}
-                                    </h5>
+            <a href="{% url 'UserManagement:edit_profile' %}">Add some info</a>
+{% else %}
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+<h1>{{profile.first_name}} {{profile.last_name}}</h1>
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+    <div class="w3-third">
+    
+      <div class="w3-white w3-text-grey w3-card-4">
+        <div class="w3-display-container">
+          <<img src="{{profile.avatar.url}}" style="width:420px; height:300px; size = relative" alt="{% static 'img/avatar2.png' %}">
+        </div><br>
+        <div class="w3-container">
+            {% if profile.is_author %}
+          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Author</p>
+          {% endif %}
+            {% if profile.is_contributor %}
+            <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Contributor</p>
+          {% endif %}
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-black"></i>{{profile.country}}</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-black"></i>{{profile.email}}</p>
+          <hr>
 
-
-                                    <p class="proile-rating">Ratings:
-                                            <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
-                                            </svg></span>
-                                            <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
-                                            </svg></span>
-                                            <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
-                                            </svg></span>
-                                            <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
-                                            </svg></span>
-                                            <span><svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
-                                            </svg></span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="profile-work">
-
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="tab-content profile-tab" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Name</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>{{profile.first_name}} {{profile.last_name}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Email</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>{{profile.email}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Profession</label>
-                                            </div>
-                                            <div class="col-md-6">
-
-                                             {% if profile.is_author %}
-                                                 <h6>
-                                                    Author in the field of {{profile.field}}
-                                                 </h6>
-                                                {% endif %}
-                                            {% if profile.is_contributor %}
-                                                <h6>
-                                                    Contributor in the field of {{profile.field}}
-                                                </h6>
-                                            {% endif %}
-                                        </div>
-                                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div class="grid-500">
-                                            <div class="col-md-6">
-                                                <label>Total Projects</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>    </p>
-                                            </div>
-                                        </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+          <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-black"></i>Rating</b></p>
+          <p>1.2k</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-black" style="width:90%">90%</div>
+          </div><br>
         </div>
+      </div><br>
+
+    <!-- End Left Column -->
     </div>
-            </div>
+
+    <!-- Right Column -->
+    <div class="w3-twothird">
+    
+      <div class="w3-container w3-card w3-white w3-margin-bottom">
+        <div class="w3-container"><br>
+          <button type="button" class="btn btn-outline-success" ><a href="#" >Add task</a></button>
+        </div><br>
+        <div class="w3-container">
+          <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a></button>
+        </div><br>
+        <div class="w3-container">
+          <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:change_password' %}">Chage Password</a></button>
+        </div><br>
+      </div>
+
+      <div class="w3-container w3-card w3-white">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Completed Tasks</h2>
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>Task1</b></h5>
+          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>date</h6>
+          <p>Description</p>
+          <hr>
+        </div>
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>Task2</b></h5>
+          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>year</h6>
+          <p>description</p>
+          <hr>
+        </div>
+
+      </div>
+
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
+    {% endif %}
+</div>
 {% endblock %}
