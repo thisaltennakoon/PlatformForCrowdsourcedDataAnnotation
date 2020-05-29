@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('CreateTask', '0001_initial'),
+       # ('CreateTask', '0001_initial'),
     ]
 
     operations = [

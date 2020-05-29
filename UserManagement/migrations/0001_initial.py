@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('CreateTask', '0001_initial'),
+        #('CreateTask', '0001_initial'),
     ]
 
     operations = [
