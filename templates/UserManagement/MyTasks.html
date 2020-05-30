@@ -14,34 +14,66 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 {% block body %}
 <br>
 {% if user_text_data_annotation_tasks|length > 0 %}
-<div class="container">
+
     <div class="card">
         <div class="card-header">Text Data Annotation Tasks</div>
         <div class="card-body">
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>Title</th>
+                <th>Description</th>status
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
             {% for text_data_annotation_task in user_text_data_annotation_tasks %}
             <tr>
+                {% if text_data_annotation_task.status == "completed" %}
+                <td><a href="/DoTextDataAnnotationTask/ViewMyAnnotations?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></td>
+                {% else %}
                 <td><a href="/DoTextDataAnnotationTask/Task?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></td>
+                {% endif %}
+                {% if text_data_annotation_task.description|length > 140 %}
+                    {% set x=text_data_annotation_task.description %}
+                    <td>{{ x[:3] }}</td>
+                {% else %}
+                <td>{{text_data_annotation_task.description}}</td>
+                {% endif %}
+                {% if text_data_annotation_task.status == "new" %}
+                <td><span class="badge badge-primary">New</span></td>
+                {% elif text_data_annotation_task.status == "inprogress" %}
+                <td><span class="badge badge-success">In Progress</span></td>
+                {% elif text_data_annotation_task.status == "completed" %}
+                <td><span class="badge badge-danger">Completed</span></td>
+                {% endif %}
             </tr>
             {% endfor %}
             <tr>
-                <td><a href="#">test</a></td>
+                <td><a href="#">test gfdfgfd dgffgfd </a></td>
+                <td>erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet.</td>
+                <td><span class="badge badge-primary">New</span></td>
+            </tr>
+            <tr>
+                <td><a href="#">test gfdfgfd dgffgfd </a></td>
+                <td>erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet.</td>
+                <td><span class="badge badge-success">In Progress</span></td>
+            </tr>
+            <tr>
+                <td><a href="#">test gfdfgfd dgffgfd </a></td>
+                <td>erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet.</td>
+                <td><span class="badge badge-danger">Completed</span></td>
             </tr>
             </tbody>
         </table>
         </div>
     </div>
-</div>
+
 {% endif %}
 
 <br>
 {% if user_image_data_annotation_tasks|length > 0 %}
-<div class="container">
+
     <div class="card">
         <div class="card-header">Image Data Annotation Tasks</div>
         <div class="card-body">
@@ -63,7 +95,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         </table>
         </div>
     </div>
-</div>
+
 {% endif %}
 
 <br>
@@ -119,4 +151,21 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
 </div>
 {% endif %}
+<script>
+function myFunction() {
+  var dots = document.getElementById("dots");
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("myBtn");
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Read more";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less";
+    moreText.style.display = "inline";
+  }
+}
+</script>
 {% endblock %}
