@@ -55,7 +55,7 @@ window.addEventListener( "pageshow", function ( event ) {
 </script>
 
 {% block body %}
-<div class="w3-light-grey">
+<div class="w3-light-grey" style="position:relative; top:0;">
 
 <!-- Top container -->
 <div  class="w3-bar w3-top w3-white w3-large" style="z-index:4">
@@ -63,7 +63,7 @@ window.addEventListener( "pageshow", function ( event ) {
 </div>
 
 <!-- Contribution -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+<div class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
   <div class="w3-container w3-row">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close"><i class="fa fa-remove fa-fw"></i>Close</a></br>
     <div class="w3-col s8 w3-bar">
@@ -134,9 +134,24 @@ window.addEventListener( "pageshow", function ( event ) {
         <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
         <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
     </div>
+      <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+      <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+      <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
 
   </div>
-</nav>
+</div>
 
 
 <!-- Overlay effect when opening sidebar on small screens -->
@@ -145,12 +160,7 @@ window.addEventListener( "pageshow", function ( event ) {
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
 
-  <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
-
-
-  </header>
-<div class="container">
+<div style="position:relative; top:0;">
   <div class="card">
     <div class="card-header"><h2>Task Title : Find cars and Vans</h2></div>
     <div class="card-header"><h5>Task Description : gkgkghh sfdsdbfhdbsf fsdfbdsjifb sfoduhdsufh osufdhsduhf sfuhdshfsudhfshduh fsuhdfdsiuhfdshfuYou can offset grid columns in two ways: our responsive .offset- grid classes and our margin utilities. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable</h5></div>

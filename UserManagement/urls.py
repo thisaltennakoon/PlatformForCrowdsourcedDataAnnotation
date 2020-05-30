@@ -8,7 +8,6 @@ app_name = 'UserManagement'
 
 urlpatterns = [
     path('sign_in/', views.sign_in, name='sign_in'),
-    #path('connection/', views.formView, name='loginform'),
     path('sign_up/', views.sign_up, name='sign_up'),
     path('sign_out/', views.sign_out, name='sign_out'),
     path('profile/', views.profile, name='profile'),
@@ -27,7 +26,6 @@ urlpatterns = [
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('MyTasks/', views.view_my_tasks , name = 'MyTasks'),
 
-    path('Thisal/', views.Thisal, name="Thisal")
 ]
 
 if settings.DEBUG:
