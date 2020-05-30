@@ -128,6 +128,9 @@ def profiles(request):
     profiles = Profile.objects.all().exclude(first_name = '')
     return render(request,'UserManagement/profile_list.html', {'profiles':profiles})
 
+def Thisal(request):
+    return render(request,'UserManagement/annotation.html')
+
 def view_profile(request, pk):
     profile = Profile.objects.get(user=pk)
     context = {'profile': profile}

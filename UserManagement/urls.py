@@ -26,6 +26,8 @@ urlpatterns = [
     path('reset/<uidb64/token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('MyTasks/', views.view_my_tasks , name = 'MyTasks'),
+
+    path('Thisal/', views.Thisal, name="Thisal")
 ]
 
 if settings.DEBUG:
