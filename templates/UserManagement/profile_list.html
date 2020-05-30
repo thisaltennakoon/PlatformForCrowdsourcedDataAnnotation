@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-md">
+            <h4>Users</h4>
+        </div>
+        <div class="card card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Field</th>
+                    <th>View</th>
+                    <th>Delete</th>
+                </tr>
+                {% for i in profiles %}
+                    <tr>
+                        <td>{{i.first_name}} {{i.last_name}}</td>
+                        <td>{% if i.is_author %} Author{% endif %} <br/> {% if i.is_contributor %} Contributor {% endif %}</td>
+                        <td>{{i.field}}</td>
+                        <td><button class="profile-edit-btn" name="btnAddMore"><a href="{% url 'UserManagement:view_profile' i.id %}">View profile</a></button></td>
+                        <td><button class="profile-edit-btn" name="btnAddMore"><a href="{% url 'UserManagement:delete_profile' i.id %}">Delete</a></button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
