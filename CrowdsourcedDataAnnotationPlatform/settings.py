@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Janani's mysql database
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cdap_usermanagement',
@@ -104,7 +104,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306'
     }
-}
+}"""
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -118,7 +118,7 @@ DATABASES = {
 }"""
 
 #Thisal's Mysql databsse
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -127,7 +127,7 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}"""
+}
 
 #MySQL event for release data instances
 """
