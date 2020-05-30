@@ -10,7 +10,7 @@ from . import models
 from .forms import CreateUserForm, SigInForm, PWChangeForm
 from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
-from .models import Profile
+from .models import Profile, ContributorTask
 from django.contrib import messages
 
 
@@ -148,3 +148,27 @@ def delete_profile(request, pk):
         form = RateForm()
         if form.is_valid():
             rate = form.save()"""
+
+
+@login_required(login_url='UserManagement:sign_in')
+def view_my_tasks(request):
+    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
+    user_text_data_generation_tasks = []
+    user_image_data_generation_tasks = []
+    user_text_data_annotation_tasks = []
+    user_image_data_annotation_tasks = []
+    for user_task in all_user_tasks:
+        if user_task.Task.taskType == 'TextAnno':
+            user_text_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImageAnno':
+            user_image_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'TextGen':
+            user_text_data_generation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImgGen':
+            user_image_data_generation_tasks += [user_task.Task]
+    return render(request, 'UserManagement/MyTasks.html',
+                  {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                        'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
+                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                                                            'user_id':request.session['user_id']})
