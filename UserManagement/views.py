@@ -1,4 +1,3 @@
-from .models import ContributorTask
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login, logout,update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
@@ -135,8 +134,8 @@ def view_profile(request, pk):
     return render(request, 'UserManagement/view_profile.html',context)
 
 def delete_profile(request, pk):
-    profile = Profile.objects.get(user=pk)
-    user = User.objects.get(id=pk)
+    profile = get_object_or_404(Profile, user=pk)
+    user = get_object_or_404(User, id=pk)
     context = {'profile': profile}
     if request.method == "POST":
         profile.delete()
@@ -149,28 +148,3 @@ def delete_profile(request, pk):
         form = RateForm()
         if form.is_valid():
             rate = form.save()"""
-
-@login_required(login_url='UserManagement:sign_in')
-def view_my_tasks(request):
-    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
-    user_text_data_generation_tasks = []
-    user_image_data_generation_tasks = []
-    user_text_data_annotation_tasks = []
-    user_image_data_annotation_tasks = []
-    for user_task in all_user_tasks:
-        if user_task.Task.taskType=='TextAnno':
-            user_text_data_annotation_tasks += [user_task.Task]
-        elif user_task.Task.taskType=='ImageAnno':
-            user_image_data_annotation_tasks += [user_task.Task]
-        elif user_task.Task.taskType == 'TextGen':
-            user_text_data_generation_tasks += [user_task.Task]
-        elif user_task.Task.taskType == 'ImgGen':
-            user_image_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/MyTasks.html', {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
-                                                            'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
-                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
-                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                            'user_id':request.session['user_id']})
-
-
-
