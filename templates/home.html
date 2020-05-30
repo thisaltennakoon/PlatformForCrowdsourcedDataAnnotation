@@ -1,21 +1,102 @@
 {% extends 'layout.html' %}
-{% block body %}
+{% load static %}
 
-<img src = https://www.1designshop.com/wp-content/uploads/2016/01/1dsp-20160108-people010.png>
-<div class="{% if user.is_authenticated %}grid-75{% else %}grid-100{% endif %}">
-    {% if user.is_authenticated %}
-    {% if profile.first_name %}
-    <h1>Welcome {{ profile.first_name }}!</h1>
-    {% endif %}
-    <a href="{% url 'accounts:profile' %}">My Profile</a>
-    <a href="/UserManagement/MyTasks/">My Tasks</a>
-    {% else %}
-    <h1>Welcome to CDAP !</h1>
-    <p>Register and login to annotate and generate your data sets !!!</p>
-    {% endif %}
-</div>
+{% block style %}
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
 {% endblock %}
 
 
 
+<body>
+{% block body %}
 
+{% for m in messages %}
+    <p>{{m}}</p>
+{% endfor %}
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+  <!-- Automatic Slideshow Images -->
+  <div class="w3-display-container w3-center">
+    <img src="{% static 'img/img1.jpg' %}" style="width:80%">
+  </div>
+
+  <!-- The Band Section -->
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
+    <h2 class="w3-wide">CDAP</h2>
+    <p class="w3-justify">We provide a platform to connect annotators with researchers. To annotate your data sets and to earn by annotating data sets, simply register in our site. </p>
+  </div>
+
+  <!-- The Tour Section -->
+  <div class="w3-black" id="tour">
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
+      <h2 class="w3-wide w3-center">OUR SERVICES</h2>
+      <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
+        <div class="w3-third w3-margin-bottom">
+          <img src="{% static 'img/annotation.jpeg' %}" alt="" style="width:100%" class="w3-hover-opacity">
+          <div class="w3-container w3-white">
+            <p><b>Data annotation</b></p>
+          </div>
+        </div>
+        <div class="w3-third w3-margin-bottom">
+          <img src="{% static 'img/generation.jpg' %}" alt="Paris" style="width:100%" class="w3-hover-opacity">
+          <div class="w3-container w3-white">
+            <p><b>Data Generation</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- End Page Content -->
+</div>
+
+<!-- Image of location/map -->
+<img src="/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
+
+<script>
+// Automatic Slideshow - change image every 4 seconds
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}
+  x[myIndex-1].style.display = "block";
+  setTimeout(carousel, 4000);
+}
+
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+// When the user clicks anywhere outside of the modal, close it
+var modal = document.getElementById('ticketModal');
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{% endblock %}
+</body>
+
+<!--end home.html>
