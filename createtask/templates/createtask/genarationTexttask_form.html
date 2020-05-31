@@ -4,7 +4,7 @@
 
 <h3>{{heading}}</h3>
 
-<form class="form-horizontal col-12" method="POST" action="">
+<form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
 <div class="row spacer">
 <div class="col-2">
@@ -41,7 +41,7 @@
 
 </div>
 
-<div class="row form-row spacer">
+{% comment %} <div class="row form-row spacer">
     <div class="col-2">
         <label>{{customform.dataType.label}}</label>
     </div>
@@ -50,9 +50,9 @@
             {{customform.dataType}}
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 
-{{ formset.management_form }}
+{% comment %} {{ formset.management_form }}
 {% for form in formset %}
 <div class="row form-row spacer">
     <div class="col-2">
@@ -68,8 +68,16 @@
     </div>
 
 </div>
-{% endfor %}
+{% endfor %} {% endcomment %}
 
+<div class="row spacer">
+            <div class="col-2">
+                <label for="exampleFormControlFile1">Generation Dataset </label>
+            </div>
+            <div class="col-4">
+                {{csvform.data}}
+            </div>
+</div>
     
 <div class="row spacer">
     <div class="col-4 offset-2">

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task,UserNew2,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData
+from .models import Task,UserNew2,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,DataGenTextInstance
 
 # Register your models here.
 admin.site.register(Task)
@@ -14,3 +14,4 @@ admin.site.register(McqOption)
 admin.site.register(TextFile)
 admin.site.register(TextDataInstance)
 admin.site.register(TextData)
+admin.site.register(DataGenTextInstance)

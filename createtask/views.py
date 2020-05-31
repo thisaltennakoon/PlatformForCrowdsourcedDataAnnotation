@@ -3,7 +3,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView,FormView
 from django.views.generic import View
 from .forms import CreateTaskForm,CateogaryFormSet,DQuestionFormSet,McqFormSet,McqForm,CustomForm1,CsvForm
-from .models import UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,TextFile,TextDataInstance,TextData,MediaDataInstance,Task
+from .models import UserNew2,Cateogary,DescrptiveQuestion,McqQuestion,McqOption,Questionaire,TextFile,TextDataInstance,TextData,MediaDataInstance,Task,DataGenTextInstance,GenTextFile
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -236,46 +236,59 @@ def QuestionaireView(request,task_id):
 
 
 
-def createGenerationTask(request):
-    template_name = 'createtask/genarationtask_form.html'
+def createTextGenerationTask(request):
+    template_name = 'createtask/genarationTexttask_form.html'
     if request.method == 'GET':
-        customform = CustomForm1()
+        #customform = CustomForm1()
         taskform = CreateTaskForm(request.GET or None)
-        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
-        
+        csvform = CsvForm()
         #print(taskform.name.label)
 
     elif request.method == 'POST':
+        print('woow')
         taskform = CreateTaskForm(request.POST)
-        formset = CateogaryFormSet(request.POST)
-        customform = CustomForm1(request.POST)
-        if taskform.is_valid() and formset.is_valid() and customform.is_valid():
+        csvform = CsvForm(request.POST, request.FILES)
+        # formset = CateogaryFormSet(request.POST)
+        # customform = CustomForm1(request.POST)
+        if taskform.is_valid() and csvform.is_valid():
+            print('hell')
             task = taskform.save(commit=False)
             task.creatorID = UserNew2.objects.get(name='kasun')
-            rough = customform.cleaned_data
-            dataType = rough.get('dataType')
-            if dataType == 'T':
-                task.taskType = "TextGen"
-            elif dataType == 'I':
-                task.taskType = "ImageGen"
+            task.taskType = "TextGen"
+            newFileModel = GenTextFile()
             task.save()
+            newFileModel.taskID = task
+            newFileModel.csvFile = request.FILES['data']
+            newFileModel.save()
+            filename = './'+newFileModel.csvFile.url
+            processCsvGen(filename,task)
             request.session['task'] = task.id      #task id session created
-            tag = 0
-            for form in formset:
-                # so that `book` instance can be attached.
-                generationClass = form.save(commit=False)
-                generationClass.taskID = task
-                generationClass.cateogaryTag = tag
-                generationClass.save()
-                tag += 1
+
             # return render(request, 'createtask/success.html')
             return redirect('createtask:Gen_example_add')
+        else:
+            print('aiiyo')
+            #print(taskform.errors)
+            print(csvform.errors)
     
     return render(request, template_name, {
         'taskform': taskform,
-        'formset': formset,
-        'customform': customform,
+        'csvform': csvform,
     })
+
+def processCsvGen(filename,task):
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        instancelist = []
+        for i, line in enumerate(reader):
+            if i==0:
+                continue
+            else:
+                data = line[0]
+                print(line[0])
+                DataGenTextinstance = DataGenTextInstance(taskID=task,data=data)
+                instancelist.append(DataGenTextinstance)
+        DataGenTextInstance.objects.bulk_create(instancelist)
 
 
 def AddGenExample(request):

@@ -56,10 +56,9 @@ class GenTextFile(models.Model):
     taskID = models.ForeignKey(Task,on_delete=models.CASCADE)
     csvFile = models.FileField(upload_to=directory_path)
 
-class GenCateogary(models.Model):
+class DataGenTextInstance(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
-    cateogaryName = models.CharField(max_length= 250)
-    cateogaryTag = models.IntegerField(default=0) #0,1,2,..
+    data = models.CharField(max_length= 5000)
 
 #QUIZ
 class Questionaire(models.Model):
