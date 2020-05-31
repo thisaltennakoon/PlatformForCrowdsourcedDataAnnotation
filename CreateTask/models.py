@@ -21,7 +21,7 @@ class Task(models.Model):
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
     requiredNumofAnnotations = models.IntegerField(default=1)
 
-    def __str__(self):  # display book name in admin panel
+    def __str__(self):  
         return self.title
 
 
@@ -65,6 +65,19 @@ class TextDataInstance(models.Model):
 class TextData(models.Model):
     InstanceID = models.ForeignKey(TextDataInstance, on_delete=models.CASCADE)
     Data = models.CharField(max_length=3000)
+
+#TEXT GENERATION
+
+def directory_path4(instance,filename):
+    return 'TextGen/task_{0}/{1}'.format(instance.taskID.id, filename)
+
+class GenTextFile(models.Model):
+    taskID = models.ForeignKey(Task,on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path)
+
+class DataGenTextInstance(models.Model):
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    data = models.CharField(max_length= 5000)
 
 
 # QUIZ

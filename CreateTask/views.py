@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
-    TextDataInstance, TextData, MediaDataInstance, Task
+    TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -296,3 +296,59 @@ def AddGenExample(request):
         #     input1 = request.POST['class'+i]
         #     exampleEntry =
         return render(request, 'createtask/success.html')
+
+#TEXTGENERATION
+
+def createTextGenerationTask(request):
+    template_name = 'createtask/genarationTexttask_form.html'
+    if request.method == 'GET':
+        #customform = CustomForm1()
+        taskform = CreateTaskForm(request.GET or None)
+        csvform = CsvForm()
+        #print(taskform.name.label)
+
+    elif request.method == 'POST':
+        print('woow')
+        taskform = CreateTaskForm(request.POST)
+        csvform = CsvForm(request.POST, request.FILES)
+        # formset = CateogaryFormSet(request.POST)
+        # customform = CustomForm1(request.POST)
+        if taskform.is_valid() and csvform.is_valid():
+            print('hell')
+            task = taskform.save(commit=False)
+            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.taskType = "TextGen"
+            newFileModel = GenTextFile()
+            task.save()
+            newFileModel.taskID = task
+            newFileModel.csvFile = request.FILES['data']
+            newFileModel.save()
+            filename = './'+newFileModel.csvFile.url
+            processCsvGen(filename,task)
+            request.session['task'] = task.id      #task id session created
+
+            # return render(request, 'createtask/success.html')
+            return redirect('createtask:Gen_example_add')
+        else:
+            print('aiiyo')
+            #print(taskform.errors)
+            print(csvform.errors)
+    
+    return render(request, template_name, {
+        'taskform': taskform,
+        'csvform': csvform,
+    })
+
+def processCsvGen(filename,task):
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        instancelist = []
+        for i, line in enumerate(reader):
+            if i==0:
+                continue
+            else:
+                data = line[0]
+                print(line[0])
+                DataGenTextinstance = DataGenTextInstance(taskID=task,data=data)
+                instancelist.append(DataGenTextinstance)
+        DataGenTextInstance.objects.bulk_create(instancelist)
