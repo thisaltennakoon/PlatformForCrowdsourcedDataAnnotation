@@ -189,6 +189,7 @@ def AddTextAnnoExamples(request):
         return render(request, 'createtask/success.html')
 
 def processExampleCsvFile(filename,task,words,test,dic):
+    error = []
     wrong_format = False
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
@@ -221,13 +222,18 @@ def processExampleCsvFile(filename,task,words,test,dic):
                     exampledatalist.append(data)
                 result = str(line[words])
                 print('result='+str(result))
-                resultCateogary = dic[result]
+                try:
+                    resultCateogary = dic[result]
+                except KeyError:
+                    error.append('Cateogary tag error')
+                    print(error)
                 resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
                 exampleAnnotationresult.append(resultobject)
 
 
         ExampleTextData.objects.bulk_create(exampledatalist)
         ExampleTextAnnoResult.objects.bulk_create(exampleAnnotationresult)
+        print (error)
 
 
 
