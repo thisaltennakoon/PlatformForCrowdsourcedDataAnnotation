@@ -25,17 +25,17 @@
     {% endfor %}
 
     <div class="row spacer">
-        <div class="col-2">
-            <label for="exampleFormControlFile1">Example Annotation Dataset </label>
-        </div>
-        <div class="col-4">
-             <input type="file" id="file" name="file">
-        </div>
-    </div> 
+            <div class="col-2">
+                <label for="exampleFormControlFile1">Example Text Annotation Dataset </label>
+            </div>
+            <div class="col-4">
+                {{csvform.data}}
+            </div>
+    </div>
 
     <div class="row spacer">
         <div class="col-8">
-        <input type="checkbox" id="checktest" name="checktest" value="">
+        <input type="checkbox" id="checktest" name="checktest" value="checked">
         <label for="checktest"> Make these example annotations a test and automaticly approve annotators with</label>
         <select  class="" id="exampleFormControlSelect1">
             <option>90%</option>

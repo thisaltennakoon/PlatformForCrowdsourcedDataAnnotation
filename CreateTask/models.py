@@ -161,6 +161,7 @@ class CateogaryTag(models.Model):
 
 class AnnotationTest(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=False)   #0=non_active , 1=active
 
 
 class TestResult(models.Model):
@@ -170,6 +171,12 @@ class TestResult(models.Model):
 
 
 # TEXT
+def directory_path5(instance, filename):
+    return 'MediaAnno/TextExamples/task_{0}/{1}'.format(instance.taskID.id, filename)
+class TestTextFile(models.Model):                   #To upload example csv file
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path5)
+
 class ExampleTextDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
 

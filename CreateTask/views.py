@@ -4,7 +4,8 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
-    TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance
+    TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
+    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -97,8 +98,10 @@ def createTextTask(request):
             # print(newFileModel.csvFile.path)
             print(newFileModel.csvFile.url)
             filename = './' + newFileModel.csvFile.url
-            ProcessCsv(filename, task)
+            words =ProcessCsv(filename, task)
+            print('words='+str(words))
             request.session['task'] = task.id
+            request.session['words'] = words   # for validating example adding csv
             tag = 0
             for form in formset:
                 # so that `book` instance can be attached.
@@ -118,6 +121,7 @@ def createTextTask(request):
 
 
 def ProcessCsv(filename, task):
+    words = 0
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
         instancelist = []
@@ -131,12 +135,13 @@ def ProcessCsv(filename, task):
         TextDataInstance.objects.bulk_create(instancelist)
         real_objects = TextDataInstance.objects.filter(taskID=task)
         print('Helllloooo')
-        print(real_objects)
+        #print(real_objects)
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
         for i, line in enumerate(reader):
             # print(instancelist[i-1])
             if i == 0:
+                words = len(line)
                 continue
             else:
                 for word in line:
@@ -144,21 +149,86 @@ def ProcessCsv(filename, task):
                     datalist.append(data)
 
         TextData.objects.bulk_create(datalist)
+    return words
 
 
 def AddTextAnnoExamples(request):
     template_name = 'createtask/addTextAnnoExamples.html'
+    csvform = CsvForm()
     task = Task.objects.get(id=request.session['task'])
-    print(task)
+    words = request.session['words']
     cateogary_list = task.cateogary_set.all()
     if request.method == 'GET':
-        context = {'cateogary_list': cateogary_list}
+        context = {'cateogary_list': cateogary_list,'csvform':csvform}
         return render(request, template_name, context)
         # get task,get cateogaries print them in template form
-    # if request.method == 'POST':
-    #     pass
-    # save models,
-    # test object create if needed
+
+    if request.method == 'POST':
+        dic={}
+        for cateogary in cateogary_list:
+            name = str(cateogary.id)
+            #print(name)
+            tag = request.POST[name]                #handle errors
+            dic.update({tag:cateogary})
+        print(dic)
+        
+        csvFile = request.FILES['data']                #handle errors
+        examplefile = TestTextFile(taskID=task, csvFile=csvFile)
+        examplefile.save()
+        filename = './' + examplefile.csvFile.url
+        test = AnnotationTest(taskID = task)               #check checkbox
+        isTest = request.POST['checktest']             #handle errors
+        if isTest == 'checked':
+            isTest = True
+        else:
+            isTest =False             
+        print('isTest='+str(isTest))
+        test.is_active = isTest
+        test.save()
+        processExampleCsvFile(filename,task,words,test,dic)
+        return render(request, 'createtask/success.html')
+
+def processExampleCsvFile(filename,task,words,test,dic):
+    wrong_format = False
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        exampleinstancelist = []
+        exampledatalist = []
+        exampleAnnotationresult = []
+        for i, line in enumerate(reader):
+            if i == 0:
+                continue
+            elif i == 21 :
+                break
+            else:
+                exampledatainstance = ExampleTextDataInstance(testID=test)
+                exampleinstancelist.append(exampledatainstance)
+        ExampleTextDataInstance.objects.bulk_create(exampleinstancelist)
+        real_objects = ExampleTextDataInstance.objects.filter(testID=test)
+
+        #print(real_objects)
+    with open(filename, "r") as f:
+        reader = csv.reader(f, delimiter=",")
+        for i, line in enumerate(reader):
+            # print(instancelist[i-1])
+            if i == 0:
+                continue
+            elif i == 21:
+                break
+            else:
+                for j in range(words):
+                    data = ExampleTextData(Data=line[j], InstanceID=real_objects[i - 1])
+                    exampledatalist.append(data)
+                result = str(line[words])
+                print('result='+str(result))
+                resultCateogary = dic[result]
+                resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
+                exampleAnnotationresult.append(resultobject)
+
+
+        ExampleTextData.objects.bulk_create(exampledatalist)
+        ExampleTextAnnoResult.objects.bulk_create(exampleAnnotationresult)
+
 
 
 def AddQuestions(request):
