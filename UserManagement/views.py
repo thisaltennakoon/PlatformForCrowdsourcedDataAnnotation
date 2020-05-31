@@ -162,16 +162,35 @@ def view_my_tasks(request):
     user_image_data_annotation_tasks = []
     for user_task in all_user_tasks:
         if user_task.Task.taskType == 'TextAnno':
-            user_text_data_annotation_tasks += [user_task.Task]
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_text_data_annotation_tasks += [user_task.Task]
+            else:
+                user_text_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImageAnno':
-            user_image_data_annotation_tasks += [user_task.Task]
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_image_data_annotation_tasks += [user_task.Task]
+            else:
+                user_image_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'TextGen':
-            user_text_data_generation_tasks += [user_task.Task]
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_text_data_generation_tasks += [user_task.Task]
+            else:
+                user_text_data_generation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImgGen':
-            user_image_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/MyTasks.html',
-                  {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
-                                                        'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
-                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
-                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                            'user_id':request.session['user_id']})
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_image_data_generation_tasks += [user_task.Task]
+            else:
+                user_image_data_generation_tasks += [user_task.Task]
+    return render(request, 'UserManagement/MyTasks.html',{'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                          'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
+                                                          'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                          'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                                                          'user_id':request.session['user_id']})
