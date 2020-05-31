@@ -28,7 +28,7 @@ class ProfileForm(forms.ModelForm):
         ('Psychology', 'Psychology'),
         ('Art and Culture', 'Art and Culture')
     ]
-    avatar = forms.ImageField(label='avatar', widget=forms.FileInput(attrs={'class':''}))
+    avatar = forms.ImageField(label='avatar', required=False, widget=forms.FileInput(attrs={'class':''}))
     first_name = forms.CharField(label='first_name',widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
     last_name = forms.CharField(label='last_name', required=False, widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control'}))
     email = forms.EmailField(label='email', widget=forms.EmailInput(attrs={'placeholder': 'email', 'class':'form-control'}))

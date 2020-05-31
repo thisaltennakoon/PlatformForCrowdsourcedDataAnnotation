@@ -1,5 +1,0 @@
-
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Undefined variable: \"$display-font\".\A         on line 3 of /Users/Tyson/social_team_building/sass/circle/components/lists.sass\A         from line 1 of /Users/Tyson/social_team_building/sass/circle/components.sass\A \A 1: @import \"components/lists\"\A 2: @import \"components/headers\"\A 3: @import \"components/tables\"\A 4: @import \"components/forms\"\A 5: @import \"components/containers\""; }
