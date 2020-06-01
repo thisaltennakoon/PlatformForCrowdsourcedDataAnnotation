@@ -12,6 +12,7 @@ from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
 from .models import Profile, ContributorTask
 from django.contrib import messages
+from CreateTask.models import Task
 
 
 def sign_in(request):
@@ -149,6 +150,11 @@ def delete_profile(request, pk):
         form = RateForm()
         if form.is_valid():
             rate = form.save()"""
+
+@login_required(login_url='UserManagement:sign_in')
+def view_field_task_list(request):
+    user_field = 
+    all_field_tasks = Task.objects.filter(field=request.user.)
 
 
 @login_required(login_url='UserManagement:sign_in')

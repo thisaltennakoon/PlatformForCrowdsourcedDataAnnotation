@@ -19,7 +19,7 @@ class Task(models.Model):
     description = models.CharField(max_length=1000)
     status = models.CharField(max_length=60, default='new')  # new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
-    field = models.CharField(max_length=30)
+    field = models.CharField(max_length=30, default='')
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
     requiredNumofAnnotations = models.IntegerField(default=1)
 
