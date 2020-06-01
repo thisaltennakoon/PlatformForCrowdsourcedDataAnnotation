@@ -27,8 +27,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     <div class="w3-third">
     
       <div class="w3-white w3-text-grey w3-card-4">
-        <div class="w3-display-container">
-          <<img src="{{profile.avatar.url}}" style="width:420px; height:300px; size = relative" alt="{% static 'img/avatar2.png' %}">
+        <div class="w3-display-container"><br>
+          <img src="{{profile.avatar.url}}" style="width:400px; height:400px; size: relative; border-radius:50%; max-width:100%; text-align: center;" alt="">
         </div><br>
         <div class="w3-container">
             {% if profile.is_author %}

@@ -1,10 +1,10 @@
 
 from django.contrib import admin
-from .models import Task,UserNew2,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance
+from .models import Task,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance
 
 # Register your models here.
 admin.site.register(Task)
-admin.site.register(UserNew2)
+#admin.site.register(UserNew2)
 admin.site.register(Cateogary)
 admin.site.register(DescrptiveQuestion)
 admin.site.register(Questionaire)

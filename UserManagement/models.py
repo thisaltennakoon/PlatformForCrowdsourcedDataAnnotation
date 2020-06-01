@@ -27,6 +27,20 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def no_of_ratings(self):
+        ratings = Rating.objects.filter(user=self)
+        return len(ratings)
+
+    def avg_ratings(self):
+        sum = 0
+        ratings = Rating.objects.filter(user=self)
+        for rating in ratings:
+            sum += rating.star
+        if len(ratings)>0:
+            return sum/len(ratings)
+        else:
+            return 0
+
 
 
 def create_profile(sender, **kwargs):
@@ -35,15 +49,9 @@ def create_profile(sender, **kwargs):
 
 post_save.connect(create_profile, sender=User)
 
-"""class Rating(models.Model):
-    from_user = models.ManyToManyField(User)
-    to_user = models.ManyToManyField(User)
-    star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])"""
-
-
-
-
-
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])
 
 
 class ContributorTask(models.Model):
