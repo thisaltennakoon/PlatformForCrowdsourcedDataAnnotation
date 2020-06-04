@@ -61,6 +61,7 @@ def sign_up(request):
             group = Group.objects.get(name='crowd_user')
             new_user.groups.add(group)
             login(request, user)
+            request.session['user_id'] = user.id
             messages.success(request,"Congradulations! Your account was created successfully")
             return HttpResponseRedirect(reverse('home'))  # TODO: go to profile
     return render(request, 'UserManagement/sign_up.html', {'form': form})
