@@ -78,7 +78,7 @@
                 <ul class="actionlist">
                     {% for annotated_data_instance in annotated_data_instances %}
                     <li class="addlink">
-                        <a href="/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.DataInstance}}">Data Instance : {{annotated_data_instance.DataInstance}}</a>
+                        <a href="/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.id}}">Data Instance : {{annotated_data_instance.DataInstance}}</a>
                         <!--a onclick="window.location.replace('/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.id}}')" >Data Instance : {{annotated_data_instance.DataInstance}}</a-->
                         <br>
                         <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</span>
