@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <title>Data Annotation Task</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" dashboard" data-admin-utc-offset="0" >
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+    </div>
+    <!-- END Header -->
+
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1><strong>Task Title : {{task_object.title}}</strong></h1>
+        <h1><strong>Task Description : {{task_object.description}}</strong></h1>
+        <h1><strong>Instructions : {{task_object.instructions}}</strong></h1>
+        <h1><strong>Task Type : {{task_object.taskType}}</strong></h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                <form action="Task" method="POST">
+                {%for data_instance in exampleinstance_list%}
+                    <h1><strong>Data Instance</strong></h1>
+                    {% load static %}
+                    <img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"><br>
+                    <h4>Data Classes</h4>
+                        {% csrf_token %}
+                        {% for data_class in cateogary_list %}
+                        <input type="radio" id="{{data_class.cateogaryName}}" name="data_class_id" value="{{data_class.cateogaryTag}}" required>
+                        <lable for="{{data_class.cateogaryTag}}">{{data_class.cateogaryName}}</lable><br>
+                        {% endfor %}
+                        <input type="hidden" name="DataInstance" value="{{data_instance.media}}">
+                        <input type="hidden" name="task_id" value="{{task_id}}">
+                        <input type="hidden" name="user_id" value="{{user_id}}">
+                        <input type="Submit" value="Submit Data Annotation" >
+                {%endfor%}
+                </form>
+                
+            </div>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>

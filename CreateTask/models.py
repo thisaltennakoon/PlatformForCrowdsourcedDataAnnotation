@@ -162,7 +162,8 @@ class CateogaryTag(models.Model):
 class AnnotationTest(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)   #0=non_active , 1=active
-
+    required_marks = models.IntegerField(default=50)
+    #add pass marks
 
 class TestResult(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
@@ -173,7 +174,7 @@ class TestResult(models.Model):
 
 # TEXT
 def directory_path5(instance, filename):
-    return 'MediaAnno/TextExamples/task_{0}/{1}'.format(instance.taskID.id, filename)
+    return 'TextAnno/Test/task_{0}/{1}'.format(instance.taskID.id, filename)
 class TestTextFile(models.Model):                   #To upload example csv file
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
     csvFile = models.FileField(upload_to=directory_path5)
@@ -205,7 +206,7 @@ def directory_path3(instance, filename):
 
 class ExampleMediaDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
-    mediaData = models.FileField(upload_to=directory_path2)
+    mediaData = models.FileField(upload_to=directory_path3)
 
 
 class ExampleMediaAnnoResult(models.Model):

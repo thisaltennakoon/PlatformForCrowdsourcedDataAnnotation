@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^createGen/addexample$',views.AddGenExample, name='Gen_example_add'),
     url(r'^createTextAnno/$',views.createTextTask, name='TextAnno_task_add'),
     url(r'^TextAnnoExampleAdd/$',views.AddTextAnnoExamples, name='TextAnno_example_add'),
+     url(r'^MediaAnnoExampleAdd/$',views.AddMediaAnnoExamples, name='MediaAnno_example_add'),
     url(r'^createTextGen/$',views.createTextGenerationTask, name='Gen_Texttask_add'),
     url(r'^TextAnnoTest/(?P<task_id>[0-9]+)/$',views.DoTextAnnotationTest, name='TextAnno_Test'),
 ]

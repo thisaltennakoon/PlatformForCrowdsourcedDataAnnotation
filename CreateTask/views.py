@@ -5,7 +5,8 @@ from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
-    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers
+    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
+    ExampleMediaDataInstance
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -54,7 +55,7 @@ def createTask(request):
             files = request.FILES.getlist('file_field')
             print(files)
             processImages(files, task)
-            return redirect('createtask:question_add')
+            return redirect('createtask:MediaAnno_example_add')
 
     return render(request, template_name, {
         'taskform': taskform,
@@ -71,6 +72,46 @@ def processImages(files, task):
         else:
             pass
     MediaDataInstance.objects.bulk_create(images)
+
+
+def AddMediaAnnoExamples(request):
+    template_name = 'createtask/addMediaAnnoExamples.html'
+    task = Task.objects.get(id=request.session['task'])
+
+    if request.method == 'GET':
+        return render(request, template_name)
+    
+    if request.method == 'POST':
+        test = AnnotationTest(taskID = task)  
+        files = request.FILES.getlist('file_field')
+        isTest = request.POST['checktest']   
+        if isTest == 'checked':
+            isTest = True
+        else:
+            isTest =False             
+        test.is_active = isTest
+        test.save()
+        request.session['test'] = test.id
+        images = []
+        for image in files:
+            if image.content_type[:5] == 'image':
+                imgObj = ExampleMediaDataInstance(testID=test, mediaData=image)
+                images.append(imgObj)
+            else:
+                pass
+        ExampleMediaDataInstance.objects.bulk_create(images)
+
+def doMediaAnnoExamples(request):       #by task author
+    template_name = 'createtask/doMediaAnnoExamples.html'
+    test = AnnotationTest.objects.get(id=request.session['test'])
+    task = Task.objects.get(id=request.session['task'])
+    exampleinstance_list = test.examplemediadatainstance_set.all()
+    cateogary_list = task.cateogary_set.all()
+
+    if request.method == 'GET':
+        context = {'cateogary_list': cateogary_list,'exampleinstance_list':exampleinstance_list}
+        return render(request, template_name, context)
+    #if request.method == 'POST':
 
 
 def createTextTask(request):
