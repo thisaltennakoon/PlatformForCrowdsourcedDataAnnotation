@@ -129,7 +129,7 @@ DATABASES = {
     }
 }
 #Abi's Mysql database
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -138,7 +138,7 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3306'
     }
-}
+}'''
 #abi sqlite database
 '''DATABASES = {
     'default': {

@@ -42,7 +42,7 @@ def textanalyse(request):
         task = []
         for l in datainstance:
             for lm in ar:
-                if str(l) == lm.DataInstance:
+                if l == lm.DataInstance_id:
                     task.append([lm.UserID, str(l), str(lm.ClassID)])
                     result1.append(lm.ClassID)
                     annotator.append(lm.UserID)
