@@ -62,6 +62,7 @@ def sign_up(request):
             group = Group.objects.get(name='crowd_user')
             new_user.groups.add(group)
             login(request, user)
+            request.session['user_id'] = user.id
             messages.success(request,"Congradulations! Your account was created successfully")
             return HttpResponseRedirect(reverse('home'))  # TODO: go to profile
     return render(request, 'UserManagement/sign_up.html', {'form': form})
@@ -151,10 +152,15 @@ def delete_profile(request, pk):
         if form.is_valid():
             rate = form.save()"""
 
+
 @login_required(login_url='UserManagement:sign_in')
 def view_field_task_list(request):
-    user_field = 
-    all_field_tasks = Task.objects.filter(field=request.user.)
+    user = request.session['user_id']
+    profile = Profile.objects.get(user_id=user)
+    user_field = profile.field
+    all_field_tasks = Task.objects.filter(field=user_field).exclude(creatorID=user)
+    print(all_field_tasks)
+    return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks':all_field_tasks})
 
 
 @login_required(login_url='UserManagement:sign_in')

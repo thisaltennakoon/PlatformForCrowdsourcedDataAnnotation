@@ -67,6 +67,11 @@
                 <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View tasks</a>
             </li>
             {% endif %}
+            {% if user.is_authenticated and user.is_contributor %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">Tasks</a>
+            </li>
+            {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'UserManagement:sign_out' %}">Sign Out</a>
