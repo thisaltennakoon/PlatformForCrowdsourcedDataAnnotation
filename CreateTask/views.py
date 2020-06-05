@@ -6,7 +6,7 @@ from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSe
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
-    ExampleMediaDataInstance
+    ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -18,6 +18,14 @@ import os
 from PIL import Image
 import csv
 
+def doTest(request,task_id):
+    if request.method == 'GET':
+        task = Task.objects.get(pk=task_id)
+        test = AnnotationTest.objects.get(taskID=task_id)
+        if task.taskType == 'TextAnno':
+            return redirect('createtask:TextAnno_Test',task_id=task_id)
+        elif task.taskType == 'ImageAnno':
+            return redirect('createtask:ImageAnno_Test',task_id=task_id)
 
 def test(request, task):
     print(task)
@@ -100,19 +108,86 @@ def AddMediaAnnoExamples(request):
             else:
                 pass
         ExampleMediaDataInstance.objects.bulk_create(images)
+        return redirect('createtask:MediaAnno_example_do')
 
 def doMediaAnnoExamples(request):       #by task author
     template_name = 'createtask/doMediaAnnoExamples.html'
+
+    dic ={}
     test = AnnotationTest.objects.get(id=request.session['test'])
     task = Task.objects.get(id=request.session['task'])
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
+    for cateogary in cateogary_list:
+        tag = str(cateogary.cateogaryTag)         #handle errors
+        dic.update({tag:cateogary})
 
     if request.method == 'GET':
         context = {'cateogary_list': cateogary_list,'exampleinstance_list':exampleinstance_list}
         return render(request, template_name, context)
-    #if request.method == 'POST':
 
+    if request.method == 'POST':
+        for instance in exampleinstance_list:
+            name = str(instance.id)
+            tag = request.POST[name]
+            resultCateogary = dic[tag]
+            result_obj = ExampleMediaAnnoResult()
+            result_obj.ExampleMediaDataInstanceID = instance
+            result_obj.resultCateogary = resultCateogary
+            result_obj.save()
+
+def DoMediaAnnotationTest(request,task_id):   #how to get the task
+    template_name = 'createtask/mediaAnnoTest.html'
+    task = Task.objects.get(pk=task_id)
+    test = AnnotationTest.objects.get(taskID=task)  # try required
+    user_done_this = False
+    user= UserNew2.objects.get(name='kasun')    
+    #user_done_this = check_test_done(user,test)     #user can answer only one time
+    instance_list = test.examplemediadatainstance_set.all()
+    cateogary_list = task.cateogary_set.all()
+    dic={}
+    for cateogary in cateogary_list:
+        tag = str(cateogary.cateogaryTag)         #handle errors
+        dic.update({tag:cateogary})
+    
+
+    #print(dic)
+    if request.method == 'GET':
+        if user_done_this == False:
+            context = {'instance_list': instance_list,'cateogary_list':cateogary_list,'task':task }
+            return render(request, template_name, context)
+        else:
+           return render(request, 'createtask/Uhavedonethis.html') 
+
+    if request.method == 'POST':
+        if user_done_this == False:
+            score = 0
+            result_object = TestResult()
+            result_object.testID = test     #correct this
+            result_object.annotatorID = user
+            result_object.score = 0
+            for instance in instance_list:
+                name = str(instance.id)
+                tag = request.POST[name]
+                resultCateogary = dic[tag]
+                awnswer_obj = MediaAnnoAnswers()
+                awnswer_obj.userID = user
+                awnswer_obj.mediaInstance = instance
+                awnswer_obj.answerCateogary = resultCateogary
+                awnswer_obj.save()
+
+                realanswer_obj= ExampleMediaAnnoResult.objects.get(ExampleMediaDataInstanceID=instance)   #handle errors
+                realanswer = realanswer_obj.resultCateogary
+                if resultCateogary == realanswer:
+                    score +=1
+                
+            score_prentage = score/len(instance_list)*100
+            round(score_prentage,2)
+            result_object.score = score_prentage
+            result_object.save()
+            print(score_prentage)
+        else:
+            return render(request, 'createtask/Uhavedonethis.html')
 
 def createTextTask(request):
     template_name = 'createtask/addtextAnno.html'

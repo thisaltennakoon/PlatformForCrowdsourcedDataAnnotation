@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from .models import Task,UserNew2,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance,DataGenTextInstance, \
-    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest
+    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
 
 # Register your models here.
 admin.site.register(Task)
@@ -22,3 +22,7 @@ admin.site.register(ExampleTextDataInstance)
 admin.site.register(ExampleTextData)
 admin.site.register(ExampleTextAnnoResult)
 admin.site.register(AnnotationTest)
+admin.site.register(MediaAnnoAnswers)
+admin.site.register(ExampleMediaAnnoResult)
+admin.site.register(ExampleMediaDataInstance)
+

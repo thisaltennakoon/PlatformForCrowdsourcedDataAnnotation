@@ -22,14 +22,14 @@
 
     <!-- Content -->
     <div id="content" class="colMS">
-        <h1><strong>Task Title : {{task_object.title}}</strong></h1>
-        <h1><strong>Task Description : {{task_object.description}}</strong></h1>
-        <h1><strong>Instructions : {{task_object.instructions}}</strong></h1>
-        <h1><strong>Task Type : {{task_object.taskType}}</strong></h1>
+        <h1><strong>Task Title : {{task.title}}</strong></h1>
+        <h1><strong>Task Description : {{task.description}}</strong></h1>
+        <h1><strong>Instructions : {{task.instructions}}</strong></h1>
+        <h1><strong>Task Type : {{task.taskType}}</strong></h1>
         <div id="content-main">
             <div class="app-auth module">
                 <form action="" method="POST">
-                {%for data_instance in exampleinstance_list%}
+                {%for data_instance in instance_list%}
                     <h1><strong>Data Instance</strong></h1>
                     {% load static %}
                     <img max-width="420" max-height="420" src="{{ data_instance.mediaData.url }}" alt="{{ data_instance.mediaData.url }}"><br>
