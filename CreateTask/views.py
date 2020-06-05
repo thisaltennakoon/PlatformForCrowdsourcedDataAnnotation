@@ -5,7 +5,7 @@ from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
-    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest
+    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -428,3 +428,72 @@ def processCsvGen(filename,task):
                 DataGenTextinstance = DataGenTextInstance(taskID=task,data=data)
                 instancelist.append(DataGenTextinstance)
         DataGenTextInstance.objects.bulk_create(instancelist)
+
+
+
+def DoTextAnnotationTest(request,task_id):   #how to get the task
+    task = Task.objects.get(pk=task_id)
+    test = AnnotationTest.objects.get(taskID=task)  # try required
+    user_done_this = False
+    user= UserNew2.objects.get(name='kasun')    
+    #user_done_this = check_test_done(user,test)     #user can answer only one time
+    instance_list = test.exampletextdatainstance_set.all()
+    cateogary_list = task.cateogary_set.all()
+    dic={}
+    for cateogary in cateogary_list:
+        tag = str(cateogary.cateogaryTag)         #handle errors
+        dic.update({tag:cateogary})
+    
+
+    #print(dic)
+    if request.method == 'GET':
+        if user_done_this == False:
+            for instance in instance_list:
+                subdata = instance.exampletextdata_set.all()
+                instance.subdata = subdata
+
+            context = {'instance_list': instance_list,'cateogary_list':cateogary_list,'task':task }
+            return render(request, 'createtask/testAnnoTest.html', context)
+        else:
+           return render(request, 'createtask/Uhavedonethis.html') 
+
+    if request.method == 'POST':
+        if user_done_this == False:
+            score = 0
+            result_object = TestResult()
+            result_object.testID = test     #correct this
+            result_object.annotatorID = user
+            result_object.score = 0
+            for instance in instance_list:
+                name = str(instance.id)
+                tag = request.POST[name]
+                resultCateogary = dic[tag]
+                awnswer_obj = TextAnnoAnswers()
+                awnswer_obj.userID = user
+                awnswer_obj.textInstance = instance
+                awnswer_obj.answerCateogary = resultCateogary
+                awnswer_obj.save()
+
+                realanswer_obj= ExampleTextAnnoResult.objects.get(ExampleTextDataInstanceID=instance)   #handle errors
+                realanswer = realanswer_obj.resultCateogary
+                if resultCateogary == realanswer:
+                    score +=1
+                
+            score_prentage = score/len(instance_list)
+            round(score_prentage,2)
+            result_object.score = score_prentage
+            result_object.save()
+            print(score_prentage)
+        else:
+            return render(request, 'createtask/Uhavedonethis.html') 
+
+
+def check_test_done(user,test):
+    isDone = False
+    try:
+        pastTest = TestResult(annotatorID=user,testID=test)
+    except TestResult.DoesNotExist:
+        isDone = False
+    else:
+        isDone = True
+    return isDone

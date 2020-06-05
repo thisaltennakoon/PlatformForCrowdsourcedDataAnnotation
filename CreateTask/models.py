@@ -170,6 +170,7 @@ class TestResult(models.Model):
     score = models.DecimalField(max_digits=5, decimal_places=2)  # score out of 100
 
 
+
 # TEXT
 def directory_path5(instance, filename):
     return 'MediaAnno/TextExamples/task_{0}/{1}'.format(instance.taskID.id, filename)

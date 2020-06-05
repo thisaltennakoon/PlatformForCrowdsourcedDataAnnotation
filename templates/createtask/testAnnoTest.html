@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+    <title>Data Annotation Task</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" dashboard" data-admin-utc-offset="0" >
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="breadcrumbs">
+        <a href="/UserManagement/MyTasks/"> My Tasks </a>
+        &rsaquo;<a href="/DoTextDataAnnotationTask/"> My Data Annotation Tasks </a>
+        &rsaquo; {{task_object.Title}}
+    </div>
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1><strong>Task Title : {{task.title}}</strong></h1>
+        <h1><strong>Task Description : {{task.description}}</strong></h1>
+        <h1><strong>Instructions : {{task.instructions}}</strong></h1>
+        <h1><strong>Task Type : {{task.taskType}}</strong></h1>
+        <div id="content-main">
+            <div class="app-auth module">
+                <h1><strong>Data Instance</strong></h1>
+                <form action="" method="POST">
+                {% csrf_token %}
+                {%for instance in instance_list%}
+                    <table>
+                        <tr>
+                            <th>Sub Data Instances</th>
+                        </tr>
+                        {% for sub_data_instance in instance.subdata %}
+                        <tr>
+                            <td>{{ sub_data_instance.Data }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <h4>Data Classes</h4>
+                    
+                        
+                        {% for data_class in cateogary_list %}
+                        <input type="radio" id="{{instance.id}}" name="{{instance.id}}" value="{{data_class.cateogaryTag}}" required>
+                        <lable for="{{data_class.cateogaryTag}}">{{data_class.cateogaryName}}</lable><br>
+                        {% endfor %}
+                        <input type="hidden" name="DataInstance" value="{{instance.id}}">
+                        {% comment %} <input type="hidden" name="task_id" value="{{task_id}}">
+                        <input type="hidden" name="user_id" value="{{user_id}}"> {% endcomment %}
+                        
+                    
+                {%endfor%}
+                <input type="Submit" value="Submit Data Annotation" >
+                </form>
+            </div>
+        </div>
+</div>
+</body>
+</html>
