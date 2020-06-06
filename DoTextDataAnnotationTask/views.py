@@ -27,6 +27,7 @@ def first(request):
 @login_required(login_url='UserManagement:sign_in')
 def task(request):
     user_id = request.session['user_id']
+
     #print(1)
     if request.method == 'POST':
         data_class_id = request.POST['data_class_id']
@@ -61,6 +62,8 @@ def task(request):
     else:
         try:
             task_id = request.GET['task_id']
+            if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:
+                return redirect('/UserManagement/MyTasks/')
             data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations)
             annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
             #print(annotated_data_instances)
@@ -133,6 +136,11 @@ def task(request):
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': False})
                     else:
+                        remaining_data_instances = TextDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
+                        if len(remaining_data_instances)==0:
+                            completed_task = Task.objects.get(id=task_id)
+                            completed_task.status = 'completed'
+                            completed_task.save()
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -211,6 +219,8 @@ def view_my_annotations(request):
     try:
         task_id = request.GET['task_id']
         user_id = request.session['user_id']
+        if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:
+            return redirect('/UserManagement/MyTasks/')
         try:
             viewing_data_instance = request.GET['viewing_data_instance']
             stop_viewing(request, task_id, viewing_data_instance)
