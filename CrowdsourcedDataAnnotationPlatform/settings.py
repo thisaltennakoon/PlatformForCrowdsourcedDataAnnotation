@@ -261,7 +261,7 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 
 EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = 'true'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = 'False'
 EMAIL_HOST_USER = 'cdapmanager@gmail.com'
 EMAIL_HOST_PASSWORD = 'cdap@admin'
