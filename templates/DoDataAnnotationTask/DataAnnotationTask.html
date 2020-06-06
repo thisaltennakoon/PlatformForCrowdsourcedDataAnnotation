@@ -1,94 +1,142 @@
-<!DOCTYPE html>
-<html lang="en-us" >
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Annotation task{% endblock %}
+
+<!---DOCTYPE html>
+<html>
 <head>
-    <title>Data Annotation Task</title>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
-    <meta name="robots" content="NONE,NOARCHIVE">
-</head>
-<body class=" dashboard" data-admin-utc-offset="0" >
-<!-- Container -->
-<div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
-        <div id="user-tools">
+<title>Annotatio task</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"--->
+{% block style %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/png" href="favicon.png">
+  <style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+{% endblock %}
+
+
+{% block body %}
+<div class="w3-light-grey">
+
+<!-- Top container -->
+<div  class="w3-bar w3-top w3-white w3-large" style="z-index:4">
+  <button class=" w3-button w3-hide-large w3-hover-none w3-hover-text-light-green" onclick="w3_open();"><i class="fa fa-bars"></i> View Contribution</button>
+</div>
+
+<!-- Contribution -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close"><i class="fa fa-remove fa-fw"></i>Close</a></br>
+    <div class="w3-col s8 w3-bar">
+      <span>Welcome, <strong>First name</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-bar-block">
+    <!---Annotated images-->
+    <h4>Your Contribution</h4>
+      {% if annotated_data_instances_available %}
+      {% for annotated_data_instance in annotated_data_instances %}
+      <div class="w3-bar-item">
+          <h5 style="color: darkslategray; font-size: 15px;"><a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}">Data Instance : {{annotated_data_instance.DataInstance}}</a></h5>
+          <h6 style="color: dimgrey; font-size: 12px;">Your Answer : {{annotated_data_instance.ClassID}}</h6>
+          <h6 style="color: dimgrey; font-size: 12px;">Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</h6>
+      </div>
+      {% endfor %}
+      {% else %}
+      <h3>You haven't done any annotations</h3>
+      {% endif %}
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+
+
+  </header>
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><h2>Task Title : {{task_object.title}}</h2></div>
+            <div class="card-header"><h5>Task Description : {{task_object.description}}</h5></div>
+            <div class="card-header"><h5>Instructions : {{task_object.instructions}}</h5></div>
+            <div class="card-header"><h5>Task Type : {{task_object.taskType}}</h5></div>
             {% if data_instance_available %}
-            <a href='/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}'><strong>View My Contributions</strong></a>
-            {% endif %}
-        </div>
-    </div>
-    <!-- END Header -->
-    <div class="breadcrumbs">
-        <a href="/UserManagement/MyTasks/"> My Tasks </a>
-        &rsaquo;<a href="/DoDataAnnotationTask/"> My Data Annotation Tasks </a>
-        &rsaquo; {{task_object.Title}}
-    </div>
-    <!-- Content -->
-    <div id="content" class="colMS">
-        <h1><strong>Task Title : {{task_object.title}}</strong></h1>
-        <h1><strong>Task Description : {{task_object.description}}</strong></h1>
-        <h1><strong>Instructions : {{task_object.instructions}}</strong></h1>
-        <h1><strong>Task Type : {{task_object.taskType}}</strong></h1>
-        <div id="content-main">
-            <div class="app-auth module">
-                {% if data_instance_available %}
-                COMPLETE WITHIN : <p id="time_left"></p>
-                <h1><strong>Data Instance</strong></h1>
-                {% load static %}
-                <img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"><br>
-                <h4>Data Classes</h4>
+            <div class="card-header"><h5>COMPLETE WITHIN : <p id="time_left"></p></h5></div>
+            {% load static %}
+            <div class="card-body"><img max-width="420" max-height="420" src="{{ data_instance.media.url }}" alt="{{ data_instance.media.url }}"></div>
+            <div class="card-body">
+                <h5>Your answer</h5>
                 <form action="Task" method="POST">
                     {% csrf_token %}
                     {% for data_class in data_classes %}
-                    <input type="radio" id="{{data_class.cateogaryName}}" name="data_class_id" value="{{data_class.cateogaryTag}}" required>
-                    <lable for="{{data_class.cateogaryTag}}">{{data_class.cateogaryName}}</lable><br>
+
+
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="{{data_class.cateogaryTag}}" name="data_class_id" class="custom-control-input" value="{{data_class.cateogaryTag}}" required>
+                        <label class="custom-control-label" for="{{data_class.cateogaryTag}}">{{data_class.cateogaryName}}</label>
+                    </div>
+
                     {% endfor %}
                     <input type="hidden" name="DataInstance" value="{{data_instance.media}}">
                     <input type="hidden" name="task_id" value="{{task_id}}">
                     <input type="hidden" name="user_id" value="{{user_id}}">
-                    <input type="Submit" value="Submit Data Annotation" >
+                    <button type="submit" class="btn btn-success"><h6>Submit</h6></button>
                 </form>
-                <button onclick="window.location.replace('/DoDataAnnotationTask/SkipDataInstance?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}')" class="button DeleteButtonStyle">Skip This Data Instance</button>
-                <button onclick="window.location.replace('/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}')" class="button DeleteButtonStyle">Stop Annotating</button>
-                {% else %}
-                <h3>Congratulations!</h3> <h3>All the data instances in this task has been annotated.Try another task</h3>
-                <button onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}')" class="button DeleteButtonStyle">View My Contributions</button>
-                {% endif %}
             </div>
-        </div>
-        <div id="content-related">
-            <div class="module" id="recent-actions-module">
-                <h2>My Contributions</h2>
-                {% if annotated_data_instances_available %}
-                <!--h3>My actions</h3-->
-                <ul class="actionlist">
-                    {% for annotated_data_instance in annotated_data_instances %}
-                    <li class="addlink">
-                        <a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}">Data Instance : {{annotated_data_instance.DataInstance}}</a>
-                        <!--a onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}')" >Data Instance : {{annotated_data_instance.DataInstance}}</a-->
-                        <br>
-                        <span class="mini quiet">Your Answer : {{annotated_data_instance.ClassID}}<br>Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <h3>You haven't done any annotations</h3>
-                {% endif %}
+            <div class="card-footer">
+                <div class="btn-group">
+                    <button onclick="window.location.replace('/DoDataAnnotationTask/SkipDataInstance?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}')" type="button" class="btn btn-warning">Skip This Data Instance</button>
+                </div>
+                <div class="btn-group">
+                    <button onclick="window.location.replace('/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}')" type="button" class="btn btn-danger">Stop Annotating</button>
+                </div>
             </div>
+            {% else %}
+            <h3>Congratulations!</h3> <h3>All the data instances in this task has been annotated.Try another task</h3>
+            <button onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}')" class="btn btn-success">View My Contributions</button>
+            {% endif %}
         </div>
-        <br class="clear">
     </div>
-    <!-- END Content -->
-    <div id="footer"></div>
+    <!-- End page content -->
 </div>
-<!-- END Container -->
 <script>
+
+  // Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
 var msec = Date.parse(new Date())+302000;
 var a = new Date(msec)
 var countDownDate = a.getTime();
@@ -122,5 +170,5 @@ window.addEventListener( "pageshow", function ( event ) {
 });
 
 </script>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -13,7 +13,7 @@ import datetime
 
 def test(request):
     #return HttpResponse(str(datetime.datetime.now()))
-    return render(request, 'DoDataAnnotationTask/DataAnnotationResulttest.html')
+    return render(request, 'DoDataAnnotationTask/test.html')
 
 @login_required(login_url='UserManagement:sign_in')
 def first(request):
