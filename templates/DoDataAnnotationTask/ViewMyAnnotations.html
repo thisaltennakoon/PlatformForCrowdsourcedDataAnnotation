@@ -12,8 +12,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 {% endblock %}
 {% block body %}
-
-<br>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/UserManagement/MyTasks/">My Tasks</a></li>
+    <li class="breadcrumb-item"><a href="/DoDataAnnotationTask/Task?task_id={{task_object.id}}">{{task_object.title}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Contributions</li>
+  </ol>
+</nav>
 <div class="card">
     <div class="card-header">My Contributions</div>
     {% if annotated_data_instances_available %}

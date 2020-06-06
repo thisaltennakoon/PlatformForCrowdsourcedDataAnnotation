@@ -12,6 +12,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 {% endblock %}
 {% block body %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/UserManagement/MyTasks/">My Tasks</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{task_object.title}}</li>
+  </ol>
+</nav>
 <div class="w3-light-grey">
     <!-- Top container -->
     <div  class="w3-bar w3-top w3-white w3-large" style="z-index:4">
@@ -22,7 +28,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <div class="w3-container w3-row">
             <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close"><i class="fa fa-remove fa-fw"></i>Close</a></br>
             <div class="w3-col s8 w3-bar">
-                <span>Welcome, <strong>First name</strong></span><br>
+                <span>Welcome, <strong>{{first_name}}</strong></span><br>
             </div>
         </div>
         <hr>

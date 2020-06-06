@@ -7,7 +7,7 @@ from .models import DataAnnotationResult
 from django.contrib import messages
 import random
 from django.contrib.auth.decorators import login_required
-from UserManagement.models import ContributorTask
+from UserManagement.models import ContributorTask,Profile
 from django.db import DatabaseError, transaction
 
 def test(request):
@@ -93,7 +93,7 @@ def task(request):
                                                                                                     'data_classes': Cateogary.objects.filter(taskID_id=task_id),
                                                                                                     'data_instance': data_instance,
                                                                                                     'sub_data_instances':sub_data_instances,
-                                                                                                    #'user_id': user_id,
+                                                                                                    'first_name':Profile.objects.get(user=request.user).first_name,
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': True,
                                                                                                     'annotated_data_instances': annotated_data_instances})
@@ -103,7 +103,7 @@ def task(request):
                                                                                                     'data_classes': Cateogary.objects.filter(taskID_id=task_id),
                                                                                                     'data_instance': data_instance,
                                                                                                     'sub_data_instances':sub_data_instances,
-                                                                                                    #'user_id': user_id,
+                                                                                                    'first_name':Profile.objects.get(user=request.user).first_name,
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': False})
                     elif len(data_annotation)==0 and skip_instance_request:
@@ -119,7 +119,7 @@ def task(request):
                                                                                                     'data_classes': Cateogary.objects.filter(taskID_id=task_id),
                                                                                                     'data_instance': data_instance,
                                                                                                     'sub_data_instances':sub_data_instances,
-                                                                                                    #'user_id': user_id,
+                                                                                                    'first_name':Profile.objects.get(user=request.user).first_name,
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': True,
                                                                                                     'annotated_data_instances': annotated_data_instances})
@@ -129,7 +129,7 @@ def task(request):
                                                                                                     'data_classes': Cateogary.objects.filter(taskID_id=task_id),
                                                                                                     'data_instance': data_instance,
                                                                                                     'sub_data_instances':sub_data_instances,
-                                                                                                    #'user_id': user_id,
+                                                                                                    'first_name':Profile.objects.get(user=request.user).first_name,
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': False})
                     else:
@@ -137,12 +137,14 @@ def task(request):
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
                                                                                                     'task_id': task_id,
+                                                                                                        'first_name': Profile.objects.get(user=request.user).first_name,
                                                                                                     'annotated_data_instances_available': True,
                                                                                                     'annotated_data_instances': annotated_data_instances})
                         else:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
                                                                                                     'task_id': task_id,
+                                                                                                        'first_name': Profile.objects.get(user=request.user).first_name,
                                                                                                     'annotated_data_instances_available': False,})
             except DatabaseError:
                 return HttpResponse("DatabaseError")

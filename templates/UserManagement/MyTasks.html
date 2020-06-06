@@ -12,8 +12,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 {% endblock %}
 {% block body %}
-
-<br>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">My Tasks</li>
+  </ol>
+</nav>
 {% if user_text_data_annotation_tasks|length > 0 %}
 <div class="card">
     <div class="card-header">Text Data Annotation Tasks</div>
