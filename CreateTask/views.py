@@ -50,6 +50,7 @@ def createTask(request):
             # print(numAnnos)
             task.requiredNumofAnnotations = numAnnos
             task.save()
+            task_id = task.id
             request.session['task'] = task.id
             tag = 0
             for form in formset:
@@ -63,7 +64,7 @@ def createTask(request):
             files = request.FILES.getlist('file_field')
             print(files)
             processImages(files, task)
-            return redirect('createtask:MediaAnno_example_add')
+            return redirect('createtask:MediaAnno_example_add',task_id=task_id)
 
     return render(request, template_name, {
         'taskform': taskform,
@@ -82,9 +83,9 @@ def processImages(files, task):
     MediaDataInstance.objects.bulk_create(images)
 
 
-def AddMediaAnnoExamples(request):
+def AddMediaAnnoExamples(request,task_id):
     template_name = 'createtask/addMediaAnnoExamples.html'
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
 
     if request.method == 'GET':
         return render(request, template_name)
@@ -108,14 +109,14 @@ def AddMediaAnnoExamples(request):
             else:
                 pass
         ExampleMediaDataInstance.objects.bulk_create(images)
-        return redirect('createtask:MediaAnno_example_do')
+        return redirect('createtask:MediaAnno_example_do',task_id=task_id)
 
-def doMediaAnnoExamples(request):       #by task author
+def doMediaAnnoExamples(request,task_id):       #by task author
     template_name = 'createtask/doMediaAnnoExamples.html'
 
     dic ={}
     test = AnnotationTest.objects.get(id=request.session['test'])
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
     for cateogary in cateogary_list:
@@ -208,6 +209,7 @@ def createTextTask(request):
             newFileModel = TextFile()
             task.taskType = "TextAnno"
             task.save()
+            task_id = task.id
             newFileModel.taskID = task
             newFileModel.csvFile = csvFile
             newFileModel.save()
@@ -227,7 +229,7 @@ def createTextTask(request):
                 cateogary.save()
                 tag += 1
             # return render(request, 'createtask/success.html')
-            return redirect('createtask:TextAnno_example_add')
+            return redirect('createtask:TextAnno_example_add',task_id=task_id)
 
     return render(request, template_name, {
         'taskform': taskform,
@@ -268,10 +270,10 @@ def ProcessCsv(filename, task):
     return words
 
 
-def AddTextAnnoExamples(request):
+def AddTextAnnoExamples(request,task_id):
     template_name = 'createtask/addTextAnnoExamples.html'
     csvform = CsvForm()
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
     words = request.session['words']
     cateogary_list = task.cateogary_set.all()
     if request.method == 'GET':
@@ -342,7 +344,6 @@ def processExampleCsvFile(filename,task,words,test,dic):
                     resultCateogary = dic[result]
                 except KeyError:
                     error.append('Cateogary tag error')
-                    print(error)
                 resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
                 exampleAnnotationresult.append(resultobject)
 
