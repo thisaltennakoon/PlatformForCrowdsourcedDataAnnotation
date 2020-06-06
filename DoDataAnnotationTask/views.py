@@ -59,7 +59,9 @@ def task(request):
                 else:
                     return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
         except DatabaseError:
-            return HttpResponse("DatabaseError")
+            print('DatabaseError in task() annotation submission Image Data Annotation')
+            #return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     else:
         #print(1)
         try:
@@ -138,9 +140,10 @@ def task(request):
                     else:
                         remaining_data_instances = MediaDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
                         if len(remaining_data_instances)==0:
-                            completed_task = Task.objects.get(id=task_id)
-                            completed_task.status = 'completed'
-                            completed_task.save()
+                            completed_task = Task.objects.get(id=task_id, status='inprogress')
+                            if len(completed_task)!=0:
+                                completed_task.status = 'completed'
+                                completed_task.save()
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -155,8 +158,11 @@ def task(request):
                                                                                                     'first_name':Profile.objects.get(user=request.user).first_name,
                                                                                                     'annotated_data_instances_available': False,})
             except DatabaseError:
-                return HttpResponse("DatabaseError")
+                print('DatabaseError in task() giving data instance to annotator Image data annotation')
+                # return HttpResponse("DatabaseError")
+                return redirect('/UserManagement/MyTasks/')
         except:
+            print('Failure in task() Image data annotation ')
             return redirect('/UserManagement/MyTasks/')
 
 @login_required(login_url='UserManagement:sign_in')
@@ -173,7 +179,9 @@ def skip_data_instance(request):
                 else:
                     return HttpResponse('error')
         except DatabaseError:
-            return HttpResponse("DatabaseError")
+            print('DatabaseError in skip_data_instance()  Image data annotation')
+            # return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
 
@@ -187,8 +195,11 @@ def stop_annotating(request):
         if stop_viewing(request,task_id,viewing_data_instance):
             return redirect('/UserManagement/MyTasks/')
         else:
-            return HttpResponse('error')
+            print('Error in stop_annotating()  Image data annotation')
+            # return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     except:
+        print('Error in stop_annotating()  Image data annotation')
         return redirect('/UserManagement/MyTasks/')
 
 @login_required(login_url='UserManagement:sign_in')
@@ -236,6 +247,7 @@ def view_my_annotations(request):
             return render(request, 'DoDataAnnotationTask/ViewMyAnnotations.html', {'annotated_data_instances_available': False,
                                                                'task_object': Task.objects.get(id=task_id), })
     except:
+        print('Error in view_my_annotations()  Image data annotation')
         return redirect('/UserManagement/MyTasks/')
 
 @login_required(login_url='UserManagement:sign_in')
