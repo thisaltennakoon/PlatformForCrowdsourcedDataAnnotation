@@ -83,7 +83,7 @@ def task(request):
             try:
                 with transaction.atomic():
                     #print(4)
-                    print(data_instances_to_exclude)
+                    #print(data_instances_to_exclude)
                     data_annotation = MediaDataInstance.objects.filter(taskID_id=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude)
                     #print(5)
                     if len(data_annotation) > 0:
@@ -134,6 +134,11 @@ def task(request):
                                                                                                     'task_id': task_id,
                                                                                                     'annotated_data_instances_available': False})
                     else:
+                        remaining_data_instances = MediaDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
+                        if len(remaining_data_instances)==0:
+                            completed_task = Task.objects.get(id=task_id)
+                            completed_task.status = 'completed'
+                            completed_task.save()
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
