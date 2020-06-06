@@ -19,40 +19,7 @@
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 {% endblock %}
-  <script>
-var msec = Date.parse(new Date())+302000;
-var a = new Date(msec)
-var countDownDate = a.getTime();
 
-var x = setInterval(function() {
-  var now = new Date().getTime();
-  var distance = countDownDate - now;
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  document.getElementById("time_left").innerHTML = minutes + "m " + seconds + "s ";
-
-  if (distance < 1000) {
-    clearInterval(x);
-    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}");
-  }
-
-    if (distance < 10000) {
-    document.getElementById("time_left").style.color = "red";
-  }
-}, 1000);
-
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted ||
-                         ( typeof window.performance != "undefined" &&
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    // Handle page restore.
-    window.location.reload();
-  }
-});
-
-</script>
 
 {% block body %}
 <div class="w3-light-grey">
@@ -149,13 +116,14 @@ window.addEventListener( "pageshow", function ( event ) {
   <header class="w3-container" style="padding-top:22px">
 
   </header>
+
 <div class="container">
   <div class="card">
     <div class="card-header"><h2>Task Title : Find cars and Vans</h2></div>
     <div class="card-header"><h5>Task Description : gkgkghh sfdsdbfhdbsf fsdfbdsjifb sfoduhdsufh osufdhsduhf sfuhdshfsudhfshduh fsuhdfdsiuhfdshfuYou can offset grid columns in two ways: our responsive .offset- grid classes and our margin utilities. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable</h5></div>
     <div class="card-header"><h5>Instructions : kghkgkghk</h5></div>
     <div class="card-header"><h5>Task Type : ImageAnno</h5></div>
-    <div class="card-header"><h5>COMPLETE WITHIN :<p id="time_left">2m 11s</p></h5></div>
+    <div class="card-header"><h5>COMPLETE WITHIN :<h5 id="time_left"></h5></h5></div>
     <div class="card-body"><img src="dog2.jpeg"  alt="Google Regional Map"></div>
     <div class="card-body">Or</div>
     <div class="card-body">
@@ -220,6 +188,40 @@ window.addEventListener( "pageshow", function ( event ) {
 </div>
 
 <script>
+
+var msec = Date.parse(new Date())+302000;
+var a = new Date(msec)
+var countDownDate = a.getTime();
+
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("time_left").innerHTML = minutes + "m " + seconds + "s ";
+
+  if (distance < 1000) {
+    clearInterval(x);
+    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}");
+  }
+
+    if (distance < 10000) {
+    document.getElementById("time_left").style.color = "red";
+  }
+}, 1000);
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");
 
