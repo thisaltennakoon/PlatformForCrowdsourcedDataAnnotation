@@ -66,6 +66,8 @@ def task(request):
             #print(Profile.objects.get(user=request.user).first_name)
             #'user':Profile.objects.get(user=request.user)
             task_id = request.GET['task_id']
+            if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:
+                return redirect('/UserManagement/MyTasks/')
             data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations)
             annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
             data_instances_to_exclude = []
@@ -216,8 +218,10 @@ def stop_viewing(request,task_id,viewing_data_instance):
 @login_required(login_url='UserManagement:sign_in')
 def view_my_annotations(request):
     try:
-        task_id = request.GET['task_id']
         user_id = request.session['user_id']
+        task_id = request.GET['task_id']
+        if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:
+            return redirect('/UserManagement/MyTasks/')
         try:
             viewing_data_instance = request.GET['viewing_data_instance']
             stop_viewing(request, task_id, viewing_data_instance)
@@ -232,7 +236,7 @@ def view_my_annotations(request):
             return render(request, 'DoDataAnnotationTask/ViewMyAnnotations.html', {'annotated_data_instances_available': False,
                                                                'task_object': Task.objects.get(id=task_id), })
     except:
-        return redirect('/DoDataAnnotationTask/')
+        return redirect('/UserManagement/MyTasks/')
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_annotations_change(request):
