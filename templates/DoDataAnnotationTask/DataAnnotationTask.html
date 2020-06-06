@@ -28,14 +28,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <hr>
         <div class="w3-bar-block">
             <!---Annotated images-->
-            <h4>Your Contribution</h4>
+
             {% if annotated_data_instances_available %}
+            <button onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.id}}'" type="button" class="btn btn-info">View My Contributions</button><hr>
+
             {% for annotated_data_instance in annotated_data_instances %}
             <div class="w3-bar-item">
                 <h5 style="color: darkslategray; font-size: 15px;"><a href="/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}&viewing_data_instance={{data_instance.media}}">Data Instance : {{annotated_data_instance.DataInstance}}</a></h5>
                 <h6 style="color: dimgrey; font-size: 12px;">Your Answer : {{annotated_data_instance.ClassID}}</h6>
                 <h6 style="color: dimgrey; font-size: 12px;">Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</h6>
             </div>
+            <hr>
             {% endfor %}
             {% else %}
             <h3>You haven't done any annotations</h3>
@@ -84,8 +87,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
                     </div>
                 </div>
                 {% else %}
+                <div class="card-body">
                 <h3>Congratulations!</h3> <h3>All the data instances in this task has been annotated.Try another task</h3>
-                <button onclick="window.location.replace('/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}')" class="btn btn-success">View My Contributions</button>
+                </div>
+                <div class="card-footer">
+                <button onclick="window.location.href='/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}'" type="button" class="btn btn-info">View My Contributions</button>
+                </div>
                 {% endif %}
             </div>
         </div>
