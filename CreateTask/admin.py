@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import Task,UserNew2,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance,DataGenTextInstance, \
+from .models import Task,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance,DataGenTextInstance, \
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
 
 
