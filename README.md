@@ -3,6 +3,7 @@
 Thisal
 
 pip install mysqlclient
+pip install django-pyc
 
 MySQL event
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
