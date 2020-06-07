@@ -23,7 +23,7 @@ class Task(models.Model):
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
     requiredNumofAnnotations = models.IntegerField(default=1)
 
-    def __str__(self):  # display book name in admin panel
+    def __str__(self):  
         return self.title
 
 
@@ -67,6 +67,19 @@ class TextDataInstance(models.Model):
 class TextData(models.Model):
     InstanceID = models.ForeignKey(TextDataInstance, on_delete=models.CASCADE)
     Data = models.CharField(max_length=3000)
+
+#TEXT GENERATION
+
+def directory_path4(instance,filename):
+    return 'TextGen/task_{0}/{1}'.format(instance.taskID.id, filename)
+
+class GenTextFile(models.Model):
+    taskID = models.ForeignKey(Task,on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path)
+
+class DataGenTextInstance(models.Model):
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    data = models.CharField(max_length= 5000)
 
 
 # QUIZ
@@ -150,7 +163,9 @@ class CateogaryTag(models.Model):
 
 class AnnotationTest(models.Model):
     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
-
+    is_active = models.BooleanField(default=False)   #0=non_active , 1=active
+    required_marks = models.IntegerField(default=50)
+    #add pass marks
 
 class TestResult(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
@@ -158,7 +173,14 @@ class TestResult(models.Model):
     score = models.DecimalField(max_digits=5, decimal_places=2)  # score out of 100
 
 
+
 # TEXT
+def directory_path5(instance, filename):
+    return 'TextAnno/Test/task_{0}/{1}'.format(instance.taskID.id, filename)
+class TestTextFile(models.Model):                   #To upload example csv file
+    taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
+    csvFile = models.FileField(upload_to=directory_path5)
+
 class ExampleTextDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
 
@@ -186,7 +208,7 @@ def directory_path3(instance, filename):
 
 class ExampleMediaDataInstance(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
-    mediaData = models.FileField(upload_to=directory_path2)
+    mediaData = models.FileField(upload_to=directory_path3)
 
 
 class ExampleMediaAnnoResult(models.Model):
