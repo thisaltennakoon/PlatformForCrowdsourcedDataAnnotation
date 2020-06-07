@@ -4,7 +4,7 @@ from . import models
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from .models import Profile #Rating
+from .models import Profile, ContributorTask
 
 
 class ProfileForm(forms.ModelForm):
@@ -63,6 +63,11 @@ class PWChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label='username',widget=forms.TextInput(attrs={'placeholder': 'current password', 'class': 'form-control'}))
     new_password1 = forms.CharField(label='password',widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
     new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
+
+class TaskRegForm(forms.ModelForm):
+    class Meta:
+        model = ContributorTask
+        fields = ['User', 'Task']
 
 """class RateForm (forms.ModelForm):
     class Meta:

@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models
-from .forms import CreateUserForm, SigInForm, PWChangeForm
+from .forms import *
 from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
 from .models import Profile, ContributorTask
@@ -136,6 +136,7 @@ def view_profile(request, pk):
     context = {'profile': profile}
     return render(request, 'UserManagement/view_profile.html',context)
 
+@login_required(login_url='UserManagement:sign_in')
 def delete_profile(request, pk):
     profile = get_object_or_404(Profile, user=pk)
     user = get_object_or_404(User, id=pk)
@@ -143,7 +144,8 @@ def delete_profile(request, pk):
     if request.method == "POST":
         profile.delete()
         user.delete()
-        #return redirect('UserManagement/profile_list.html')
+        messages.success(request, 'You have deleted a user')
+        return HttpResponseRedirect(reverse('UserManagement:profile_list'))
     return render(request, 'UserManagement/delete_profile.html', context)
 
 """def rate(request):
@@ -162,6 +164,19 @@ def view_field_task_list(request):
     print(all_field_tasks)
     return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks':all_field_tasks})
 
+@login_required(login_url='UserManagement:sign_in')
+def reg_task (request, pk):
+    ct = ContributorTask()
+    task = get_object_or_404(Task, id=pk)
+    user = request.user
+    context = {'task':task}
+    if request.method=="POST":
+        ct.Task=task
+        ct.User=user
+        ct.save()
+        messages.success(request, "You have successfully registered as a contributor")
+        return HttpResponseRedirect(reverse('UserManagement:field_task_list'))
+    return render(request, 'UserManagement/reg_task.html')
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):

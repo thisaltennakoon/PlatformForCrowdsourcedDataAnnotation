@@ -56,6 +56,9 @@ class Rating(models.Model):
 
 class ContributorTask(models.Model):
     Task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    User = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    """class Meta:
+        unique_together = (('Task', 'User'),)"""
 
 
