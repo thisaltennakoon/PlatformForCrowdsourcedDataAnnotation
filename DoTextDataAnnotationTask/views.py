@@ -130,10 +130,9 @@ def task(request):
                     else:
                         remaining_data_instances = TextDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
                         if len(remaining_data_instances)==0:
-                            completed_task = Task.objects.get(id=task_id, status='inprogress')
-                            if len(completed_task)!=0:
-                                completed_task.status = 'completed'
-                                completed_task.save()
+                            completed_task = Task.objects.get(id=task_id)
+                            completed_task.status = 'completed'
+                            completed_task.save()
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
