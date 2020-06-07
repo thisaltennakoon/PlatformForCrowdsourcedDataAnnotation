@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sep',
+        'NAME': 'cdap_usermanagement',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -122,11 +122,11 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crowdsourceddataannotationplatform3',
+        'NAME': 'crowdsourceddataannotationplatform1',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3308'
+        'HOST':'127.0.0.1',
+        'PORT':'3308'
     }
 }
 
