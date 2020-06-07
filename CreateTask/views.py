@@ -46,7 +46,7 @@ def createTask(request):
         formset = CateogaryFormSet(request.POST)
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             task.taskType = "ImageAnno"
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
@@ -205,7 +205,7 @@ def createTextTask(request):
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
@@ -449,7 +449,7 @@ def createGenerationTask(request):
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
             if dataType == 'T':
