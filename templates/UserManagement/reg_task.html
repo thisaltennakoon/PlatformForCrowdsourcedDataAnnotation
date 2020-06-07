@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<p>Are you sure you want to register for the task ?</p>
+
+<form action = "" method ="POST">
+    {% csrf_token %}
+    <a href="{% url 'UserManagement:field_task_list' %}">cancel</a>
+    <input type="submit" name = "confirm">
+</form>
+
+{% endblock %}

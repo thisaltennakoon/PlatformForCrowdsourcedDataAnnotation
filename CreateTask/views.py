@@ -3,10 +3,12 @@ from django.views import generic
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
+
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
+
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -41,7 +43,7 @@ def createTask(request):
         formset = CateogaryFormSet(request.POST)
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(name='kasun')
             task.taskType = "ImageAnno"
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
@@ -201,7 +203,7 @@ def createTextTask(request):
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(name='kasun')
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
@@ -523,6 +525,68 @@ def QuestionaireView(request, task_id):
         return render(request, 'createtask/viewQuestions.html', context)
 
 
+<<<<<<< HEAD
+=======
+def createGenerationTask(request):
+    template_name = 'createtask/genarationtask_form.html'
+    if request.method == 'GET':
+        customform = CustomForm1()
+        taskform = CreateTaskForm(request.GET or None)
+        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
+
+        # print(taskform.name.label)
+
+    elif request.method == 'POST':
+        taskform = CreateTaskForm(request.POST)
+        formset = CateogaryFormSet(request.POST)
+        customform = CustomForm1(request.POST)
+        if taskform.is_valid() and formset.is_valid() and customform.is_valid():
+            task = taskform.save(commit=False)
+            task.creatorID = User.objects.get(name='kasun')
+            rough = customform.cleaned_data
+            dataType = rough.get('dataType')
+            if dataType == 'T':
+                task.taskType = "TextGen"
+            elif dataType == 'I':
+                task.taskType = "ImageGen"
+            task.save()
+            request.session['task'] = task.id  # task id session created
+            tag = 0
+            for form in formset:
+                # so that `book` instance can be attached.
+                generationClass = form.save(commit=False)
+                generationClass.taskID = task
+                generationClass.cateogaryTag = tag
+                generationClass.save()
+                tag += 1
+            # return render(request, 'createtask/success.html')
+            return redirect('createtask:Gen_example_add')
+
+    return render(request, template_name, {
+        'taskform': taskform,
+        'formset': formset,
+        'customform': customform,
+    })
+
+
+def AddGenExample(request):
+    task = Task.objects.get(id=request.session['task'])
+    # questionaire = Questionaire.objects.get(taskID=task) #try required
+    class_list = task.cateogary_set.all()
+
+    if request.method == 'GET':
+        context = {'class_list': class_list}
+        return render(request, 'createtask/addGenExamples.html', context)
+
+    if request.method == 'POST':
+        # for i in range(len(class_list)):
+        #     input1 = request.POST['class'+i]
+        #     exampleEntry =
+        return render(request, 'createtask/success.html')
+
+#TEXTGENERATION
+
+>>>>>>> c2a47e411fe12b96374403e53dbadfba955b848b
 def createTextGenerationTask(request):
     template_name = 'createtask/genarationTexttask_form.html'
     if request.method == 'GET':

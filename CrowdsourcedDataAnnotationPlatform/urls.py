@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('UserManagement/', include('UserManagement.urls', namespace='accounts')),
     path('', views.home, name='home'),
+    path('', include('django.contrib.auth.urls')),
     path('DoDataAnnotationTask/', include('DoDataAnnotationTask.urls')),
     path('DoDataGenerationTask/', include('DoDataGenerationTask.urls')),
     path('DoTextDataAnnotationTask/', include('DoTextDataAnnotationTask.urls')),
