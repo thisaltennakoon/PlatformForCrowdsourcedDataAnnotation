@@ -163,10 +163,11 @@ def view_field_task_list(request):
     registeredTasks = ContributorTask.objects.filter(User_id=user)
     registeredTaskID = []
     for i in registeredTasks:
-        registeredTaskID += [i.Task]
+        registeredTaskID += [i.Task_id]
     all_field_tasks = Task.objects.filter(field=user_field).exclude(creatorID=user)
-    print(all_field_tasks)
-    return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks':all_field_tasks, 'registeredTaskID':registeredTaskID})
+    all_field_tasks_unregistered = all_field_tasks.exclude(id__in = registeredTaskID)
+    #print(all_field_tasks)
+    return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks_unregistered':all_field_tasks_unregistered})
 
 @login_required(login_url='UserManagement:sign_in')
 def reg_task (request, pk):
