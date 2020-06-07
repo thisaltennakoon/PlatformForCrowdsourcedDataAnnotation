@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 
-from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
+from .models import Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
