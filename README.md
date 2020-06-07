@@ -4,6 +4,7 @@ Thisal
 
 pip install mysqlclient
 pip install django-pyc
+Clear all pyc files safely- python manage.py clearpyc --noinput
 
 MySQL event
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
