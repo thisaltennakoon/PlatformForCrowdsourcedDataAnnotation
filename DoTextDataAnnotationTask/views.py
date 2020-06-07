@@ -27,38 +27,30 @@ def first(request):
 @login_required(login_url='UserManagement:sign_in')
 def task(request):
     user_id = request.session['user_id']
-
-    #print(1)
     if request.method == 'POST':
         data_class_id = request.POST['data_class_id']
         data_instance = request.POST['DataInstance']
         task_id = request.POST['task_id']
-        #print(2)
         try:
             with transaction.atomic():
                 annotating_data_instance = TextDataInstance.objects.get(taskID_id=task_id, id=data_instance)
-                #print(3)
                 if (annotating_data_instance.WhoIsViewing==user_id) and (annotating_data_instance.IsViewing==True) and (annotating_data_instance.NumberOfAnnotations < Task.objects.get(id=task_id).requiredNumofAnnotations):  # for extra protection.Can be removed if nessasary
-                    #print(4)
-
                     data_annotation_result = DataAnnotationResult(TaskID=Task.objects.get(id=task_id),
                                                                   DataInstance=annotating_data_instance,
                                                                   ClassID=data_class_id,
                                                                   UserID=user_id)
-                    #print(5)
                     data_annotation_result.save()
-                    #print(6)
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.NumberOfAnnotations += 1
-                    #print(7)
                     annotating_data_instance.save()
-                    #print(8)
                     return redirect('/DoTextDataAnnotationTask/Task?task_id=' + str(task_id))
                 else:
                     return redirect('/DoTextDataAnnotationTask/Task?task_id=' + str(task_id))
         except DatabaseError:
-            return HttpResponse("DatabaseError")
+            print('DatabaseError in task() annotation submission Text Data Annotation')
+            # return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     else:
         try:
             task_id = request.GET['task_id']
@@ -138,9 +130,10 @@ def task(request):
                     else:
                         remaining_data_instances = TextDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
                         if len(remaining_data_instances)==0:
-                            completed_task = Task.objects.get(id=task_id)
-                            completed_task.status = 'completed'
-                            completed_task.save()
+                            completed_task = Task.objects.get(id=task_id, status='inprogress')
+                            if len(completed_task)!=0:
+                                completed_task.status = 'completed'
+                                completed_task.save()
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': False,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -155,8 +148,11 @@ def task(request):
                                                                                                         'first_name': Profile.objects.get(user=request.user).first_name,
                                                                                                     'annotated_data_instances_available': False,})
             except DatabaseError:
-                return HttpResponse("DatabaseError")
+                print('DatabaseError in task() giving data instance to annotator Text Data Annotation')
+                # return HttpResponse("DatabaseError")
+                return redirect('/UserManagement/MyTasks/')
         except:
+            print('Error in task() giving data instance to annotator Text Data Annotation')
             return redirect('/DoTextDataAnnotationTask/')
 
 @login_required(login_url='UserManagement:sign_in')
@@ -170,15 +166,17 @@ def skip_data_instance(request):
                 if stop_viewing(request,task_id,viewing_data_instance):
                     return redirect('/DoTextDataAnnotationTask/Task?skip_instance='+viewing_data_instance+'&task_id=' + str(task_id))
                 else:
-                    return HttpResponse('error')
+                    print('Error in skip_data_instance() Text Data Annotation')
+                    return redirect('/UserManagement/MyTasks/')
         except DatabaseError:
-            return HttpResponse("DatabaseError")
+            print('DatabaseError in skip_data_instance() Text Data Annotation')
+            # return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/DoTextDataAnnotationTask/Task?task_id=' + str(task_id))
 
 @login_required(login_url='UserManagement:sign_in')
 def stop_annotating(request):
-    #print(132213231312)
     try:
         task_id = request.GET['task_id']
         viewing_data_instance = request.GET['viewing_data_instance']
@@ -186,7 +184,9 @@ def stop_annotating(request):
         if stop_viewing(request,task_id,viewing_data_instance):
             return redirect('/UserManagement/MyTasks/')
         else:
-            return HttpResponse('error')
+            print('Error in stop_annotating() Text Data Annotation')
+            # return HttpResponse("DatabaseError")
+            return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/UserManagement/MyTasks/')
 

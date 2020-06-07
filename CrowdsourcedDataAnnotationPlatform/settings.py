@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'TextDataAnalyse',
     'testresultrank',
     'django_filters',  #search filter in user management
+    'django_pyc',
 ]
 
 MIDDLEWARE = [
