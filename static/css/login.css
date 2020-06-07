@@ -50,6 +50,24 @@ body {
       color: #919aa3; }
     .login-card .form-control::placeholder {
       color: #919aa3; }
+  .login-card .form-control-select {
+    border: 1px solid #d5dae2;
+    padding: 15px 25px;
+    margin-bottom: 20px;
+    min-height: 50px;
+    font-size: 13px;
+    line-height: 15;
+    font-weight: normal; }
+    .login-card .form-control::-webkit-input-placeholder {
+      color: #919aa3; }
+    .login-card .form-control::-moz-placeholder {
+      color: #919aa3; }
+    .login-card .form-control:-ms-input-placeholder {
+      color: #919aa3; }
+    .login-card .form-control::-ms-input-placeholder {
+      color: #919aa3; }
+    .login-card .form-control::placeholder {
+      color: #919aa3; }
   .login-card .login-btn {
     padding: 13px 20px 12px;
     background-color: #000;

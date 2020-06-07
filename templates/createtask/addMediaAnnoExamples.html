@@ -1,0 +1,43 @@
+{% extends "createtask/base.html" %}
+{% block container %}
+<h2>   Add Some example annotations by yourself</h2>
+<form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row spacer">
+            <div class="col-2">
+                <label for="exampleFormControlFile1">Example Annotation Media Files</label>
+            </div>
+            <div class="col-4">
+                <input type="file" id="file_input" name="file_field" webkitdirectory directory/>
+            </div>
+    </div>
+
+    <div class="row spacer">
+        <div class="col-8">
+        <input type="checkbox" id="checktest" name="checktest" value="checked">
+        <label for="checktest"> Make these example annotations a test and automaticly approve annotators with</label>
+        <select  class="" id="exampleFormControlSelect1">
+            <option>90%</option>
+            <option>80%</option>
+            <option>75%</option>
+            <option>70%</option>
+            <option>60%</option>
+            <option>50%</option>
+        </select>
+        accuaracy
+        </div>
+
+    </div> 
+
+    <div class="row spacer">
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Next</button>
+        </div>
+        {% comment %} <div class="col-4">
+            <button type="submit" class="btn btn-primary">Skip This Step</button>
+        </div> {% endcomment %}
+    </div>
+
+
+{% endblock container %}

@@ -1,46 +1,75 @@
 {% extends 'layout.html' %}
 {% load static %}
-{% block body %}
+{% load auth_extras %}
+
 <!link rel="stylesheet" href="{% static 'assets/css/circle/search.css' %}">
 {% block style %}
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    .card {
-        width: 50%;
-        height:50%;
-        border: 2px;
-    }
-    .container{
-       justify-items: center;
-    }
-</style>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}">
 {% endblock %}
+
+{% block body %}
   <form method="get">
     {{ filter.form.as_p }}
     <button type="submit">Search</button>
   </form>
 
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">OUR TEAM</h5>
+        <div class="row">
+            {% if filter.qs %}
+            {% for user in filter.qs %}
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" >
+                    <div class="mainflip flip-0">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img class=" img-fluid" src="{{user.avatar.url}}" alt="card image"></p>
+                                    <h4 class="card-title">{{user.first_name}} {{user.last_name}}</h4>
+                                    {% if user.is_author %}
+                                    <p class="card-text">Author in {{user.field}} field</p>
+                                    {% endif %}
+                                    {% if user.is_contributor %}
+                                    <p class="card-text">Contributor in {{user.field}} field</p>
+                                    {% endif %}
+                                    <a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center mt-4">
+                                    <h4 class="card-title">{{user.first_name}} {{user.last_name}}</h4>
+                                    <p class="card-text">{{user.bio}}</p>
+                                    <p class="card-text"><i class="fa fa-envelope" style="padding-right: 5px;"></i>{{user.email}}</p>
+                                    {% if request.user.is_authenticated %}
+                                    <a href="{% url 'UserManagement:view_profile' user.id %}" ><i class="fa fa-eye"></i></a>
+                                    {% endif %}
+                                    {% if request.user.is_authenticated and request.user|has_group:"admin" %}
+                                    <a href="{% url 'UserManagement:delete_profile' user.id %}" ><i class="fa fa-trash" style="color: red;"></i></a>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- ./Team member -->
 
-  {% if filter.qs %}
-<div class = "container">
-    <h2>Search Results</h2>
-    {% for user in filter.qs %}
-
-    <div class="item">
-    <img src="{{user.profile.avatar.url}}" alt="John" style="width:10%">
-        <h3>{{user.first_name}} {{user.last_name}}</h3>
-        {% if user.is_author %}
-          <p class="title">Author in {{user.field}} field</p>
-        {% elif user.is_contributor %}
-          <p class="title">Contributor in {{user.field}} field</p>
-        {% endif %}
-    <p><button>View profile</button></p>
-    </div>
-
-    {% endfor %}
         </div>
+    </div>
     {% else %}
-        <p>Sorry, No matches found!</p>
-  {% endif %}
+        <p>Sorry, No matches found</p>
+    {% endif %}
+</section>
 
 {% endblock %}

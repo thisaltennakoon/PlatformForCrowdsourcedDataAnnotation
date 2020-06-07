@@ -4,7 +4,7 @@ from . import models
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from .models import Profile #Rating
+from .models import Profile, ContributorTask
 
 
 class ProfileForm(forms.ModelForm):
@@ -28,7 +28,7 @@ class ProfileForm(forms.ModelForm):
         ('Psychology', 'Psychology'),
         ('Art and Culture', 'Art and Culture')
     ]
-    avatar = forms.ImageField(label='avatar', widget=forms.FileInput(attrs={'class':''}))
+    avatar = forms.ImageField(label='avatar', required=False, widget=forms.FileInput(attrs={'class':''}))
     first_name = forms.CharField(label='first_name',widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
     last_name = forms.CharField(label='last_name', required=False, widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control'}))
     email = forms.EmailField(label='email', widget=forms.EmailInput(attrs={'placeholder': 'email', 'class':'form-control'}))
@@ -63,6 +63,11 @@ class PWChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label='username',widget=forms.TextInput(attrs={'placeholder': 'current password', 'class': 'form-control'}))
     new_password1 = forms.CharField(label='password',widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
     new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
+
+class TaskRegForm(forms.ModelForm):
+    class Meta:
+        model = ContributorTask
+        fields = ['User', 'Task']
 
 """class RateForm (forms.ModelForm):
     class Meta:
