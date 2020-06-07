@@ -42,8 +42,14 @@ CateogaryFormSet = modelformset_factory(
 class CreateTaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('title', 'description', 'instructions',)
-        labels = {'title': 'Title', 'description': 'Description', 'instructions': 'Instructions'}
+        fields = ('title', 'description', 'instructions', 'field')
+        labels = {'title': 'Title', 'description': 'Description', 'instructions': 'Instructions', 'field':'Field'}
+        field_choices = [
+        ('Engineering', 'Engineering'),
+        ('Medicine', 'Medicine'),
+        ('Psychology', 'Psychology'),
+        ('Art and Culture', 'Art and Culture')
+        ]
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -63,7 +69,11 @@ class CreateTaskForm(forms.ModelForm):
                 'style': 'height: 100px',
                 # 'placeholder': 'Enter Book Name here'
             }
-            )
+            ),
+            'field': forms.Select(attrs = {
+                'class': 'form-control',
+                'style': 'height: 100px',
+            })
         }
 
 

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'ImageDataAnalyse',
     'TextDataAnalyse',
     'testresultrank',
+    'django_filters',  #search filter in user management
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#Janani's database
+#Janani's sqlite database
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -93,6 +94,17 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
     }
 }"""
 
+#Janani's mysql database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sep',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306'
+    }
+}
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -106,7 +118,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -115,7 +127,7 @@ DATABASES = {
         'HOST': '',
         'PORT': ''
     }
-}
+}"""
 
 #MySQL event for release data instances
 """
@@ -233,3 +245,23 @@ STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Janani's parts
+#MEDIA_URL = '/images/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
+DJANGORESIZED_DEFAULT_QUALITY = 75
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
+
+#   SMTP configuration
+
+EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = 'False'
+EMAIL_HOST_USER = 'cdapmanager@gmail.com'
+EMAIL_HOST_PASSWORD = 'cdap@admin'

@@ -3,10 +3,12 @@ from django.views import generic
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
+
 from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
+
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -44,7 +46,7 @@ def createTask(request):
         formset = CateogaryFormSet(request.POST)
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(name='kasun')
             task.taskType = "ImageAnno"
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
@@ -203,7 +205,7 @@ def createTextTask(request):
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(name='kasun')
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
@@ -447,7 +449,7 @@ def createGenerationTask(request):
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(name='kasun')
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
             if dataType == 'T':

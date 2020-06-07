@@ -2,22 +2,24 @@ from django.db import models
 from django.urls import reverse
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.contrib.auth.models import User
 #from zipfile import ZipFile
 
 
-class UserNew2(models.Model):
+"""class UserNew2(models.Model):
     name = models.CharField(max_length=250)
-    email = models.CharField(max_length=64)
+    email = models.CharField(max_length=64)"""
 
 
 # IMAGE ANNOTATION AND 'DATA GENARATION'
 
 class Task(models.Model):
-    creatorID = models.ForeignKey(UserNew2, on_delete=models.CASCADE)
+    creatorID = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
     status = models.CharField(max_length=60, default='new')  # new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
+    field = models.CharField(max_length=30, default='')
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
     requiredNumofAnnotations = models.IntegerField(default=1)
 
@@ -167,7 +169,7 @@ class AnnotationTest(models.Model):
 
 class TestResult(models.Model):
     testID = models.ForeignKey(AnnotationTest, on_delete=models.CASCADE)
-    annotatorID = models.ForeignKey(UserNew2, on_delete=models.CASCADE)  # user janani's user table
+    annotatorID = models.ForeignKey(User, on_delete=models.CASCADE)  # user janani's user table
     score = models.DecimalField(max_digits=5, decimal_places=2)  # score out of 100
 
 
@@ -194,7 +196,7 @@ class ExampleTextAnnoResult(models.Model):
 
 
 class TextAnnoAnswers(models.Model):
-    userID = models.ForeignKey(UserNew2, on_delete=models.CASCADE)
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
     textInstance = models.ForeignKey(ExampleTextDataInstance, on_delete=models.CASCADE)
     answerCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
 
@@ -215,6 +217,6 @@ class ExampleMediaAnnoResult(models.Model):
 
 
 class MediaAnnoAnswers(models.Model):
-    userID = models.ForeignKey(UserNew2, on_delete=models.CASCADE)
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
     mediaInstance = models.ForeignKey(ExampleMediaDataInstance, on_delete=models.CASCADE)
     answerCateogary = models.ForeignKey(Cateogary, on_delete=models.CASCADE)
