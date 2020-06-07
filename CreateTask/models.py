@@ -16,7 +16,7 @@ class Task(models.Model):
     creatorID = models.ForeignKey(UserNew2, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
-    status = models.CharField(max_length=60, default='new')  # new,#inprogress,#completed
+    status = models.CharField(max_length=60, default='inprogress')  # new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
     requiredNumofAnnotations = models.IntegerField(default=1)
@@ -137,20 +137,6 @@ class McqOption(models.Model):
 #     example = models.ImageField()
 
 
-# TEXT DATA ANNOTATION
-
-# class TextTask(models.Model):
-#     creatorID = models.ForeignKey(UserNew2,on_delete=models.CASCADE)
-#     title = models.CharField(max_length=250)
-#     description = models.CharField(max_length=1000)
-#     status = models.CharField(max_length=60, default='new')    #new,#inprogress,#completed
-#     instructions = models.CharField(max_length=1000)
-#     #csvFile = models.FileField(upload_to=directory_path)
-
-
-# class TextCateogary(models.Model):
-#     taskID = models.ForeignKey(Task, on_delete=models.CASCADE)
-#     cateogaryName = models.CharField(max_length= 250)
 
 
 # TEXT AND MEDIA DATA EXAMPLE AND TEST
