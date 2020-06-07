@@ -19,6 +19,7 @@
                 </tr>
                 {% if all_field_tasks %}
                 {% for i in all_field_tasks %}
+                   {% if i.id not in registeredTaskID %}
                     <tr>
                         <td>{{i.title}}</td>
                         <td>{{i.description}}</td>
@@ -26,6 +27,7 @@
                         <td>{{i.taskType}}</button></td>
                         <td><button type="submit"><a href="{% url 'UserManagement:reg_task' i.id %}">Register</a></button></td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 {% else %}
                 <p>Sorry, you don't have new tasks to contribute !</p>
