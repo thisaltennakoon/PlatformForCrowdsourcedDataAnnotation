@@ -4,11 +4,11 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 
-from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
+from .models import  Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
-
+from UserManagement.models import User
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -41,9 +41,14 @@ def createTask(request):
     elif request.method == 'POST':
         taskform = CreateTaskForm(request.POST)
         formset = CateogaryFormSet(request.POST)
+        print(taskform.is_valid() )
+        print(taskform.errors)
+        print(formset.is_valid() )
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            print(request.user)
+            print(request.session['user_id'])
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             task.taskType = "ImageAnno"
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
@@ -203,7 +208,7 @@ def createTextTask(request):
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
@@ -525,8 +530,6 @@ def QuestionaireView(request, task_id):
         return render(request, 'createtask/viewQuestions.html', context)
 
 
-<<<<<<< HEAD
-=======
 def createGenerationTask(request):
     template_name = 'createtask/genarationtask_form.html'
     if request.method == 'GET':
@@ -542,7 +545,7 @@ def createGenerationTask(request):
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(name='kasun')
+            task.creatorID = User.objects.get(pk=request.session['user_id'])
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
             if dataType == 'T':
@@ -586,7 +589,6 @@ def AddGenExample(request):
 
 #TEXTGENERATION
 
->>>>>>> c2a47e411fe12b96374403e53dbadfba955b848b
 def createTextGenerationTask(request):
     template_name = 'createtask/genarationTexttask_form.html'
     if request.method == 'GET':
