@@ -7,7 +7,7 @@
         <div class="col-md">
             <h4>Tasks</h4>
         </div>
-        {% if all_field_tasks %}
+        {% if all_field_tasks_unregistered %}
         <div class="card card-body">
             <table class="table table-bordered">
                 <tr>
@@ -17,19 +17,18 @@
                     <th>Data type</th>
                     <th>Register</th>
                 </tr>
-                {% if all_field_tasks %}
-                {% for i in all_field_tasks %}
-                    <tr>
-                        <td>{{i.title}}</td>
-                        <td>{{i.description}}</td>
-                        <td>{{i.field}}</td>
-                        <td>{{i.taskType}}</button></td>
-                        <td><button type="submit"><a href="{% url 'UserManagement:reg_task' i.id %}">Register</a></button></td>
-                    </tr>
-                {% endfor %}
+                
+                    {% for i in all_field_tasks_unregistered %}
+                        <tr>
+                            <td>{{i.title}}</td>
+                            <td>{{i.description}}</td>
+                            <td>{{i.field}}</td>
+                            <td>{{i.taskType}}</button></td>
+                            <td><button type="submit"><a href="{% url 'UserManagement:reg_task' i.id %}">Register</a></button></td>
+                        </tr>
+                    {% endfor %}
                 {% else %}
                 <p>Sorry, you don't have new tasks to contribute !</p>
-                {% endif %}
             </table>
         </div>
         {% endif %}
