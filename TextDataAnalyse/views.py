@@ -1,18 +1,18 @@
 from django.contrib.auth import get_user_model
 from nltk import agreement
 from django.shortcuts import render
-from .models import DataClass, AnnotationDataSet, AnnotationDataSetresult, Task
+from DoTextDataAnnotationTask.models import DataAnnotationResult as AnnotationDataSetresult
+from CreateTask.models import Task, TextDataInstance as AnnotationDataSet,Cateogary as DataClass
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponse, Http404
 import random
 import json
+from django.contrib.auth.decorators import login_required
+#def first(request):
+ #   user = Task.objects.get(id=1)
+  #  return render(request, "analyse/viewtask.html", {'user': user})
 
-
-def first(request):
-    user = Task.objects.get(id=1)
-    return render(request, "analyse/viewtask.html", {'user': user})
-
-
+@login_required(login_url='UserManagement:sign_in')
 def textanalyse(request):
     try:
         TaskID = request.GET['Task_ID']
@@ -21,18 +21,18 @@ def textanalyse(request):
         t = Task.objects.all()
         for t1 in t:
             if t1.id == int(TaskID):
-                noOfannotationneed = t1.DataInstanceAnnotationTimes
+                noOfannotationneed = t1.requiredNumofAnnotations
         d1 = DataClass.objects.all()
         a1 = AnnotationDataSet.objects.all()
         ar = AnnotationDataSetresult.objects.all()
         noOdata = 0
         datainstance = []
         for j in d1:
-            if j.TaskID_id == int(TaskID):
-                lables.append(j.ClassName)
-                classid.append(j.ClassID)
+            if j.taskID_id == int(TaskID):
+                lables.append(j.cateogaryName)
+                classid.append(j.cateogaryTag)
         for k in a1:
-            if k.TaskID_id == int(TaskID):
+            if k.taskID_id == int(TaskID):
                 noOdata += 1
                 datainstance.append(k.id)
         result1 = []
@@ -42,7 +42,7 @@ def textanalyse(request):
         task = []
         for l in datainstance:
             for lm in ar:
-                if l == lm.Datainstance_id:
+                if l == lm.DataInstance_id:
                     task.append([lm.UserID, str(l), str(lm.ClassID)])
                     result1.append(lm.ClassID)
                     annotator.append(lm.UserID)
@@ -73,21 +73,21 @@ def textanalyse(request):
         try:
             r.append(str("%.4f" % round(ratingtask.kappa(), 4)))
 
-        except ZeroDivisionError:
-            r.append("Not Start to Annotate")
+        except:
+            r.append("Can't calculate just now with this result.")
         try:
             r.append(str("%.4f" % round(ratingtask.multi_kappa(), 4)))
-        except ZeroDivisionError:
-            r.append("Not Start to Annotate")
+        except:
+            r.append("Can't calculate just now with this result.")
         try:
             r.append(str("%.4f" % round(ratingtask.alpha(), 4)))
-        except ValueError:
-            r.append("Not Start to Annotate")
+        except:
+            r.append("Can't calculate just now with this result.")
         try:
             r.append(str("%.4f" % round(ratingtask.pi(), 4)))
-        except ZeroDivisionError:
-            r.append("Not Start to Annotate")
-        data = {'labels': lables, 'data': m, 'r': noOdata, 'k': r[0], 'f': r[1], 'a': r[2], 's': r[3],
+        except:
+            r.append("Can't calculate just now with this result.")
+        data = {'labels': lables, 'data': m, 'r': noOdata, 'k': r[0], 'f': r[1], 'a': r[2], 's':r[3],
                 'process': process}
         return render(request, 'analyse/textdataanalyse.html', data)
     except:
