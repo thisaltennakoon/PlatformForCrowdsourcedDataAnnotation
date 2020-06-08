@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
 
-from .models import Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
+from .models import UserNew2, Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
@@ -29,9 +29,6 @@ def doTest(request,task_id):
         elif task.taskType == 'ImageAnno':
             return redirect('createtask:ImageAnno_Test',task_id=task_id)
 
-def test(request, task):
-    print(task)
-    return render(request, 'createtask/success.html')
 
 
 def createTask(request):
@@ -46,12 +43,13 @@ def createTask(request):
         formset = CateogaryFormSet(request.POST)
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(pk=request.session['user_id'])
+            task.creatorID = User.objects.get(name='kasun')
             task.taskType = "ImageAnno"
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
             task.requiredNumofAnnotations = numAnnos
             task.save()
+            task_id = task.id
             request.session['task'] = task.id
             tag = 0
             for form in formset:
@@ -65,7 +63,7 @@ def createTask(request):
             files = request.FILES.getlist('file_field')
             print(files)
             processImages(files, task)
-            return redirect('createtask:MediaAnno_example_add')
+            return redirect('createtask:MediaAnno_example_add',task_id=task_id)
 
     return render(request, template_name, {
         'taskform': taskform,
@@ -84,9 +82,9 @@ def processImages(files, task):
     MediaDataInstance.objects.bulk_create(images)
 
 
-def AddMediaAnnoExamples(request):
+def AddMediaAnnoExamples(request,task_id):
     template_name = 'createtask/addMediaAnnoExamples.html'
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
 
     if request.method == 'GET':
         return render(request, template_name)
@@ -110,14 +108,14 @@ def AddMediaAnnoExamples(request):
             else:
                 pass
         ExampleMediaDataInstance.objects.bulk_create(images)
-        return redirect('createtask:MediaAnno_example_do')
+        return redirect('createtask:MediaAnno_example_do',task_id=task_id)
 
-def doMediaAnnoExamples(request):       #by task author
+def doMediaAnnoExamples(request,task_id):       #by task author
     template_name = 'createtask/doMediaAnnoExamples.html'
 
     dic ={}
     test = AnnotationTest.objects.get(id=request.session['test'])
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
     for cateogary in cateogary_list:
@@ -205,11 +203,12 @@ def createTextTask(request):
         csvform = CsvForm(request.POST, request.FILES)
         if taskform.is_valid() and formset.is_valid() and csvform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(pk=request.session['user_id'])
+            task.creatorID = User.objects.get(name='kasun')
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
             task.save()
+            task_id = task.id
             newFileModel.taskID = task
             newFileModel.csvFile = csvFile
             newFileModel.save()
@@ -229,7 +228,7 @@ def createTextTask(request):
                 cateogary.save()
                 tag += 1
             # return render(request, 'createtask/success.html')
-            return redirect('createtask:TextAnno_example_add')
+            return redirect('createtask:TextAnno_example_add',task_id=task_id)
 
     return render(request, template_name, {
         'taskform': taskform,
@@ -270,10 +269,10 @@ def ProcessCsv(filename, task):
     return words
 
 
-def AddTextAnnoExamples(request):
+def AddTextAnnoExamples(request,task_id):
     template_name = 'createtask/addTextAnnoExamples.html'
     csvform = CsvForm()
-    task = Task.objects.get(id=request.session['task'])
+    task = Task.objects.get(id=task_id)
     words = request.session['words']
     cateogary_list = task.cateogary_set.all()
     if request.method == 'GET':
@@ -305,6 +304,7 @@ def AddTextAnnoExamples(request):
         test.save()
         processExampleCsvFile(filename,task,words,test,dic)
         return render(request, 'createtask/success.html')
+
 
 def processExampleCsvFile(filename,task,words,test,dic):
     error = []
@@ -344,7 +344,6 @@ def processExampleCsvFile(filename,task,words,test,dic):
                     resultCateogary = dic[result]
                 except KeyError:
                     error.append('Cateogary tag error')
-                    print(error)
                 resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
                 exampleAnnotationresult.append(resultobject)
 
@@ -354,6 +353,98 @@ def processExampleCsvFile(filename,task,words,test,dic):
         print (error)
 
 
+
+
+def DoTextAnnotationTest(request,task_id):   #how to get the task
+    task = Task.objects.get(pk=task_id)
+    test = AnnotationTest.objects.get(taskID=task)  # try required
+    user_done_this = False
+    user= UserNew2.objects.get(name='kasun')    
+    #user_done_this = check_test_done(user,test)     #user can answer only one time
+    instance_list = test.exampletextdatainstance_set.all()
+    cateogary_list = task.cateogary_set.all()
+    dic={}
+    for cateogary in cateogary_list:
+        tag = str(cateogary.cateogaryTag)         #handle errors
+        dic.update({tag:cateogary})
+    
+
+    #print(dic)
+    if request.method == 'GET':
+        if user_done_this == False:
+            for instance in instance_list:
+                subdata = instance.exampletextdata_set.all()
+                instance.subdata = subdata
+
+            context = {'instance_list': instance_list,'cateogary_list':cateogary_list,'task':task }
+            return render(request, 'createtask/testAnnoTest.html', context)
+        else:
+           return render(request, 'createtask/Uhavedonethis.html') 
+
+    if request.method == 'POST':
+        if user_done_this == False:
+            score = 0
+            result_object = TestResult()
+            result_object.testID = test     #correct this
+            result_object.annotatorID = user
+            result_object.score = 0
+            for instance in instance_list:
+                name = str(instance.id)
+                tag = request.POST[name]
+                resultCateogary = dic[tag]
+                awnswer_obj = TextAnnoAnswers()
+                awnswer_obj.userID = user
+                awnswer_obj.textInstance = instance
+                awnswer_obj.answerCateogary = resultCateogary
+                awnswer_obj.save()
+
+                realanswer_obj= ExampleTextAnnoResult.objects.get(ExampleTextDataInstanceID=instance)   #handle errors
+                realanswer = realanswer_obj.resultCateogary
+                if resultCateogary == realanswer:
+                    score +=1
+                
+            score_prentage = score/len(instance_list)
+            round(score_prentage,2)
+            result_object.score = score_prentage
+            result_object.save()
+            print(score_prentage)
+        else:
+            return render(request, 'createtask/Uhavedonethis.html') 
+
+
+def check_test_done(user,test):
+    isDone = False
+    try:
+        pastTest = TestResultobjects.get(annotatorID=user,testID=test)
+    except TestResult.DoesNotExist:
+        isDone = False
+    else:
+        isDone = True
+    return isDone
+
+
+def check_is_test(task):
+    isTestExist = False
+    try:
+        test = AnnotationTest.objects.get(taskID=task) 
+    except AnnotationTest.DoesNotExist:
+        isTestExist = False
+    else:
+        isTestExist = True
+    return isTestExist
+
+def check_is_taskauthor(user,task):
+    isTaskAuthor = False
+    user = UserNew2.objects.get(name='kasun') 
+    task = Task.objects.get(pk=task)
+    if task.creatorID == user.id:
+        isTaskAuthor = True
+    else:
+        isTaskAuthor = False
+    return isTaskAuthor
+
+
+########################################################################
 
 def AddQuestions(request):
     template_name = 'createtask/addQuestions.html'
@@ -434,6 +525,8 @@ def QuestionaireView(request, task_id):
         return render(request, 'createtask/viewQuestions.html', context)
 
 
+<<<<<<< HEAD
+=======
 def createGenerationTask(request):
     template_name = 'createtask/genarationtask_form.html'
     if request.method == 'GET':
@@ -449,7 +542,7 @@ def createGenerationTask(request):
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(pk=request.session['user_id'])
+            task.creatorID = User.objects.get(name='kasun')
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
             if dataType == 'T':
@@ -493,6 +586,7 @@ def AddGenExample(request):
 
 #TEXTGENERATION
 
+>>>>>>> c2a47e411fe12b96374403e53dbadfba955b848b
 def createTextGenerationTask(request):
     template_name = 'createtask/genarationTexttask_form.html'
     if request.method == 'GET':
@@ -548,70 +642,59 @@ def processCsvGen(filename,task):
         DataGenTextInstance.objects.bulk_create(instancelist)
 
 
-
-def DoTextAnnotationTest(request,task_id):   #how to get the task
-    task = Task.objects.get(pk=task_id)
-    test = AnnotationTest.objects.get(taskID=task)  # try required
-    user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
-    #user_done_this = check_test_done(user,test)     #user can answer only one time
-    instance_list = test.exampletextdatainstance_set.all()
-    cateogary_list = task.cateogary_set.all()
-    dic={}
-    for cateogary in cateogary_list:
-        tag = str(cateogary.cateogaryTag)         #handle errors
-        dic.update({tag:cateogary})
-    
-
-    #print(dic)
+def createGenerationTask(request):
+    template_name = 'createtask/genarationtask_form.html'
     if request.method == 'GET':
-        if user_done_this == False:
-            for instance in instance_list:
-                subdata = instance.exampletextdata_set.all()
-                instance.subdata = subdata
+        customform = CustomForm1()
+        taskform = CreateTaskForm(request.GET or None)
+        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
 
-            context = {'instance_list': instance_list,'cateogary_list':cateogary_list,'task':task }
-            return render(request, 'createtask/testAnnoTest.html', context)
-        else:
-           return render(request, 'createtask/Uhavedonethis.html') 
+        # print(taskform.name.label)
+
+    elif request.method == 'POST':
+        taskform = CreateTaskForm(request.POST)
+        formset = CateogaryFormSet(request.POST)
+        customform = CustomForm1(request.POST)
+        if taskform.is_valid() and formset.is_valid() and customform.is_valid():
+            task = taskform.save(commit=False)
+            task.creatorID = UserNew2.objects.get(name='kasun')
+            rough = customform.cleaned_data
+            dataType = rough.get('dataType')
+            if dataType == 'T':
+                task.taskType = "TextGen"
+            elif dataType == 'I':
+                task.taskType = "ImageGen"
+            task.save()
+            request.session['task'] = task.id  # task id session created
+            tag = 0
+            for form in formset:
+                # so that `book` instance can be attached.
+                generationClass = form.save(commit=False)
+                generationClass.taskID = task
+                generationClass.cateogaryTag = tag
+                generationClass.save()
+                tag += 1
+            # return render(request, 'createtask/success.html')
+            return redirect('createtask:Gen_example_add')
+
+    return render(request, template_name, {
+        'taskform': taskform,
+        'formset': formset,
+        'customform': customform,
+    })
+
+
+def AddGenExample(request):
+    task = Task.objects.get(id=request.session['task'])
+    # questionaire = Questionaire.objects.get(taskID=task) #try required
+    class_list = task.cateogary_set.all()
+
+    if request.method == 'GET':
+        context = {'class_list': class_list}
+        return render(request, 'createtask/addGenExamples.html', context)
 
     if request.method == 'POST':
-        if user_done_this == False:
-            score = 0
-            result_object = TestResult()
-            result_object.testID = test     #correct this
-            result_object.annotatorID = user
-            result_object.score = 0
-            for instance in instance_list:
-                name = str(instance.id)
-                tag = request.POST[name]
-                resultCateogary = dic[tag]
-                awnswer_obj = TextAnnoAnswers()
-                awnswer_obj.userID = user
-                awnswer_obj.textInstance = instance
-                awnswer_obj.answerCateogary = resultCateogary
-                awnswer_obj.save()
-
-                realanswer_obj= ExampleTextAnnoResult.objects.get(ExampleTextDataInstanceID=instance)   #handle errors
-                realanswer = realanswer_obj.resultCateogary
-                if resultCateogary == realanswer:
-                    score +=1
-                
-            score_prentage = score/len(instance_list)
-            round(score_prentage,2)
-            result_object.score = score_prentage
-            result_object.save()
-            print(score_prentage)
-        else:
-            return render(request, 'createtask/Uhavedonethis.html') 
-
-
-def check_test_done(user,test):
-    isDone = False
-    try:
-        pastTest = TestResult(annotatorID=user,testID=test)
-    except TestResult.DoesNotExist:
-        isDone = False
-    else:
-        isDone = True
-    return isDone
+        # for i in range(len(class_list)):
+        #     input1 = request.POST['class'+i]
+        #     exampleEntry =
+        return render(request, 'createtask/success.html')
