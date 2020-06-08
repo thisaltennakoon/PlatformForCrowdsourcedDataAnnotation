@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'TextDataAnalyse',
     'testresultrank',
     'django_filters',  #search filter in user management
-    'django_pyc',
+    #'django_pyc',
 ]
 
 MIDDLEWARE = [
@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Janani's mysql database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sepnew',
@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
         'HOST': '',
         'PORT': ''
     }
-}"""
+}
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -119,7 +119,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform1',
@@ -128,7 +128,7 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}
+}"""
 
 #MySQL event for release data instances
 """
