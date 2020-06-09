@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from .models import Task,Cateogary,DescrptiveQuestion,Questionaire,McqOption,TextFile,TextDataInstance,TextData,MediaDataInstance,DataGenTextInstance, \
-    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
+    ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers,TestResult
 
 
 # Register your models here.
@@ -27,4 +27,3 @@ admin.site.register(AnnotationTest)
 admin.site.register(MediaAnnoAnswers)
 admin.site.register(ExampleMediaAnnoResult)
 admin.site.register(ExampleMediaDataInstance)
-

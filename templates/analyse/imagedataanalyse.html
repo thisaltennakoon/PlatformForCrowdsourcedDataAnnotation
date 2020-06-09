@@ -11,147 +11,192 @@
 </head>
 <style>
     
- body{
-  border:5px solid  #28a745!important;
- }   
-    
-    
-    #popup-1 {
+   
+  body{
+    border:5px solid  #343a40;
+   }   
+      
+      
+      #popup-1 {
+          display: none;
+          background-color: rgba(0,0,0,0.5);
+          position: absolute;
+      
+      }
+      #popup-2 {
         display: none;
         background-color: rgba(0,0,0,0.5);
         position: absolute;
-    
-    }
-    #popup-2 {
+      }
+      #popup-3 {
       display: none;
       background-color: rgba(0,0,0,0.5);
       position: absolute;
     }
-    #popup-3 {
+    #popup-4 {
     display: none;
     background-color: rgba(0,0,0,0.5);
     position: absolute;
-  }
-  #popup-4 {
-  display: none;
-  background-color: rgba(0,0,0,0.5);
-  position: absolute;
-  
-  }
     
-    .popup-content {
-        position: relative;
-        padding: 20px;
-        margin: 0 auto;
-        background-color: rgb(152, 226, 216);
-        width: 700px;
-        top: 0vh;
-        border:4px solid  #28a745!important;
-        border-radius: 8px;
     }
-    button{
-      border:2px ;
-    }
-    button:active{
-      background-color:darkseagreen;
-    }
-.row{
-  padding-left: 175px; 
-  padding-top:5px;
-}
-.card{
-  border:2px solid #28a745!important;
-}
-.card-header{
-  background-color: #28a745!important; 
-  color: #fff!important; 
-  font-size:20;
-
-}
-.card-body{
-  background-color: rgb(160, 207, 160);
-}
-#container{
-  width:525px; 
-  padding-left:200; 
-  padding-top:20px;
-}
-#textanalyse{
-  border:2px solid  #28a745!important;
-}
-.card1{
-  height:10px;
-}
-.card text-white bg-success mb-4{
-  max-width: 45rem;
-}
-#body{
-  height:580px;
-}
-#inner-body{
-  background-color: white;
-  border:2px solid  #28a745!important;
-  padding-top:10px;
-  border-radius: 5px;
+      
+      .popup-content {
+          position: relative;
+          padding: 20px;
+          margin: 0 auto;
+          background-color: rgb(152, 226, 216);
+          width: 700px;
+          top: 0vh;
+          border:4px solid  #343a40;
+          border-radius: 8px;
+      }
+      button{
+        border:2px ;
+      }
+      button:active{
+        background-color:darkseagreen;
+      }
+  .row{
+    padding-left: 175px; 
+    padding-top:5px;
+  }
+  .card{
+    border:2px solid #343a40;
+  }
+  .card-header{
+    background-color: #343a40;; 
+    color: #fff; 
+    font-size:20;
   
-}
-.card2{
-  width: 22rem;
-}
-.card-title{
-  color: black;
-  cursor: pointer;
-  pointer-events: visible;
+  }
+  .card-body{
+    background-color: #6f746f;
+  }
+  #container{
+    width:525px; 
+    padding-left:200; 
+    padding-top:20px;
+  }
+  #textanalyse{
+    border:2px solid  #343a40;;
+  }
+  .card1{
+    height:10px;
+  }
+  .card text-white bg-success mb-4{
+    max-width: 45rem;
+  }
+  #body{
+    height:580px;
+  }
+  #inner-body{
+    background-color: white;
+    border:#343a40;;
+    padding-top:10px;
+    border-radius: 5px;
+    
+  }
+  .card2{
+    width: 22rem;
+  }
+  .card-title{
+    color: black;
+    cursor: pointer;
+    pointer-events: visible;
+    
+  }
+  .card-title:active{
+    color: rgb(82, 82, 170);
+  }
+  .card-text{
+    color: black;
   
-}
-.card-title:active{
-  color: rgb(82, 82, 170);
-}
-.card-text{
-  color: black;
-
-}
-#int{
-  height:125px; padding-top:50px;
-  padding-bottom: 20px;
-}
-.text{
-  text-align:center; 
-  font-weight:bold;
-}
-#last{
-  padding-top:10px;
-}
-.navbar {
-  background-color:#28a745!important; height:50px; padding-top:0px;
-}
-.navbar-brand{
-  color: white!important; line-height:40px; padding-left: 50px; padding-top:0px; font-size:25px;
-}
-.form-inline{
-  padding-top:7px;
-}
-.btn{
-  background-color: white!important; 
-}
-.btn:active{color:#28a745!important;
-}
+  }
+  #int{
+    height:125px; padding-top:50px;
+    padding-bottom: 20px;
+  }
+  .text{
+    text-align:center; 
+    font-weight:bold;
+  }
+  #last{
+    padding-top:10px;
+  }
+  .form-inline{
+    padding-top:7px;
+  }
+  .btn{
+    background-color: white; 
+  }
+  .btn:active{color:#343a40;;
+  }
+  .bg-success1{
+    background-color: #343835 !important;
+  
+  }
 </style>
 <body >
-  <nav class="navbar navbar-light bg-light justify-content-between " >
-    <a class="navbar-brand" >CDAP</a>
-    <form class="form-inline">
-      <a href="###" class="btn btn-outline-success mr-sm-2"  > View My Task </a>
-      <a href="###" class="btn btn-outline-success my-2 my-sm-0" >SignOut</a>
-    </form>
-  </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">CDAP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/search/">Search</a>
+        </li>
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/profile/">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/profile/edit/">Edit Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/profile/change_password/">Change Password</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/MyTasks/">My Tasks</a>
+        </li>
+        <li class="nav_item">
+
+        </li>
+        <!---li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              Settings
+        </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/UserManagement/profile/edit/">Edit Profile</a>
+              <a class="dropdown-item" href="/UserManagement/profile/change_password/">Change Password</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li-->
+        
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/UserManagement/sign_out/">Sign Out</a>
+        </li>
+        
+        </ul>
+</div>
+</nav>
     <div class="row" >
         <div class="col-sm-7">
           <div class="card" >
             <div class="card-header" >Annotation Analysis Pie Chart for {{r}} number of details</div>
-            <div class="card-body" >
-                <div id="container">
-                  <canvas id="textanalyse" width="100%" height="100%" ></canvas>
+            <div class="card-body"  >
+                <div id="container" >
+                  <canvas id="textanalyse" width="100%" height="100%" style='background-color:#fff;'></canvas>
                 </div>
             </div>
           </div>
@@ -204,7 +249,7 @@
               <div class="card-header" >Process Progress for Annotation Task</div>
               <div class="card-body" id="int">
                 <div class="progress" >
-                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{process}}%;  " aria-valuenow="{{process}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar progress-bar-striped bg-success1" role="progressbar" style="width: {{process}}%;  " aria-valuenow="{{process}}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div> 
                 <br>
                 <p class ="text">Task Done Now :{{process}}%  </p>
@@ -219,7 +264,7 @@
       datasets: [{
         data: {{ data|safe }},
         backgroundColor: [
-        '#28a745', '#56c570','#8be09f'
+        '#343a40', '#C3BFBF','AD9E9E',
         ],
         label: 'Analysis'
       }],
