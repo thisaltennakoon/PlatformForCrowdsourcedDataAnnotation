@@ -140,8 +140,8 @@ def task(request):
                     else:
                         remaining_data_instances = MediaDataInstance.objects.filter(taskID_id=task_id,NumberOfAnnotations__lt=data_instance_annotation_times)
                         if len(remaining_data_instances)==0:
-                            completed_task = Task.objects.get(id=task_id, status='inprogress')
-                            if len(completed_task)!=0:
+                            completed_task = Task.objects.get(id=task_id)
+                            if completed_task.status=='inprogress':
                                 completed_task.status = 'completed'
                                 completed_task.save()
                         if len(annotated_data_instances) > 0:
