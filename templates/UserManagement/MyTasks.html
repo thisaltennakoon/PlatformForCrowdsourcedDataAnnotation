@@ -1,97 +1,240 @@
-<!DOCTYPE html>
-<html lang="en-us" >
-<head>
-    <title>My Tasks</title>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
-    <meta name="robots" content="NONE,NOARCHIVE">
-</head>
-<body class=" dashboard" data-admin-utc-offset="0">
-<!-- Container -->
-<div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Annotation task{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/png" href="favicon.png">
+  <style>
+  body {
+ background-image: url("{% static 'mg/photo-of-white-wall-1484759.jpg' %}");
+ background-color: #cccccc;
+}
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+{% endblock %}
+{% block body %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">My Tasks</li>
+  </ol>
+</nav>
+{% if user_text_data_annotation_tasks|length > 0 %}
+<div class="card">
+    <div class="card-header">Text Data Annotation Tasks</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 15%">Title</th>
+                <th style="width: 75%">Description</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for text_data_annotation_task in user_text_data_annotation_tasks %}
+            <tr>
+                {% if text_data_annotation_task.status == "completed" %}
+                <td><a href="/DoTextDataAnnotationTask/ViewMyAnnotations?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></td>
+                {% else %}
+                <td><a href="/DoTextDataAnnotationTask/Task?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></td>
+                {% endif %}
+                {% if text_data_annotation_task.description|length > 140 %}
+                <td>
+                    <style>
+                        #more{{text_data_annotation_task.id}} {display: none;}
+                    </style>
+                    <p>{{text_data_annotation_task.description1}}
+                        <span id="dots{{text_data_annotation_task.id}}">...</span>
+                        <span id="more{{text_data_annotation_task.id}}">{{text_data_annotation_task.description2}}</span>
+                    </p>
+                    <button class="btn btn-info" onclick="myFunction({{text_data_annotation_task.id}})" id="myBtn{{text_data_annotation_task.id}}">Read more</button>
+                </td>
+                {% else %}
+                <td>{{text_data_annotation_task.description}}</td>
+                {% endif %}
+                {% if text_data_annotation_task.status == "new" %}
+                <td><span class="badge badge-primary">New</span></td>
+                {% elif text_data_annotation_task.status == "inprogress" %}
+                <td><span class="badge badge-success">In Progress</span></td>
+                {% elif text_data_annotation_task.status == "completed" %}
+                <td><span class="badge badge-danger">Completed</span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <!-- END Header -->
-    <div class="breadcrumbs">
-        My Tasks
-    </div>
-    <!-- Content -->
-    <div id="content" class="colMS">
-        <h1><strong>My Tasks</strong></h1>
-        <h1><strong>user_id : {{user_id}}</strong></h1>
-        <div id="content-main">
-            {% if user_text_data_annotation_tasks|length > 0 %}
-            <div class="app-auth module">
-                <table>
-                    <caption>
-                        Text Data Annotation Tasks
-                    </caption>
-                    {% for text_data_annotation_task in user_text_data_annotation_tasks %}
-                    <tr class="{{text_data_annotation_task.id}}">
-                        <th scope="row"><a href="/DoTextDataAnnotationTask/Task?task_id={{text_data_annotation_task.id}}">{{text_data_annotation_task.title}}</a></th>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
-            {% if user_image_data_annotation_tasks|length > 0 %}
-            <div class="app-auth module">
-                <table>
-                    <caption>
-                        Image Data Annotation Tasks
-                    </caption>
-                    {% for image_data_annotation_task in user_image_data_annotation_tasks %}
-                    <tr class="{{image_data_annotation_task.id}}">
-                        <th scope="row"><a href="/DoDataAnnotationTask/Task?task_id={{image_data_annotation_task.id}}">{{image_data_annotation_task.title}}</a></th>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
-            {% if user_text_data_generation_tasks|length > 0 %}
-            <div class="app-CreateDataAnnotationTask module">
-                <table>
-                    <caption>
-                        Text Data Generation Tasks
-                    </caption>
-                    {% for text_data_generation_task in user_text_data_generation_tasks %}
-                    <tr class="{{text_data_generation_task.id}}">
-                        <th scope="row"><a href="/DoDataGenerationTask/Task?task_id={{text_data_generation_task.id}}">{{text_data_generation_task.title}}</a></th>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
-            {% if user_image_data_generation_tasks|length > 0 %}
-            <div class="app-CreateDataAnnotationTask module">
-                <table>
-                    <caption>
-                        Image Data Generation Tasks
-                    </caption>
-                    {% for image_data_generation_task in user_image_data_generation_tasks %}
-                    <tr class="{{image_data_generation_task.id}}">
-                        <th scope="row"><a href="/DoImageDataGenerationTask/Task?task_id={{image_data_generation_task.id}}">{{image_data_generation_task.title}}</a></th>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
-        </div>
-        <br class="clear">
-    </div>
-    <!-- END Content -->
-    <div id="footer"></div>
 </div>
-<!-- END Container -->
-</body>
-</html>
+{% endif %}
+
+<br>
+{% if user_image_data_annotation_tasks|length > 0 %}
+<div class="card">
+    <div class="card-header">Image Data Annotation Tasks</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 15%">Title</th>
+                <th style="width: 75%">Description</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for image_data_annotation_task in user_image_data_annotation_tasks %}
+            <tr>
+                {% if image_data_annotation_task.status == "completed" %}
+                <td><a href="/DoDataAnnotationTask/ViewMyAnnotations?task_id={{image_data_annotation_task.id}}">{{image_data_annotation_task.title}}</a></td>
+                {% else %}
+                <td><a href="/DoDataAnnotationTask/Task?task_id={{image_data_annotation_task.id}}">{{image_data_annotation_task.title}}</a></td>
+                {% endif %}
+                {% if image_data_annotation_task.description|length > 140 %}
+                <td>
+                    <style>
+                        #more{{image_data_annotation_task.id}} {display: none;}
+                    </style>
+                    <p>{{image_data_annotation_task.description1}}
+                        <span id="dots{{image_data_annotation_task.id}}">...</span>
+                        <span id="more{{image_data_annotation_task.id}}">{{image_data_annotation_task.description2}}</span>
+                    </p>
+                    <button class="btn btn-info" onclick="myFunction({{image_data_annotation_task.id}})" id="myBtn{{image_data_annotation_task.id}}">Read more</button>
+                </td>
+                {% else %}
+                <td>{{image_data_annotation_task.description}}</td>
+                {% endif %}
+                {% if image_data_annotation_task.status == "new" %}
+                <td><span class="badge badge-primary">New</span></td>
+                {% elif image_data_annotation_task.status == "inprogress" %}
+                <td><span class="badge badge-success">In Progress</span></td>
+                {% elif image_data_annotation_task.status == "completed" %}
+                <td><span class="badge badge-danger">Completed</span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<br>
+{% if user_text_data_generation_tasks|length > 0 %}
+<div class="card">
+    <div class="card-header">Text Data Generation Tasks</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 15%">Title</th>
+                <th style="width: 75%">Description</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for text_data_generation_task in user_text_data_generation_tasks %}
+            <tr>
+                {% if text_data_generation_task.status == "completed" %}
+                <td><a href="/DoDataGenerationTask/ViewMyAnnotations?task_id={{text_data_generation_task.id}}">{{text_data_generation_task.title}}</a></td>
+                {% else %}
+                <td><a href="/DoDataGenerationTask/Task?task_id={{text_data_generation_task.id}}">{{text_data_generation_task.title}}</a></td>
+                {% endif %}
+                {% if text_data_generation_task.description|length > 140 %}
+                <td>
+                    <style>
+                        #more{{text_data_generation_task.id}} {display: none;}
+                    </style>
+                    <p>{{text_data_generation_task.description1}}
+                        <span id="dots{{text_data_generation_task.id}}">...</span>
+                        <span id="more{{text_data_generation_task.id}}">{{text_data_generation_task.description2}}</span>
+                    </p>
+                    <button class="btn btn-info" onclick="myFunction({{text_data_generation_task.id}})" id="myBtn{{text_data_generation_task.id}}">Read more</button>
+                </td>
+                {% else %}
+                <td>{{text_data_generation_task.description}}</td>
+                {% endif %}
+                {% if text_data_generation_task.status == "new" %}
+                <td><span class="badge badge-primary">New</span></td>
+                {% elif text_data_generation_task.status == "inprogress" %}
+                <td><span class="badge badge-success">In Progress</span></td>
+                {% elif text_data_generation_task.status == "completed" %}
+                <td><span class="badge badge-danger">Completed</span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<br>
+{% if user_image_data_generation_tasks|length > 0 %}
+<div class="card">
+    <div class="card-header">Image Data Generation Tasks</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 15%">Title</th>
+                <th style="width: 75%">Description</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for image_data_generation_task in user_image_data_generation_tasks %}
+            <tr>
+                {% if image_data_generation_task.status == "completed" %}
+                <td><a href="/DoImageDataGenerationTask/ViewMyAnnotations?task_id={{image_data_generation_task.id}}">{{image_data_generation_task.title}}</a></td>
+                {% else %}
+                <td><a href="/DoImageDataGenerationTask/Task?task_id={{image_data_generation_task.id}}">{{image_data_generation_task.title}}</a></td>
+                {% endif %}
+                {% if image_data_generation_task.description|length > 140 %}
+                <td>
+                    <style>
+                        #more{{image_data_generation_task.id}} {display: none;}
+                    </style>
+                    <p>{{image_data_generation_task.description1}}
+                        <span id="dots{{image_data_generation_task.id}}">...</span>
+                        <span id="more{{image_data_generation_task.id}}">{{image_data_generation_task.description2}}</span>
+                    </p>
+                    <button class="btn btn-info" onclick="myFunction({{image_data_generation_task.id}})" id="myBtn{{image_data_generation_task.id}}">Read more</button>
+                </td>
+                {% else %}
+                <td>{{image_data_generation_task.description}}</td>
+                {% endif %}
+                {% if image_data_generation_task.status == "new" %}
+                <td><span class="badge badge-primary">New</span></td>
+                {% elif image_data_generation_task.status == "inprogress" %}
+                <td><span class="badge badge-success">In Progress</span></td>
+                {% elif image_data_generation_task.status == "completed" %}
+                <td><span class="badge badge-danger">Completed</span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+<script>
+function myFunction(taskid) {
+   var taskidstr=taskid.toString()
+  var dots = document.getElementById("dots".concat(taskidstr));
+  var moreText = document.getElementById("more".concat(taskidstr));
+  var btnText = document.getElementById("myBtn".concat(taskidstr));
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Read more";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less";
+    moreText.style.display = "inline";
+  }
+}
+</script>
+{% endblock %}
