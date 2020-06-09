@@ -55,26 +55,22 @@ def formView(request):
       return render(request, 'sign_in.html', {})
 
 def sign_up(request):
-    if request.user.is_authenticated:
-        messages.success(request, 'Please sign out first to sign up with different account')
-        return redirect('home')
-    else:
-        form = CreateUserForm()
-        if request.method == 'POST':
-            form = CreateUserForm(data=request.POST)
-            if form.is_valid():
-                new_user = form.save()
-                user = authenticate(
-                    username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password1']
-                )
-                group = Group.objects.get(name='crowd_user')
-                new_user.groups.add(group)
-                login(request, user)
-                request.session['user_id'] = user.id
-                messages.success(request,"Congradulations! Your account was created successfully")
-                return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
-        return render(request, 'UserManagement/sign_up.html', {'form': form})
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(data=request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1']
+            )
+            group = Group.objects.get(name='crowd_user')
+            new_user.groups.add(group)
+            login(request, user)
+            request.session['user_id'] = user.id
+            messages.success(request,"Congradulations! Your account was created successfully")
+            return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
+    return render(request, 'UserManagement/sign_up.html', {'form': form})
 
 
 def sign_out(request):
@@ -146,7 +142,6 @@ def view_profile(request, pk):
     return render(request, 'UserManagement/view_profile.html',context)
 
 @login_required(login_url='UserManagement:sign_in')
-@allowed_user(allowed_roles=['admin'])
 def delete_profile(request, pk):
     profile = get_object_or_404(Profile, user=pk)
     user = get_object_or_404(User, id=pk)
@@ -163,7 +158,6 @@ def delete_profile(request, pk):
         form = RateForm()
         if form.is_valid():
             rate = form.save()"""
-
 
 @login_required(login_url='UserManagement:sign_in')
 def view_field_task_list(request):
