@@ -3,6 +3,9 @@ from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from .views import *
 from .models import *
+from CreateTask.models import Task
+from django.contrib.auth.models import User
+import datetime
 
 
 class TestUrls(SimpleTestCase):
@@ -34,10 +37,47 @@ class TestUrls(SimpleTestCase):
 
 
 class TestModels(TestCase):
-    def setUp(self):
-        #DataAnnotationResult.
-        pass
 
+    def setUp(self):
+        self.my_user = User.objects.create(username='Author')
+        self.task=Task.objects.create(creatorID=self.my_user,
+                            title="test title",
+                            description="test description",
+                            status="test status",
+                            instructions="test instructions",
+                            field="test field",
+                            taskType="test taskType",
+                            requiredNumofAnnotations=3)
+        self.data_instance1 = MediaDataInstance.objects.create(taskID=self.task,
+                                                              LastUpdate=datetime.datetime.now())
+        self.data_instance2 = MediaDataInstance.objects.create(taskID=self.task,
+                                                              LastUpdate=datetime.datetime.now())
+
+    def test_DataAnnotationResult(self):
+        contributor_user = User.objects.create(username='Contributor')
+        data_instances = MediaDataInstance.objects.filter(taskID=self.task)
+        for data_instance in data_instances:
+            data_instance.IsViewing = True
+            data_instance.WhoIsViewing = contributor_user.id
+            data_instance_reserved_time = datetime.datetime.now()
+            data_instance.LastUpdate = data_instance_reserved_time
+            data_instance.save()
+            self.assertEqual(data_instance.IsViewing, True)
+            self.assertEqual(data_instance.WhoIsViewing, contributor_user.id)
+            self.assertEqual(data_instance.LastUpdate, data_instance_reserved_time)
+            data_annotation_result = DataAnnotationResult.objects.create(TaskID=self.task,
+                                                                         DataInstance=data_instance,
+                                                                         ClassID=0,
+                                                                         UserID=contributor_user.id,
+                                                                         LastUpdate=datetime.datetime.now())
+            data_instance.IsViewing = False
+            data_instance.WhoIsViewing = 0
+            data_instance_released_time = datetime.datetime.now()
+            data_instance.LastUpdate = data_instance_released_time
+            data_instance.save()
+            self.assertEqual(data_instance.IsViewing, False)
+            self.assertEqual(data_instance.WhoIsViewing, 0)
+            self.assertEqual(data_instance.LastUpdate, data_instance_released_time)
 
 
 
