@@ -32,7 +32,7 @@
                                     <button><a href="">Text Task analysis</a></button>
                                 {% endif %}
                                 <button><a href="">Test analysis</a></button><br>
-                                <button><a href="{% url 'UserManagement:delete_task' %}">Delete</a></button>
+                                <button><a href="{% url 'UserManagement:delete_task' i.id %}">Delete</a></button>
                             </td>
                         </tr>
                     {% endfor %}
