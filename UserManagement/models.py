@@ -1,5 +1,5 @@
 from CreateTask.models import Task
-from tkinter import Image
+#from tkinter import Image
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models

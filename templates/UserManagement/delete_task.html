@@ -28,7 +28,7 @@
               <p style="color:red">{{form.errors}}</p>
               <form method="POST" action="">
                 {% csrf_token %}
-                  <a href="{% url 'UserManagement:athor_task_list' %}">NO, take me back.</a> 
+                  <a href="{% url 'UserManagement:author_task_list' %}">NO, take me back.</a> 
                   <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Yes, I'm sure">
                 </form>
             </div>
