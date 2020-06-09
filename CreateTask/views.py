@@ -21,14 +21,32 @@ from PIL import Image
 import csv
 
 def doTest(request,task_id):
-    if request.method == 'GET':
-        task = Task.objects.get(pk=task_id)
+    is_test = False
+    task = Task.objects.get(pk=task_id)
+    try:
         test = AnnotationTest.objects.get(taskID=task_id)
-        if task.taskType == 'TextAnno':
-            return redirect('createtask:TextAnno_Test',task_id=task_id)
-        elif task.taskType == 'ImageAnno':
-            return redirect('createtask:ImageAnno_Test',task_id=task_id)
+        
+    except AnnotationTest.DoesNotExist:
+        is_test = False
+    else:
+        is_test = True
 
+    if request.method == 'GET':
+        if is_test == True:
+            if task.taskType == 'TextAnno':
+                return redirect('createtask:TextAnno_Test',task_id=task_id)
+            elif task.taskType == 'ImageAnno':
+                return redirect('createtask:ImageAnno_Test',task_id=task_id)
+        else:
+            #redirect directly to do task
+            pass
+
+def is_pass(score,test):
+    if score >= test.required_marks:
+        #add to task
+        pass
+    else:
+        pass
 
 
 def createTask(request):
