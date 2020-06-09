@@ -15,6 +15,7 @@
                     <th>Description</th>
                     <th>Field</th>
                     <th>Data type</th>
+                    <th>Options</th>
                 </tr>
                 
                     {% for i in all_author_tasks %}
@@ -23,6 +24,11 @@
                             <td>{{i.description}}</td>
                             <td>{{i.field}}</td>
                             <td>{{i.taskType}}</button></td>
+                            <td>
+                                <button>Task Analysis</button>
+                                <button>Test Analysis</button><br>
+                                <button>Delete</button>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% else %}

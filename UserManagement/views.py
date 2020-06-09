@@ -12,7 +12,7 @@ from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
 from .models import Profile, ContributorTask
 from django.contrib import messages
-from CreateTask.models import Task
+from CreateTask.models import Task, AnnotationTest
 from .decorators import unauthenticated_user, allowed_user
 
 
@@ -232,4 +232,5 @@ def view_my_tasks(request):
 def view_author_task(request):
     user = request.session['user_id']
     all_author_tasks = Task.objects.filter(creatorID=user)
+    #task_test_ID = AnnotationTest.taskID.all()
     return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})
