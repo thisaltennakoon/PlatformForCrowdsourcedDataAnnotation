@@ -13,34 +13,39 @@ from .forms import ProfileForm # RateForm
 from .models import Profile, ContributorTask
 from django.contrib import messages
 from CreateTask.models import Task
+from .decorators import unauthenticated_user, allowed_user
 
 
 def sign_in(request):
-    form = SigInForm()
-    username = 'not logged in'
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            if form.user_cache is not None:
-                user = form.user_cache
-                username = form.cleaned_data['username']
-                request.session['user_id'] = user.id
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect(
-                        reverse('home')  # TODO: go to profile
-                    )
+    if request.user.is_authenticated:
+        messages.success(request, 'Please sign out first to sign in with different account')
+        return redirect('home')
+    else:
+        form = SigInForm()
+        username = 'not logged in'
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                if form.user_cache is not None:
+                    user = form.user_cache
+                    username = form.cleaned_data['username']
+                    request.session['user_id'] = user.id
+                    if user.is_active:
+                        login(request, user)
+                        return HttpResponseRedirect(
+                            reverse('home')  # TODO: go to profile
+                        )
+                    else:
+                        messages.error(
+                            request,
+                            "That user account has been disabled."
+                        )
                 else:
                     messages.error(
                         request,
-                        "That user account has been disabled."
+                        "Username or password is incorrect."
                     )
-            else:
-                messages.error(
-                    request,
-                    "Username or password is incorrect."
-                )
-    return render(request, 'UserManagement/sign_in.html', {'form': form})
+        return render(request, 'UserManagement/sign_in.html', {'form': form})
 
 def formView(request):
    if request.session.has_key('username'):
@@ -50,22 +55,26 @@ def formView(request):
       return render(request, 'sign_in.html', {})
 
 def sign_up(request):
-    form = CreateUserForm()
-    if request.method == 'POST':
-        form = CreateUserForm(data=request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1']
-            )
-            group = Group.objects.get(name='crowd_user')
-            new_user.groups.add(group)
-            login(request, user)
-            request.session['user_id'] = user.id
-            messages.success(request,"Congradulations! Your account was created successfully")
-            return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
-    return render(request, 'UserManagement/sign_up.html', {'form': form})
+    if request.user.is_authenticated:
+        messages.success(request, 'Please sign out first to sign up with different account')
+        return redirect('home')
+    else:
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(data=request.POST)
+            if form.is_valid():
+                new_user = form.save()
+                user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1']
+                )
+                group = Group.objects.get(name='crowd_user')
+                new_user.groups.add(group)
+                login(request, user)
+                request.session['user_id'] = user.id
+                messages.success(request,"Congradulations! Your account was created successfully")
+                return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
+        return render(request, 'UserManagement/sign_up.html', {'form': form})
 
 
 def sign_out(request):
@@ -137,6 +146,7 @@ def view_profile(request, pk):
     return render(request, 'UserManagement/view_profile.html',context)
 
 @login_required(login_url='UserManagement:sign_in')
+@allowed_user(allowed_roles=['admin'])
 def delete_profile(request, pk):
     profile = get_object_or_404(Profile, user=pk)
     user = get_object_or_404(User, id=pk)
@@ -224,3 +234,8 @@ def view_my_tasks(request):
                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
                                                           'user_id':request.session['user_id']})
+@login_required(login_url='UserManagement:sign_in')
+def view_author_task(request):
+    user = request.session['user_id']
+    all_author_tasks = Task.objects.filter(creatorID=user)
+    return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})

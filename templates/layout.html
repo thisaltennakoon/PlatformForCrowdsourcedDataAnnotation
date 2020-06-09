@@ -62,11 +62,9 @@
                 <a class="nav-link" href="{% url 'UserManagement:change_password' %}">Change Password</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/UserManagement/MyTasks/">My Tasks</a>
+                <a class="nav-link" href="/UserManagement/MyTasks/">MyTasks</a>
             </li>
-            <li class="nav_item">
-
-            </li>
+    
             <!---li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                   Settings
@@ -87,9 +85,9 @@
                 <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View tasks</a>
             </li>
             {% endif %}
-            {% if user.is_authenticated and user.is_contributor %}
+            {% if user.is_authenticated and user.Profile.is_contributor %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">Tasks</a>
+                <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">AvailableTasks</a>
             </li>
             {% endif %}
             {% if user.is_authenticated %}
