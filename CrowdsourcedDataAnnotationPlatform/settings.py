@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'TextDataAnalyse',
     'testresultrank',
     'django_filters',  #search filter in user management
-    'django_pyc',
+    #'django_pyc',
 ]
 
 MIDDLEWARE = [
@@ -99,11 +99,11 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sep',
+        'NAME': 'sepnew',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'HOST': '',
+        'PORT': ''
     }
 }
 

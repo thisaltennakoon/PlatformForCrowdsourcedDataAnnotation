@@ -17,7 +17,7 @@ class Task(models.Model):
     creatorID = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     description = models.CharField(max_length=1000)
-    status = models.CharField(max_length=60, default='new')  # new,#inprogress,#completed
+    status = models.CharField(max_length=60, default='inprogress')  # new,#inprogress,#completed
     instructions = models.CharField(max_length=1000)
     field = models.CharField(max_length=30, default='')
     taskType = models.CharField(max_length=10)  # TextAnno,ImgAnno,TextGen,ImgGen
