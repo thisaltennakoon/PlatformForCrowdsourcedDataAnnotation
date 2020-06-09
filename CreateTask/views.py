@@ -9,6 +9,7 @@ from .models import  Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Ques
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
 from UserManagement.models import User
+
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -20,15 +21,39 @@ import os
 from PIL import Image
 import csv
 
-def doTest(request,task_id):
-    if request.method == 'GET':
-        task = Task.objects.get(pk=task_id)
-        test = AnnotationTest.objects.get(taskID=task_id)
-        if task.taskType == 'TextAnno':
-            return redirect('createtask:TextAnno_Test',task_id=task_id)
-        elif task.taskType == 'ImageAnno':
-            return redirect('createtask:ImageAnno_Test',task_id=task_id)
+def ExampleSkip(request):
+    if request.method == 'POST':
+        #redirect correctly
+        pass
 
+
+def doTest(request,task_id):
+    is_test = False
+    task = Task.objects.get(pk=task_id)
+    try:
+        test = AnnotationTest.objects.get(taskID=task_id)
+        
+    except AnnotationTest.DoesNotExist:
+        is_test = False
+    else:
+        is_test = True
+
+    if request.method == 'GET':
+        if is_test == True:
+            if task.taskType == 'TextAnno':
+                return redirect('createtask:TextAnno_Test',task_id=task_id)
+            elif task.taskType == 'ImageAnno':
+                return redirect('createtask:ImageAnno_Test',task_id=task_id)
+        else:
+            #redirect directly to do task
+            pass
+
+def is_pass(score,test):
+    if score >= test.required_marks:
+        #add to task
+        pass
+    else:
+        pass
 
 
 def createTask(request):
@@ -140,6 +165,7 @@ def doMediaAnnoExamples(request,task_id):       #by task author
             result_obj.ExampleMediaDataInstanceID = instance
             result_obj.resultCateogary = resultCateogary
             result_obj.save()
+            return redirect('UserManagement:author_task_list')
 
 def DoMediaAnnotationTest(request,task_id):   #how to get the task
     template_name = 'createtask/mediaAnnoTest.html'
@@ -308,7 +334,8 @@ def AddTextAnnoExamples(request,task_id):
         test.is_active = isTest
         test.save()
         processExampleCsvFile(filename,task,words,test,dic)
-        return render(request, 'createtask/success.html')
+        return redirect('UserManagement:author_task_list')
+        #return render(request, 'createtask/success.html')
 
 
 def processExampleCsvFile(filename,task,words,test,dic):

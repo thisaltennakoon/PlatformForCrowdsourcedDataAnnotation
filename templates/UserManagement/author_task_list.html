@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
+{% block body %}
+
+    <div class="row">
+        <div class="col-md">
+            <h4>Tasks</h4>
+        </div>
+        {% if all_author_tasks %}
+        <div class="card card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Field</th>
+                    <th>Data type</th>
+                </tr>
+                
+                    {% for i in all_author_tasks %}
+                        <tr>
+                            <td>{{i.title}}</td>
+                            <td>{{i.description}}</td>
+                            <td>{{i.field}}</td>
+                            <td>{{i.taskType}}</button></td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                <p>You don't have added tasks !</p>
+                {% comment %} <button type="button" class="btn btn-outline-success" ><a href="#" >Add image annotation Task</a></button> 
+                <button type="button" class="btn btn-outline-success" ><a href="#" >Add text annotation Task</a></button>  {% endcomment %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
