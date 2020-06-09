@@ -32,11 +32,26 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, stop_annotating)
 
 
+
+class TestModels(TestCase):
+    def setUp(self):
+        #DataAnnotationResult.
+        pass
+
+
+
+
+
+
+
+
+
+
 class TestViews(TestCase):
 
     def test_testgtgt_GET(self):
         client = Client()
-        #response = client.get(reverse('test'))
+        #response = client.get('')
 
         #self.assertEquals(response.status_code, 200)
         #self.assertTemplateUsed(response, 'DoDataAnnotationTask/test.html')
