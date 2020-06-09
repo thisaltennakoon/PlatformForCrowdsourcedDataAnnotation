@@ -66,15 +66,12 @@ def createTask(request):
     elif request.method == 'POST':
         taskform = CreateTaskForm(request.POST)
         formset = CateogaryFormSet(request.POST)
-        print(taskform.is_valid() )
-        print(taskform.errors)
-        print(formset.is_valid() )
         if taskform.is_valid() and formset.is_valid():
             task = taskform.save(commit=False)
-            print(request.user)
-            print(request.session['user_id'])
             task.creatorID = User.objects.get(pk=request.session['user_id'])
             task.taskType = "ImageAnno"
+            field = request.POST['feild']
+            task.field = field
             numAnnos = request.POST['NumAnnotations']
             # print(numAnnos)
             task.requiredNumofAnnotations = numAnnos
@@ -86,6 +83,7 @@ def createTask(request):
                 # so that `book` instance can be attached.
                 cateogary = form.save(commit=False)
                 cateogary.taskID = task
+                print(cateogary.cateogaryName)
                 cateogary.cateogaryTag = tag
                 cateogary.save()
                 tag += 1
@@ -148,14 +146,15 @@ def doMediaAnnoExamples(request,task_id):       #by task author
     task = Task.objects.get(id=task_id)
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
+    print(str(cateogary_list))
+    print(cateogary_list[1].cateogaryName)
     for cateogary in cateogary_list:
         tag = str(cateogary.cateogaryTag)         #handle errors
         dic.update({tag:cateogary})
 
     if request.method == 'GET':
-        context = {'cateogary_list': cateogary_list,'exampleinstance_list':exampleinstance_list}
+        context = {'cateogary_list': cateogary_list,'exampleinstance_list':exampleinstance_list,'task':task}
         return render(request, template_name, context)
-
     if request.method == 'POST':
         for instance in exampleinstance_list:
             name = str(instance.id)
@@ -238,6 +237,8 @@ def createTextTask(request):
             csvFile = request.FILES['data']
             newFileModel = TextFile()
             task.taskType = "TextAnno"
+            field = request.POST['feild']
+            task.field = field
             task.save()
             task_id = task.id
             newFileModel.taskID = task

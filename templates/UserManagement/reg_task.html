@@ -17,7 +17,7 @@
       <div class="card login-card">
         <div class="row no-gutters">
           <div class="col-md-5">
-            <img src="{% static 'img/connect.png' %}" alt="login" class="login-card-img">
+            <img src="{% static 'img/reg.png' %}" alt="login" class="login-card-img">
           </div>
           <div class="col-md-7">
             <div class="card-body">
@@ -28,7 +28,9 @@
               <p style="color:red">{{form.errors}}</p>
               <form method="POST" action="">
                 {% csrf_token %}
-                  <a href="{% url 'UserManagement:profile_list' %}">NO, take me back.</a> 
+                  <a href="{% url 'UserManagement:field_task_list' %}" class="btn btn-sm btn-outline-primary">NO, take me back.</a>
+                  <br>
+                  <br>
                   <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Yes, I'm sure">
                 </form>
             </div>

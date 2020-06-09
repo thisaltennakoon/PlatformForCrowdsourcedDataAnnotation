@@ -161,12 +161,11 @@ def delete_profile(request, pk):
 @login_required(login_url='UserManagement:sign_in')
 def delete_task(request, pk):
     task = get_object_or_404(Task, id=pk)
-    if task.creatorID == request.session['user_id']:
-        if request.method == "POST":
-            task.delete()
-            messages.success(request, 'You have deleted a task')
-            return HttpResponseRedirect(reverse('UserManagement:author_task_list'))
-    return render (request, 'UserManagement/delete_task.html')
+    if request.method == "POST" :
+        task.delete()
+        messages.success(request, 'You have deleted a task')
+        return HttpResponseRedirect(reverse('UserManagement:author_task_list'))
+    return render (request, 'UserManagement/delete_task.html', {'task':task})
 
 """def rate(request):
     if request.method == "POST":

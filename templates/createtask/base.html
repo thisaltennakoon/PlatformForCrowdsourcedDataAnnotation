@@ -1,73 +1,21 @@
-{% comment %} <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Data Annotation</title>
-        {% load static %}
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-        <style type="text/css">
-            .spacer{
-                margin-top:25px;
-            }
-        
-        </style>
-        {% block custom_css %}{% endblock %}
-        <!-- Core theme CSS (includes Bootstrap)-->
-
-        <link href="{% static 'createtask/css/styles.css' %}" rel="stylesheet" />
-
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">Data Annotation</a><button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Profile</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    <br><br><br><br><br>
-    
-    {% block container %}
-    {% endblock container %}
-    
-    
-    </body>
-     {% endcomment %}
-
-{% load static %}
-{% load auth_extras %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Data Annotation</title>
+    {% load static %}
+    {% load auth_extras %}
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 
-    <!-- Basic Page Needs
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta charset="utf-8">
-    <title>{% block title %}CDAP{% endblock %}</title>
-
-    <!-- Mobile Specific Metas
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- FONTS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    {% block style %} {% endblock %}
-	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -76,30 +24,21 @@
     <script type="text/javascript" src="{% static 'js/main.js' %}"> </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+   
+    <style type="text/css">
+        .spacer{
+            margin-top:25px;
+        }
+    
+    </style>
+    {% block custom_css %}{% endblock %}
+    <!-- Core theme CSS (includes Bootstrap)-->
 
+    <link href="{% static 'createtask/css/styles.css' %}" rel="stylesheet" />
 
-
-    <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-        <style type="text/css">
-            .spacer{
-                margin-top:25px;
-            }
-        
-        </style>
-        {% block custom_css %}{% endblock %}
-        <!-- Core theme CSS (includes Bootstrap)-->
-
-        <link href="{% static 'createtask/css/styles.css' %}" rel="stylesheet" />
 </head>
-
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'home' %}">CDAP</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,15 +77,15 @@
     
             <!---li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                  Settings
+                Settings
             </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
-                  <a class="dropdown-item" href="{% url 'UserManagement:change_password' %}">Change Password</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
+                <a class="dropdown-item" href="{% url 'UserManagement:change_password' %}">Change Password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
                 </div>
-              </li-->
+            </li-->
             {% endif %}
             {% if user|has_group:"admin" %}
             <li class="nav-item">
@@ -166,19 +105,14 @@
                 <a class="nav-link" href="{% url 'UserManagement:sign_out' %}">Sign Out</a>
             </li>
             {% endif %}
-            </ul>
-  </div>
-</nav>
-<div class="bounds circle--page">
-    {% if messages %}
-        <ul class="messages centered grid-50">
-            {% for message in messages %}
-                <li style {% if message.tags %}
-                    class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
         </ul>
-    {% endif %}
-    {% block container %}{% endblock %}
-</div>
+    </div>
+
+    </nav>
+
+{% block container %}
+{% endblock container %}
+
+
 </body>
-</html>
+ 
