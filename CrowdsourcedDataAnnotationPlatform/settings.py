@@ -130,6 +130,7 @@ DATABASES = {
     }
 }"""
 
+
 #MySQL event for release data instances
 """
 drop database crowdsourceddataannotationplatform;
