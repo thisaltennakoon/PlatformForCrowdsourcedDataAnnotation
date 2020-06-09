@@ -1,63 +1,52 @@
-<!DOCTYPE html>
-<html lang="en-us" >
-<head>
-    <title>My Data Annotation Contributions</title>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
-    <meta name="robots" content="NONE,NOARCHIVE">
-</head>
-<body class=" dashboard" data-admin-utc-offset="0">
-<!-- Container -->
-<div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
-    </div>
-    <!-- END Header -->
-    <div class="breadcrumbs">
-        <a href="/UserManagement/MyTasks/"> My Tasks </a>
-        &rsaquo;<a href="/DoDataAnnotationTask/"> My Data Annotation Tasks </a>
-        &rsaquo; <a href="/DoDataAnnotationTask/Task?task_id={{task_object.id}}">{{task_object.Title}}</a>
-        &rsaquo; My Contributions
-    </div>
-    <!-- Content -->
-    <div id="content" class="colMS">
-        <h1><strong>Task Title : {{task_object.Title}}</strong></h1>
-        <h1><strong>Task Description : {{task_object.Description}}</strong></h1>
-        {% if annotated_data_instances_available %}
-        <div id="content-main">
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Annotation task{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/png" href="favicon.png">
+  <style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+{% endblock %}
+{% block body %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/UserManagement/MyTasks/">My Tasks</a></li>
+    <li class="breadcrumb-item"><a href="/DoTextDataAnnotationTask/Task?task_id={{task_object.id}}">{{task_object.title}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">My Contributions</li>
+  </ol>
+</nav>
+<div class="card">
+    <div class="card-header">My Contributions</div>
+    {% if annotated_data_instances_available %}
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th style="width: 25%">Data Instance</th>
+                <th style="width: 25%">Your Answer</th>
+                <th style="width: 25%">Last Update</th>
+                <th style="width: 25%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for annotated_data_instance in annotated_data_instances %}
-            <div class="{{annotated_data_instance.DataInstance}} module">
-                <table>
-                    <caption>
-                        Data Instance : {{annotated_data_instance.DataInstance}}
-                    </caption>
-                    <tr class="Your Answer">
-                        <th scope="row">Your Answer : {{annotated_data_instance.ClassID}}</th>
-                        <td><a href="/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}" class="addlink">Change answer</a></td>
-                        <!--td><a href="/DoDataAnnotationTask/ViewMyAnnotations/Delete?annotated_data_instance_id={{annotated_data_instance.id}}" class="deletelink">Delete</a></td-->
-                    </tr>
-                    <tr class="Last Update">
-                        <th scope="row">Last Update : {{annotated_data_instance.LastUpdate}}(UTC)</th>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+            <tr>
+                <td>{{annotated_data_instance.DataInstance}}</td>
+                <td>{{annotated_data_instance.ClassID}}</td>
+                <td>{{annotated_data_instance.LastUpdate}}(UTC)</td>
+                <td><button onclick="window.location.href = '/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id={{annotated_data_instance.id}}'" type="button" class="btn btn-danger">Change answer</button></td>
+
+            </tr>
             {% endfor %}
-            {% else %}
-            <h3>You haven't done any annotations</h3>
-            {% endif %}
-        </div>
-        <br class="clear">
+            </tbody>
+        </table>
     </div>
-    <!-- END Content -->
-    <div id="footer"></div>
+    {% else %}
+    <h3>You haven't done any annotations</h3>
+    {% endif %}
 </div>
-<!-- END Container -->
-</body>
-</html>
+{% endblock %}

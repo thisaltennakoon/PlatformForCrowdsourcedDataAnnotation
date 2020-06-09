@@ -1,0 +1,23 @@
+
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Not Found | {{ super }}{% endblock %}
+
+{% block style %}
+<style>
+    #bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+	
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<img src="{% static 'img/404.png' %}" id="bg" alt="">
+{% endblock %}
