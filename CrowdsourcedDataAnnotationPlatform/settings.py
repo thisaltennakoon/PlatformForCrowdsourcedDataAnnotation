@@ -25,7 +25,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['104.197.54.228']
 
 
 # Application definition
@@ -151,19 +151,19 @@ CREATE EVENT release_data_instances_mediadatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.CreateTask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
       
 CREATE EVENT release_data_instances_textdatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.createtask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.CreateTask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
 
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
-    BEFORE UPDATE ON createtask_mediadatainstance
+    BEFORE UPDATE ON CreateTask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -173,7 +173,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
-    BEFORE INSERT ON createtask_mediadatainstance
+    BEFORE INSERT ON CreateTask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -182,7 +182,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
 
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_update
-    BEFORE UPDATE ON createtask_textdatainstance
+    BEFORE UPDATE ON CreateTask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -192,7 +192,7 @@ CREATE TRIGGER set_last_update_time_textdatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_insert
-    BEFORE INSERT ON createtask_textdatainstance
+    BEFORE INSERT ON CreateTask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
