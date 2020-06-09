@@ -65,7 +65,7 @@ class TestModels(TestCase):
             self.assertEqual(data_instance.IsViewing, True)
             self.assertEqual(data_instance.WhoIsViewing, contributor_user.id)
             self.assertEqual(data_instance.LastUpdate, data_instance_reserved_time)
-            data_annotation_result = DataAnnotationResult.objects.create(TaskID=self.task,
+            DataAnnotationResult.objects.create(TaskID=self.task,
                                                                          DataInstance=data_instance,
                                                                          ClassID=0,
                                                                          UserID=contributor_user.id,
@@ -78,13 +78,6 @@ class TestModels(TestCase):
             self.assertEqual(data_instance.IsViewing, False)
             self.assertEqual(data_instance.WhoIsViewing, 0)
             self.assertEqual(data_instance.LastUpdate, data_instance_released_time)
-
-
-
-
-
-
-
 
 
 class TestViews(TestCase):
