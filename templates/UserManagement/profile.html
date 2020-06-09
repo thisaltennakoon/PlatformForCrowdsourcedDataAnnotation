@@ -66,6 +66,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:author_task_list' %}" >Added Tasks</a></button>
         </div><br>
         {% endif %}
+        <button type="button" class="btn btn-outline-success" ><a href="{%url 'createtask:Anno_task_add' %}" >Add image annotation Task</a></button> 
+        <button type="button" class="btn btn-outline-success" ><a href="{%url 'createtask:TextAnno_task_add'%}" >Add text annotation Task</a></button> 
         <!--div class="w3-container">
           <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:author_task_list' %}">Edit Profile</a></button>
         </div><br>
