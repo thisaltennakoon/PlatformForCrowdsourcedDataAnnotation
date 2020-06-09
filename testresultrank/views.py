@@ -52,11 +52,11 @@ def resultanalyse(request):
                 seeni.add(y)
         titt = []
         for tit in uniq:
-            tit2 = Task.objects.filter(id=str(tit)).values('Title')
-            titt.append(tit2[0]['Title'])
+            tit2 = Task.objects.filter(id=str(tit)).values('title')
+            titt.append(tit2[0]['title'])
         for titi in uniqi:
-            tit2i = Task.objects.filter(id=str(titi)).values('Title')
-            titt.append(tit2i[0]['Title'])
+            tit2i = Task.objects.filter(id=str(titi)).values('title')
+            titt.append(tit2i[0]['title'])
         lenth.append(len(titt))
         task.append(titt)
 
