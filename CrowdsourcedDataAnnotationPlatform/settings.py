@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -122,7 +122,7 @@ DATABASES = {
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crowdsourceddataannotationplatform1',
+        'NAME': 'crowdsourceddataannotationplatform',
         'USER': 'root',
         'PASSWORD': '',
         'HOST':'127.0.0.1',

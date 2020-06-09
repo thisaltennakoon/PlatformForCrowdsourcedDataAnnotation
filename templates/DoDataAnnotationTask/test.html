@@ -1,13 +1,250 @@
-<!doctype html>
-<html lang="en">
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Annotation task{% endblock %}
+
+<!---DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-annotation
-</body>
-</html>
+<title>Annotatio task</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"--->
+{% block style %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/png" href="favicon.png">
+  <style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+{% endblock %}
+
+
+{% block body %}
+<div class="w3-light-grey">
+
+<!-- Top container -->
+<div  class="w3-bar w3-top w3-white w3-large" style="z-index:4">
+  <button class=" w3-button w3-hide-large w3-hover-none w3-hover-text-light-green" onclick="w3_open();"><i class="fa fa-bars"></i> View Contribution</button>
+</div>
+
+<!-- Contribution -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close"><i class="fa fa-remove fa-fw"></i>Close</a></br>
+    <div class="w3-col s8 w3-bar">
+      <span>Welcome, <strong>First name</strong></span><br>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-bar-block">
+    <!---Annotated images-->
+    <h4>Your Contribution</h4>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+        <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+        <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+        <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+    <div class="w3-bar-item">
+        <h5 style="color: darkslategray; font-size: 15px;">Data instance: file path</h5>
+        <h6 style="color: dimgrey; font-size: 12px;">Your Answer : answer</h6>
+        <h6 style="color: dimgrey; font-size: 12px;">Last update : date and time</h6>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+
+  </header>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header"><h2>Task Title : Find cars and Vans</h2></div>
+    <div class="card-header"><h5>Task Description : gkgkghh sfdsdbfhdbsf fsdfbdsjifb sfoduhdsufh osufdhsduhf sfuhdshfsudhfshduh fsuhdfdsiuhfdshfuYou can offset grid columns in two ways: our responsive .offset- grid classes and our margin utilities. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable</h5></div>
+    <div class="card-header"><h5>Instructions : kghkgkghk</h5></div>
+    <div class="card-header"><h5>Task Type : ImageAnno</h5></div>
+    <div class="card-header"><h5>COMPLETE WITHIN :<h5 id="time_left"></h5></h5></div>
+    <div class="card-body"><img src="dog2.jpeg"  alt="Google Regional Map"></div>
+    <div class="card-body">Or</div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item">First item</li>
+        <li class="list-group-item">Second item</li>
+        <li class="list-group-item">Third item</li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <h5>Your answer</h5>
+      <form action="/action_page.php">
+
+        <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+          <label class="custom-control-label" for="customRadio1">answer 1</label>
+        </div>
+
+        <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+          <label class="custom-control-label" for="customRadio2">answer 2</label>
+        </div>
+
+        <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
+          <label class="custom-control-label" for="customRadio3">answer 3</label>
+        </div>
+
+        <button type="submit" class="btn btn-success"><h6>Submit</h6></button>
+      </form>
+
+      <h3> or</h3>
+        <form>
+    <div class="input-group mb-3 input-group-lg">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Your answer</span>
+      </div>
+      <input type="text" class="form-control">
+    </div>
+          <button type="submit" class="btn btn-success"><h6>Submit</h6></button>
+  </form>
+    </div>
+    <div class="card-footer">
+
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-warning"><h6>Skip this instance</h6></button>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger">Stop Annotation</h6></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- End page content -->
+</div>
+
+<script>
+
+var msec = Date.parse(new Date())+302000;
+var a = new Date(msec)
+var countDownDate = a.getTime();
+
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("time_left").innerHTML = minutes + "m " + seconds + "s ";
+
+  if (distance < 1000) {
+    clearInterval(x);
+    location.replace("/DoDataAnnotationTask/StopAnnotating?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}");
+  }
+
+    if (distance < 10000) {
+    document.getElementById("time_left").style.color = "red";
+  }
+}, 1000);
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</div>
+{% endblock %}

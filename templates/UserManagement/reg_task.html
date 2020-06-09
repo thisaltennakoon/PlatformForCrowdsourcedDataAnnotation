@@ -1,12 +1,44 @@
-{% extends 'layout.html' %}
+
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Register Task | {{ super }}{% endblock %}
+
+{% block style %}
+<link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block body %}
-
-<p>Are you sure you want to register for the task ?</p>
-
-<form action = "" method ="POST">
-    {% csrf_token %}
-    <a href="{% url 'UserManagement:field_task_list' %}">cancel</a>
-    <input type="submit" name = "confirm">
-</form>
+	<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+      <div class="card login-card">
+        <div class="row no-gutters">
+          <div class="col-md-5">
+            <img src="{% static 'img/connect.png' %}" alt="login" class="login-card-img">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="brand-wrapper">
+                <!--img src="assets/images/logo.svg" alt="logo" class="logo"-->
+              </div>
+              <p class="login-card-description">Are you sure you want to register {{task}}?</p>
+              <p style="color:red">{{form.errors}}</p>
+              <form method="POST" action="">
+                {% csrf_token %}
+                  <a href="{% url 'UserManagement:profile_list' %}">NO, take me back.</a> 
+                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Yes, I'm sure">
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 {% endblock %}

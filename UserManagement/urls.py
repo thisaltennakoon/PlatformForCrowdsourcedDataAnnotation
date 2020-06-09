@@ -26,7 +26,8 @@ urlpatterns = [
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
     path('MyTasks/', views.view_my_tasks , name = 'MyTasks'),
-    path('Task_list/', views.view_field_task_list, name='field_task_list'),
+    path('contributor_task_list/', views.view_field_task_list, name='field_task_list'),
+    path('author_task_list/', views.view_author_task, name='author_task_list'),
     path('Reg_task/<str:pk>', views.reg_task, name='reg_task')
 
 ]
