@@ -119,7 +119,7 @@ DATABASES = {
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -128,7 +128,7 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}
+}"""
 
 
 #MySQL event for release data instances

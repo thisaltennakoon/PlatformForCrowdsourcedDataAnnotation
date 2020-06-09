@@ -15,6 +15,7 @@
                     <th>Description</th>
                     <th>Field</th>
                     <th>Data type</th>
+                    <th>Options</th>
                 </tr>
                 
                     {% for i in all_author_tasks %}
@@ -23,6 +24,16 @@
                             <td>{{i.description}}</td>
                             <td>{{i.field}}</td>
                             <td>{{i.taskType}}</button></td>
+                            <td>
+                                {% if i.taskType == "ImageAnno" %}
+                                    <button><a href="">Image Task analysis</a></button>
+                                {% endif %}
+                                {% if i.taskType == "TextAnno" %}
+                                    <button><a href="">Text Task analysis</a></button>
+                                {% endif %}
+                                <button><a href="">Test analysis</a></button><br>
+                                <button><a href="{% url 'UserManagement:delete_task' %}">Delete</a></button>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% else %}
