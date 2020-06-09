@@ -26,12 +26,12 @@
                             <td>{{i.taskType}}</button></td>
                             <td>
                                 {% if i.taskType == "ImageAnno" %}
-                                    <button><a href="">Image Task analysis</a></button>
+                                    <button><a href="/ImageDataAnalyse/Analyse?Task_ID == {{i.id}}">Image Task analysis</a></button>
                                 {% endif %}
                                 {% if i.taskType == "TextAnno" %}
-                                    <button><a href="">Text Task analysis</a></button>
+                                    <button><a href="/TextDataAnalyse/Analyse?Task_ID == {{i.id}}">Text Task analysis</a></button>
                                 {% endif %}
-                                <button><a href="">Test analysis</a></button><br>
+                                <button><a href="/ResultAnalyse/Rank?Task_ID=={{i.id}}">Test analysis</a></button><br>
                                 <button><a href="{% url 'UserManagement:delete_task' %}">Delete</a></button>
                             </td>
                         </tr>
