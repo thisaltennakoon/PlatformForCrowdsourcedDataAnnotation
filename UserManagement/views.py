@@ -234,3 +234,8 @@ def view_my_tasks(request):
                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
                                                           'user_id':request.session['user_id']})
+@login_required(login_url='UserManagement:sign_in')
+def view_author_task(request):
+    user = request.session['user_id']
+    all_author_tasks = Task.objects.filter(creatorID=user)
+    return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})
