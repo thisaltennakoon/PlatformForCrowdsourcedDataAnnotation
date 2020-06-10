@@ -92,6 +92,8 @@ def profile(request):
     """Display User Profile"""
     profile = request.user.profile
     all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
+    user = request.user
+    all_author_tasks = Task.objects.filter(creatorID=user)
     user_text_data_generation_tasks = []
     user_image_data_generation_tasks = []
     user_text_data_annotation_tasks = []
@@ -125,8 +127,6 @@ def profile(request):
                 user_image_data_generation_tasks += [user_task.Task]
             else:
                 user_image_data_generation_tasks += [user_task.Task]
-        user = request.user
-        all_author_tasks = Task.objects.filter(creatorID=user)
     return render(request, 'UserManagement/profile.html', {'profile': profile,'all_author_tasks':all_author_tasks, 
                                                         'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
                                                         'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
