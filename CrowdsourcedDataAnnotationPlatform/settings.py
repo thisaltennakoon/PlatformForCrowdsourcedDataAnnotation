@@ -25,7 +25,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['104.197.54.228']
 
 
 # Application definition
@@ -37,21 +37,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'UserManagement',
-    'CreateTask',
     'CreateDataAnnotationTask',
     'CreateDataGenerationTask',
     'DoDataAnnotationTask',
     'DoDataGenerationTask',
-    'django_filters',
+    'UserManagement',
     'CreateTextDataAnnotationTask',
     'DoTextDataAnnotationTask',
+    'CreateTask',
     'DoTask',
     'ImageDataAnalyse',
     'TextDataAnalyse',
     'testresultrank',
+    'django_filters',  #search filter in user management
+    'django_pyc',
 ]
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,18 +87,25 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#Janani's database
-DATABASES = {
+#Janani's sqlite database
+"""DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}"""
+
+#Janani's mysql database
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sepnew',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'HOST': '',
+        'PORT': ''
     }
-}
-
+}"""
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -111,16 +119,17 @@ DATABASES = {
 }"""
 
 #Thisal's Mysql databsse
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST':'127.0.0.1',
+        'HOST':'localhost',
         'PORT':'3308'
     }
-}"""
+}
+
 
 #MySQL event for release data instances
 """
@@ -142,19 +151,19 @@ CREATE EVENT release_data_instances_mediadatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.CreateTask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
       
 CREATE EVENT release_data_instances_textdatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.createtask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.CreateTask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
 
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
-    BEFORE UPDATE ON createtask_mediadatainstance
+    BEFORE UPDATE ON CreateTask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -164,7 +173,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
-    BEFORE INSERT ON createtask_mediadatainstance
+    BEFORE INSERT ON CreateTask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -173,7 +182,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
 
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_update
-    BEFORE UPDATE ON createtask_textdatainstance
+    BEFORE UPDATE ON CreateTask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -183,7 +192,7 @@ CREATE TRIGGER set_last_update_time_textdatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_insert
-    BEFORE INSERT ON createtask_textdatainstance
+    BEFORE INSERT ON CreateTask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -236,8 +245,12 @@ STATICFILES_DIRS =  [
 
 STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
 
-MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Janani's parts
+#MEDIA_URL = '/images/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
 DJANGORESIZED_DEFAULT_QUALITY = 75
@@ -250,7 +263,7 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 
 EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = 'true'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = 'False'
 EMAIL_HOST_USER = 'cdapmanager@gmail.com'
 EMAIL_HOST_PASSWORD = 'cdap@admin'
