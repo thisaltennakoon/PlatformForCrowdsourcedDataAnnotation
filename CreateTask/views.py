@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
+from django.http import HttpResponseRedirect
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
-
+from django.urls import reverse
 from .models import  Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
-from UserManagement.models import User
+from UserManagement.models import User,ContributorTask
 
 from django.forms import formset_factory
 from django import template
@@ -18,8 +19,26 @@ from django.conf import settings
 from zipfile import ZipFile
 import sys
 import os
+from django.contrib import messages
 from PIL import Image
 import csv
+
+
+
+def creating_contibtask(request,pk):
+    print('kll')
+    ct = ContributorTask()
+    task = Task.objects.get(id=pk)
+    print(task.id)
+    user = request.user
+    ct.Task=task
+    ct.User=user
+    ct.save()
+    print('here')
+    messages.success(request, "You have successfully registered as a contributor")
+    #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+    return redirect('UserManagement:return_field_task_list')
+
 
 def ExampleSkip(request):
     if request.method == 'POST':
@@ -36,24 +55,32 @@ def doTest(request,task_id):
     except AnnotationTest.DoesNotExist:
         is_test = False
     else:
-        is_test = True
-
-    if request.method == 'GET':
-        if is_test == True:
-            if task.taskType == 'TextAnno':
-                return redirect('createtask:TextAnno_Test',task_id=task_id)
-            elif task.taskType == 'ImageAnno':
-                return redirect('createtask:ImageAnno_Test',task_id=task_id)
+        if test.is_active == True:
+            is_test = True
         else:
-            #redirect directly to do task
-            pass
+            is_test = False
+
+    if is_test == True:
+        if task.taskType == 'TextAnno':
+            return redirect('createtask:TextAnno_Test',task_id=task_id)
+        elif task.taskType == 'ImageAnno':
+            return redirect('createtask:ImageAnno_Test',task_id=task_id)
+    else:
+        print('hooooooooooooooooooooooooooooooooooo')
+        creating_contibtask(request,task_id)
+    if request.method == 'GET':
+
+        return redirect('UserManagement:return_field_task_list')
+
+
 
 def is_pass(score,test):
+    is_pass = False
     if score >= test.required_marks:
-        #add to task
-        pass
+        is_pass = True
     else:
-        pass
+        is_pass = False
+    return is_pass
 
 
 def createTask(request):
@@ -164,14 +191,14 @@ def doMediaAnnoExamples(request,task_id):       #by task author
             result_obj.ExampleMediaDataInstanceID = instance
             result_obj.resultCateogary = resultCateogary
             result_obj.save()
-            return redirect('UserManagement:author_task_list')
+        return redirect('UserManagement:author_task_list')
 
 def DoMediaAnnotationTest(request,task_id):   #how to get the task
     template_name = 'createtask/mediaAnnoTest.html'
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user= User.objects.get(id=request.session['user_id'])    
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -216,6 +243,22 @@ def DoMediaAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            #is_pass = False
+            #is_pass = is_pass(score_prentage,test)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html')
 
@@ -236,6 +279,9 @@ def createTextTask(request):
             task.creatorID = User.objects.get(pk=request.session['user_id'])
             csvFile = request.FILES['data']
             newFileModel = TextFile()
+            numAnnos = request.POST['NumAnnotations']
+            # print(numAnnos)
+            task.requiredNumofAnnotations = numAnnos
             task.taskType = "TextAnno"
             field = request.POST['feild']
             task.field = field
@@ -392,7 +438,7 @@ def DoTextAnnotationTest(request,task_id):   #how to get the task
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user= User.objects.get(id=request.session['user_id'])    
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.exampletextdatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -441,6 +487,19 @@ def DoTextAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html') 
 
@@ -468,7 +527,7 @@ def check_is_test(task):
 
 def check_is_taskauthor(user,task):
     isTaskAuthor = False
-    user = UserNew2.objects.get(name='kasun') 
+    user = User.objects.get(id=request.session['user_id']) 
     task = Task.objects.get(pk=task)
     if task.creatorID == user.id:
         isTaskAuthor = True
@@ -634,7 +693,7 @@ def createTextGenerationTask(request):
         if taskform.is_valid() and csvform.is_valid():
             print('hell')
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(id=request.session['user_id'])
             task.taskType = "TextGen"
             newFileModel = GenTextFile()
             task.save()
@@ -687,7 +746,7 @@ def createGenerationTask(request):
         customform = CustomForm1(request.POST)
         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
             task = taskform.save(commit=False)
-            task.creatorID = UserNew2.objects.get(name='kasun')
+            task.creatorID = User.objects.get(id=request.session['user_id'])
             rough = customform.cleaned_data
             dataType = rough.get('dataType')
             if dataType == 'T':

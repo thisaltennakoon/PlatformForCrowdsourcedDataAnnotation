@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 from . import views
+from django.conf.urls import url
 
 app_name = 'UserManagement'
 
@@ -28,7 +29,9 @@ urlpatterns = [
     path('MyTasks/', views.view_my_tasks , name = 'MyTasks'),
     path('contributor_task_list/', views.view_field_task_list, name='field_task_list'),
     path('author_task_list/', views.view_author_task, name='author_task_list'),
-    path('Reg_task/<str:pk>', views.reg_task, name='reg_task')
+    path('Reg_task/<str:pk>', views.reg_task, name='reg_task'),
+    #path('creating_contibtask/<str:pk>', views.reg_task, name='create_reg_task'),
+    url(r'^return_contributor_task_list/$',views.view_field_task_list, name='return_field_task_list')
 
 ]
 

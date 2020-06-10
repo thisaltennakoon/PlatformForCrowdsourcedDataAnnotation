@@ -16,6 +16,7 @@ from CreateTask.models import Task
 from .decorators import unauthenticated_user, allowed_user
 
 
+
 def sign_in(request):
     if request.user.is_authenticated:
         messages.success(request, 'Please sign out first to sign in with different account')
@@ -179,19 +180,37 @@ def view_field_task_list(request):
     #print(all_field_tasks)
     return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks_unregistered':all_field_tasks_unregistered})
 
+
+def creating_contibtask(request,pk):
+    print('kll')
+    ct = ContributorTask()
+    task = Task.objects.get(id=pk)
+    user = request.user
+    ct.Task=task
+    ct.User=user
+    ct.save()
+    messages.success(request, "You have successfully registered as a contributor")
+    return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+    
+    #return redirect('UserManagement:field_task_list')
+
 @login_required(login_url='UserManagement:sign_in')
 def reg_task (request, pk):
-    ct = ContributorTask()
+    
+    #ct = ContributorTask()
     task = get_object_or_404(Task, id=pk)
-    user = request.user
+    #user = request.user
     context = {'task':task}
+
     if request.method=="POST":
-        ct.Task=task
-        ct.User=user
-        ct.save()
-        messages.success(request, "You have successfully registered as a contributor")
-        return HttpResponseRedirect(reverse('UserManagement:field_task_list'))
-    return render(request, 'UserManagement/reg_task.html')
+        print('hellooo')
+        #creating_contibtask(request,pk)
+        return redirect('createtask:check_test',task_id=pk)
+    
+    if request.method=="GET":
+    
+        return render(request, 'UserManagement/reg_task.html')
+
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):

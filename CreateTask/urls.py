@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^createTextGen/$',views.createTextGenerationTask, name='Gen_Texttask_add'),
     url(r'^TextAnnoTest/(?P<task_id>[0-9]+)/$',views.DoTextAnnotationTest, name='TextAnno_Test'),
     url(r'^MediaAnnoTest/(?P<task_id>[0-9]+)/$',views.DoMediaAnnotationTest, name='ImageAnno_Test'),
-    url(r'^AnnoTest/(?P<task_id>[0-9]+)/$',views.doTest, name='Anno_Test'),
+    #url(r'^AnnoTest/(?P<task_id>[0-9]+)/$',views.doTest, name='Anno_Test'),
+    url(r'^checkTest/(?P<task_id>[0-9]+)/$',views.doTest, name='check_test')
 ]
