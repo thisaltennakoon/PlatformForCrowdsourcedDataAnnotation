@@ -1,3 +1,4 @@
+
 """
 Django settings for CrowdsourcedDataAnnotationPlatform project.
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['104.197.54.228']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -96,7 +97,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Janani's mysql database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sepnew',
@@ -105,7 +106,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
         'HOST': '',
         'PORT': ''
     }
-}"""
+}
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -119,7 +120,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -128,7 +129,7 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3308'
     }
-}
+}"""
 
 
 #MySQL event for release data instances

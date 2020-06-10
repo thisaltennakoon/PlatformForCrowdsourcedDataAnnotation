@@ -91,9 +91,48 @@ def sign_out(request):
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
-    return render(request, 'UserManagement/profile.html', {
-        'profile': profile
-    })
+    all_user_tasks = ContributorTask.objects.filter(User_id=request.session['user_id'])
+    user_text_data_generation_tasks = []
+    user_image_data_generation_tasks = []
+    user_text_data_annotation_tasks = []
+    user_image_data_annotation_tasks = []
+    for user_task in all_user_tasks:
+        if user_task.Task.taskType == 'TextAnno':
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_text_data_annotation_tasks += [user_task.Task]
+            else:
+                user_text_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImageAnno':
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_image_data_annotation_tasks += [user_task.Task]
+            else:
+                user_image_data_annotation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'TextGen':
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_text_data_generation_tasks += [user_task.Task]
+            else:
+                user_text_data_generation_tasks += [user_task.Task]
+        elif user_task.Task.taskType == 'ImgGen':
+            if len(user_task.Task.description)>140:
+                user_task.Task.description1=user_task.Task.description[0:140]
+                user_task.Task.description2 = user_task.Task.description[140:]
+                user_image_data_generation_tasks += [user_task.Task]
+            else:
+                user_image_data_generation_tasks += [user_task.Task]
+        user = request.user
+        all_author_tasks = Task.objects.filter(creatorID=user)
+    return render(request, 'UserManagement/profile.html', {'profile': profile,'all_author_tasks':all_author_tasks, 
+                                                        'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                        'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
+                                                        'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                        'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                                                        'user_id':request.session['user_id']})
 
 
 @login_required(login_url='UserManagement:sign_in')
