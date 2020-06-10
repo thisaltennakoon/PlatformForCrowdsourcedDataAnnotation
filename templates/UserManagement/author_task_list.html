@@ -1,37 +1,60 @@
 {% extends 'layout.html' %}
-{% include 'material/includes/material_css.html' %}
-{% include 'material/includes/material_js.html' %}
+{% load static %}
+
+{% block title %} Authored Tasks  |{% endblock %}
+
+{% block style %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+{% endblock %}
+
+
 {% block body %}
 
+<div class="container">
+
+    <br> <h2 class="text-center">My authered Tasks</h2>
+    <hr>
+    {% if all_author_tasks %}
     <div class="row">
-        <div class="col-md">
-            <h4>Tasks</h4>
-        </div>
-        {% if all_author_tasks %}
-        <div class="card card-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Field</th>
-                    <th>Data type</th>
-                </tr>
-                
-                    {% for i in all_author_tasks %}
-                        <tr>
-                            <td>{{i.title}}</td>
-                            <td>{{i.description}}</td>
-                            <td>{{i.field}}</td>
-                            <td>{{i.taskType}}</button></td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                <p>You don't have added tasks !</p>
-                {% comment %} <button type="button" class="btn btn-outline-success" ><a href="#" >Add image annotation Task</a></button> 
-                <button type="button" class="btn btn-outline-success" ><a href="#" >Add text annotation Task</a></button>  {% endcomment %}
-            </table>
-        </div>
-        {% endif %}
-    </div>
+    {% for task in all_author_tasks %}
+    <div class="col-md-4">
+        <figure class="card card-product">
+            {% if task.taskType == "ImageAnno" %}
+            <div class="img-wrap"><img src="{% static 'img/img_type.png' %}"></div>
+            {% elif task.taskType == "TextAnno" %}
+            <div class="img-wrap"><img src="{% static 'img/text_folder.png' %}"></div>
+            {% endif %}
+            <figcaption class="info-wrap">
+                    <h4 class="title">{{task.title}}</h4>
+                    <p class="desc">{{task.description}}</p>
+                    <div class="rating-wrap">
+                        <div class="label-rating"><a href="#">Contributors</div>
+                        <div class="label-rating"><a href="/ResultAnalyse/Rank/?Task_ID={{task.id}}" class="btn btn-sm btn-outline-primary">Test result analysis </a></div>
+                    </div> <!-- rating-wrap.// -->
+            </figcaption>
+            <div class="bottom-wrap">
+                <a href="{% url 'UserManagement:delete_task' task.id %}" class="btn btn-sm btn-danger float-right">Delete</a>	
+                <div class="price-wrap h5">
+                    {% if task.taskType == "ImageAnno" %}
+                        <a href="/ImageDataAnalyse/Analyse/?Task_ID={{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
+                    {% endif %}
+                    {% if task.taskType == "TextAnno" %}
+                        <a href="/TextDataAnalyse/Analyse/?Task_ID={{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
+                    {% endif %}
+                </div> <!-- price-wrap.// -->
+            </div> <!-- bottom-wrap.// -->
+        </figure>
+    </div> <!-- col // -->
+    {% endfor %}
+    
+    </div> <!-- row.// -->
+    {% else %}
+    <h3>you haven't authored any tasks</h3>
+    
+    {% endif %}
+    </div> 
 
 {% endblock %}

@@ -2,7 +2,8 @@
 {% load static %}
 {% load auth_extras %}
 
-<!link rel="stylesheet" href="{% static 'assets/css/circle/search.css' %}">
+{% block title %}Search users {% endblock %}
+
 {% block style %}
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -12,14 +13,18 @@
 {% endblock %}
 
 {% block body %}
-  <form method="get">
+
+<div>
+    <center><h3>Search here!</h3>
+  <form method="get" >
     {{ filter.form.as_p }}
-    <button type="submit">Search</button>
-  </form>
+    <button type="submit" class="btn btn-lg btn-primary">Search</button>
+  </form></center>
+</div>
 
 <section id="team" class="pb-5">
     <div class="container">
-        <h5 class="section-title h1">OUR TEAM</h5>
+        <h5 class="section-title h1">CDAP MEMBERS</h5>
         <div class="row">
             {% if filter.qs %}
             {% for user in filter.qs %}
