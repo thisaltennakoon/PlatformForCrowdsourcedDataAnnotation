@@ -1,7 +1,7 @@
 from django import forms
 from .models import Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Task
 from django.forms import formset_factory, modelformset_factory
-
+from upload_validator import FileTypeValidator
 # class CreateTaskForm(forms.ModelForm):
 
 #     class Meta:
@@ -109,6 +109,12 @@ class CreateTaskForm(forms.ModelForm):
 
 #             #'csvFile': forms.FileField(required=True),
 #         }
+
+# class CsvForm(forms.Form):
+#     data = forms.FileField(required=True,validators=[FileTypeValidator(
+#         allowed_types=['application/vnd.ms-excel'],
+#         allowed_extensions=[ '.csv']
+#     )])
 
 class CsvForm(forms.Form):
     data = forms.FileField(required=True)
