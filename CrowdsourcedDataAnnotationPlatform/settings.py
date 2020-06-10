@@ -25,7 +25,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.67.25.228']
+ALLOWED_HOSTS = ['104.197.54.228']
 
 
 # Application definition
