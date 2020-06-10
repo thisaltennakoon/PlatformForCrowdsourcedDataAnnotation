@@ -70,14 +70,6 @@ class TaskRegForm(forms.ModelForm):
         model = ContributorTask
         fields = ['User', 'Task']
 
-class filterForm(forms.ModelForm):
-    class Meta:
-        filterSet = ProfileFilter
-        fields = ['first_name', 'is_author', 'is_contributor']
-
-    first_name = forms.CharField(label='first_name',widget=forms.TextInput(attrs={'placeholder': 'Name', 'class': 'form-control'}))
-    new_password1 = forms.CharField(label='password',widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
-    new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
 
 """class RateForm (forms.ModelForm):
     class Meta:

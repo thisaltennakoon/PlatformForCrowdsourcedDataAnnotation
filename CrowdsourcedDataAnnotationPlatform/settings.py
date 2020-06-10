@@ -37,22 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'UserManagement',
+    'CreateTask',
     'CreateDataAnnotationTask',
     'CreateDataGenerationTask',
     'DoDataAnnotationTask',
     'DoDataGenerationTask',
-    'UserManagement',
+    'django_filters',
     'CreateTextDataAnnotationTask',
     'DoTextDataAnnotationTask',
-    'CreateTask',
     'DoTask',
     'ImageDataAnalyse',
     'TextDataAnalyse',
     'testresultrank',
-    'django_filters',  #search filter in user management
-    'django_pyc',
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -87,25 +86,18 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#Janani's sqlite database
-"""DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}"""
-
-#Janani's mysql database
+#Janani's database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sepnew',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '',
-        'PORT': ''
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
+
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -129,7 +121,6 @@ DATABASES = {
         'PORT':'3308'
     }
 }"""
-
 
 #MySQL event for release data instances
 """
@@ -245,12 +236,8 @@ STATICFILES_DIRS =  [
 
 STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-#Janani's parts
-#MEDIA_URL = '/images/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
 DJANGORESIZED_DEFAULT_QUALITY = 75
@@ -263,7 +250,7 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 
 EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 25
-EMAIL_USE_TLS = 'False'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = 'true'
 EMAIL_HOST_USER = 'cdapmanager@gmail.com'
 EMAIL_HOST_PASSWORD = 'cdap@admin'
