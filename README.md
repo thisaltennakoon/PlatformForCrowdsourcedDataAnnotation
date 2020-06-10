@@ -4,7 +4,7 @@ Thisal
 
 git pull origin master
 pip install mysqlclient
-pip install django-pyc
+pip3 install django-pyc
 pip3 install django-filter
 pip3 install xlrd
 pip3 install Pillow
