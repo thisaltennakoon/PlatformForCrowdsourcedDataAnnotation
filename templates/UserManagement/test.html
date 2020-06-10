@@ -169,3 +169,48 @@
 </body>
 </html>
 
+
+
+
+
+
+
+
+
+
+<div class="w3-twothird">
+    {% if all_author_tasks %}
+    {% for i in all_author_tasks %}
+    <div class="w3-container w3-card w3-white w3-margin-bottom" style="width:100%">
+        <div class="w3-container"><br>
+        <h4>{{i.title}}</h4>
+        </div><br>
+        <div class="w3-container"><br>
+        <h6>Descrition : {{i.description}}</h6>
+        </div><br>
+        <div class="w3-container">
+        {% if i.taskType == "ImageAnno" %}
+        <h5>Data type : Image</h5>
+        {% elif i.taskType == "TextAnno" %}
+        <h5>Data type : Text</h5>
+        {% endif %}
+        </div><br>
+        {% if i.taskType == "ImageAnno" %}
+        <button><a href="/ImageDataAnalyse/Analyse/?Task_ID == {{i.id}}">Image Task analysis</a></button>
+        {% endif %}
+        {% if i.taskType == "TextAnno" %}
+            <button><a href="/TextDataAnalyse/Analyse/?Task_ID == {{i.id}}">Text Task analysis</a></button>
+        {% endif %}
+        <button><a href="{% url 'UserManagement:delete_task' i.id %}">Delete</a></button>
+        <button><a href="/ResultAnalyse/Rank/?Task_ID=={{i.id}}">Test analysis</a></button><br>
+    </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>You don't have added tasks !</p>
+    {% comment %} <button type="button" class="btn btn-outline-success" ><a href="#" >Add image annotation Task</a></button> 
+    <button type="button" class="btn btn-outline-success" ><a href="#" >Add text annotation Task</a></button>  {% endcomment %}
+    </div>
+    {% endif %}
+    </div>
+

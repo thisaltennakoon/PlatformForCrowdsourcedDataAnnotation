@@ -1,119 +1,118 @@
 <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Data Annotation</title>
-        {% load static %}
-        {% load auth_extras %}
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-        <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-        <script type="text/javascript" src="{% static 'js/autogrow.js' %}"> </script>
-        <script type="text/javascript" src="{% static 'js/main.js' %}"> </script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-       
-        <style type="text/css">
-            .spacer{
-                margin-top:25px;
-            }
-        
-        </style>
-        {% block custom_css %}{% endblock %}
-        <!-- Core theme CSS (includes Bootstrap)-->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Data Annotation</title>
+    {% load static %}
+    {% load auth_extras %}
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 
-        <link href="{% static 'createtask/css/styles.css' %}" rel="stylesheet" />
-
-    </head>
-    <body>
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{% url 'home' %}">CDAP</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only"></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:search' %}">Search</a>
-                </li>
-                {% if not user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:sign_up' %}">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:sign_in' %}">Sign In</a>
-                </li>
-                {% endif %}
-                {% if user|has_group:"crowd_user" %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:profile' %}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:change_password' %}">Change Password</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/UserManagement/MyTasks/">MyTasks</a>
-                </li>
-        
-                <!---li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                    Settings
-                </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
-                    <a class="dropdown-item" href="{% url 'UserManagement:change_password' %}">Change Password</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li-->
-                {% endif %}
-                {% if user|has_group:"admin" %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View tasks</a>
-                </li>
-                {% endif %}
-                {% if user.is_authenticated and user.Profile.is_contributor %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">AvailableTasks</a>
-                </li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'UserManagement:sign_out' %}">Sign Out</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-
-        </nav>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/autogrow.js' %}"> </script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"> </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+   
+    <style type="text/css">
+        .spacer{
+            margin-top:25px;
+        }
     
-    {% block container %}
-    {% endblock container %}
-    
-    
-    </body>
-     
+    </style>
+    {% block custom_css %}{% endblock %}
+    <!-- Core theme CSS (includes Bootstrap)-->
 
+    <link href="{% static 'createtask/css/styles.css' %}" rel="stylesheet" />
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">CDAP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:search' %}">Search</a>
+            </li>
+            {% if not user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:sign_up' %}">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:sign_in' %}">Sign In</a>
+            </li>
+            {% endif %}
+            {% if user|has_group:"crowd_user" %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:change_password' %}">Change Password</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/UserManagement/MyTasks/">MyTasks</a>
+            </li>
+    
+            <!---li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                Settings
+            </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
+                <a class="dropdown-item" href="{% url 'UserManagement:change_password' %}">Change Password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li-->
+            {% endif %}
+            {% if user|has_group:"admin" %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View tasks</a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated and user.Profile.is_contributor %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">AvailableTasks</a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'UserManagement:sign_out' %}">Sign Out</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    </nav>
+
+{% block container %}
+{% endblock container %}
+
+
+</body>

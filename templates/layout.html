@@ -13,19 +13,24 @@
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    {% block style %}{% endblock %}
+
     <!-- FONTS
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    {% block style %} {% endblock %}
-	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+   
+	<!--link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet"-->
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!--link href='https://fonts.googleapis.com/css?family=Work+Sans:400,500' rel='stylesheet' type='text/css'-->
+    <!--link href='https://fonts.googleapis.com/css?family=Cousine' rel='stylesheet' type='text/css'-->
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/autogrow.js' %}"> </script>
-    <script type="text/javascript" src="{% static 'js/main.js' %}"> </script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"-->
+    
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+
+    
+    
 </head>
 
 <body>
@@ -38,7 +43,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only"></span></a>
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'UserManagement:search' %}">Search</a>
@@ -64,32 +69,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="/UserManagement/MyTasks/">MyTasks</a>
             </li>
-    
-            <!---li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                  Settings
-            </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'UserManagement:edit_profile' %}">Edit Profile</a>
-                  <a class="dropdown-item" href="{% url 'UserManagement:change_password' %}">Change Password</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li-->
+
             {% endif %}
             {% if user|has_group:"admin" %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View users</a>
             </li>
-            <li class="nav-item">
+            <!--li class="nav-item">
                 <a class="nav-link" href="{% url 'UserManagement:profile_list' %}">View tasks</a>
-            </li>
+            </li-->
             {% endif %}
-            {% if user.is_authenticated and user.Profile.is_contributor %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'UserManagement:field_task_list' %}">AvailableTasks</a>
-            </li>
-            {% endif %}
+
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'UserManagement:sign_out' %}">Sign Out</a>
