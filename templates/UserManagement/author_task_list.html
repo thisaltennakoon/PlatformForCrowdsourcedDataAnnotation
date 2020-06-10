@@ -32,17 +32,17 @@
                     <p class="desc">{{task.description}}</p>
                     <div class="rating-wrap">
                         <div class="label-rating"><a href="#">Contributors</div>
-                        <div class="label-rating"><a href="/ResultAnalyse/Rank/?Task_ID=={{task.id}}" class="btn btn-sm btn-outline-primary">Test result analysis </a></div>
+                        <div class="label-rating"><a href="/ResultAnalyse/Rank/?Task_ID={{task.id}}" class="btn btn-sm btn-outline-primary">Test result analysis </a></div>
                     </div> <!-- rating-wrap.// -->
             </figcaption>
             <div class="bottom-wrap">
                 <a href="{% url 'UserManagement:delete_task' task.id %}" class="btn btn-sm btn-danger float-right">Delete</a>	
                 <div class="price-wrap h5">
                     {% if task.taskType == "ImageAnno" %}
-                        <a href="/ImageDataAnalyse/Analyse/?Task_ID == {{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
+                        <a href="/ImageDataAnalyse/Analyse/?Task_ID = {{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
                     {% endif %}
                     {% if task.taskType == "TextAnno" %}
-                        <a href="/TextDataAnalyse/Analyse/?Task_ID == {{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
+                        <a href="/TextDataAnalyse/Analyse/?Task_ID = {{task.id}}" class="btn btn-sm btn-outline-primary">Task analysis</a></button>
                     {% endif %}
                 </div> <!-- price-wrap.// -->
             </div> <!-- bottom-wrap.// -->
