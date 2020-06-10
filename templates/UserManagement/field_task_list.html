@@ -1,66 +1,37 @@
-
 {% extends 'layout.html' %}
-{% load static %}
-
-{% block title %} Available Tasks | {% endblock %}
-
-{% block style %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
-{% endblock %}
-
-
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
 {% block body %}
 
-<div class="container">
-
-    <br> <h2 class="text-center">New Tasks for me</h2>
-    <hr>
-    {% if all_field_tasks_unregistered %}
     <div class="row">
-    {% for task in all_field_tasks_unregistered %}
-    <div class="col-md-4">
-        <figure class="card card-product">
-            {% if task.taskType == "ImageAnno" %}
-            <div class="img-wrap"><img src="{% static 'img/img_type.png' %}"></div>
-            {% elif task.taskType == "TextAnno" %}
-            <div class="img-wrap"><img src="{% static 'img/text_folder.png' %}"></div>
-            {% endif %}
-            <figcaption class="info-wrap">
-                    <h4 class="title">{{task.title}}</h4>
-                    <p class="desc">{{task.description}}</p>
-                    <div class="rating-wrap">
-                        {% if task.taskType == "ImageAnno" %}
-                        <div class="label-rating">Data Type : Image</div>
-                        {% endif %}
-                        {% if task.taskType == "TextAnno" %}
-                        <div class="label-rating">Data Type : Text</div>
-                        {% endif %}
-                        <div class="label-rating">Author : Name</div>
-                    </div> <!-- rating-wrap.// -->
-            </figcaption>
-            <div class="bottom-wrap">
-                <a href="{% url 'UserManagement:reg_task' task.id %}" class="btn btn-sm btn-primary float-right">Register</a>	
-                <!--div class="price-wrap h5">
-                    {% if task.taskType == "ImageAnno" %}
-                        <a href="/ImageDataAnalyse/Analyse/?Task_ID == {{task.id}}" class="btn btn-sm btn-primary">Task analysis</a></button>
-                    {% endif %}
-                    {% if task.taskType == "TextAnno" %}
-                        <a href="/TextDataAnalyse/Analyse/?Task_ID == {{task.id}}" class="btn btn-sm btn-primary">Task analysis</a></button>
-                    {% endif %}
-                </div--> <!-- price-wrap.// -->
-            </div> <!-- bottom-wrap.// -->
-        </figure>
-    </div> <!-- col // -->
-    {% endfor %}
-    
-    </div> <!-- row.// -->
-    {% else %}
-    <h3>you don't have any new task</h3>
-    
-    {% endif %}
-    </div> 
+        <div class="col-md">
+            <h4>Tasks</h4>
+        </div>
+        {% if all_field_tasks_unregistered %}
+        <div class="card card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Field</th>
+                    <th>Data type</th>
+                    <th>Register</th>
+                </tr>
+                
+                    {% for i in all_field_tasks_unregistered %}
+                        <tr>
+                            <td>{{i.title}}</td>
+                            <td>{{i.description}}</td>
+                            <td>{{i.field}}</td>
+                            <td>{{i.taskType}}</button></td>
+                            <td><button type="submit"><a href="{% url 'UserManagement:reg_task' i.id %}">Register</a></button></td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                <p>Sorry, you don't have new tasks to contribute !</p>
+            </table>
+        </div>
+        {% endif %}
+    </div>
 
 {% endblock %}

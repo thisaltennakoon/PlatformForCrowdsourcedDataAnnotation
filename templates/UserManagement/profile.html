@@ -7,34 +7,10 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="{% static 'css/layout.css' %}">
-<script>
-  /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
-
-</script>
 <style>
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 </style>
 {% endblock %}
-
 
 {% block body %}
 {% if not profile.first_name %}
@@ -51,22 +27,25 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     <div class="w3-third">
     
       <div class="w3-white w3-text-grey w3-card-4">
-        <div class="w3-display-container" style="align-content: center;"><br>
-          <img src="{{profile.avatar.url}}" style="width:400px; height:400px; size: relative; border-radius:50%; max-width:100%; padding-left:5%; padding-right:2%;" alt="">
+        <div class="w3-display-container"><br>
+          <img src="{{profile.avatar.url}}" style="width:400px; height:400px; size: relative; border-radius:50%; max-width:100%; text-align: center;" alt="">
         </div><br>
         <div class="w3-container">
             {% if profile.is_author %}
-          <p style="color: black;"><i class="fa fa-briefcase fa-fw w3-margin-right w3-large" style="color: grey;"></i>Task Author</p>
+          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Author</p>
           {% endif %}
             {% if profile.is_contributor %}
-            <p style="color: black;"><i class="fa fa-briefcase fa-fw w3-margin-right w3-large" style="color: grey;"></i>Task Contributor</p>
+            <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-black"></i>Task Contributor</p>
           {% endif %}
-          <p style="color: black;"><i class="fa fa-pen fa-fw w3-margin-right w3-large " style="color: grey;"></i>{{profile.field}}</p>
-            <p style="color: black;"><i class="fa fa-home fa-fw w3-margin-right w3-large" style="color: grey;"></i>{{profile.country}}</p>
-          <p style="color: black;"><i class="fa fa-envelope fa-fw w3-margin-right w3-large" style="color: grey;"></i>{{profile.email}}</p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-black"></i>{{profile.country}}</p>
+          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-black"></i>{{profile.email}}</p>
           <hr>
 
-       
+          <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-black"></i>Rating</b></p>
+          <p>1.2k</p>
+          <div class="w3-light-grey w3-round-xlarge w3-small">
+            <div class="w3-container w3-center w3-round-xlarge w3-black" style="width:90%">90%</div>
+          </div><br>
         </div>
       </div><br>
 
@@ -77,29 +56,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     <div class="w3-twothird">
     
       <div class="w3-container w3-card w3-white w3-margin-bottom">
-
-        <div class="w3-container"><br>
-        <div class="dropdown">
-          <button onclick="myFunction()" class=" btn btn-primary btn-lg btn-block dropbtn">Tasks</button>
-          <div id="myDropdown" class="dropdown-content">
-            {% if profile.is_contributor %}
-            <a href="{% url 'UserManagement:field_task_list' %}">Available tasks</a>
-            {% endif %}
-            {% if profile.is_author %}
-            <a href="{% url 'UserManagement:author_task_list' %}">Authored tasks</a>
-            {% endif %}
-            {% if profile.is_contributor %}
-            <a href="/UserManagement/MyTasks/">Registered tasks</a>
-            {% endif %}
-            {% if profile.is_author %}
-            <a href="{% url 'createtask:Anno_task_add' %}">Add image annotation Task</a>
-            <a href="{% url 'createtask:Anno_task_add' %}">Add text annotation Task</a>
-            {% endif %}
-          </div>
-        </div>
-      </div><br>
-
-      <!--
         {% if profile.is_contributor %}
         <div class="w3-container"><br>
           <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:field_task_list' %}" >AvailabeTask</a></button>
@@ -110,9 +66,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:author_task_list' %}" >Added Tasks</a></button>
         </div><br>
         {% endif %}
-        <button type="button" class="btn btn-outline-success" ><a href="{% url 'createtask:Anno_task_add' %}" >Add image annotation Task</a></button> 
-        <button type="button" class="btn btn-outline-success" ><a href="{% url 'createtask:TextAnno_task_add'%}" >Add text annotation Task</a></button> <br><br>
-        <div class="w3-container">
+        <button type="button" class="btn btn-outline-success" ><a href="{%url 'createtask:Anno_task_add' %}" >Add image annotation Task</a></button> 
+        <button type="button" class="btn btn-outline-success" ><a href="{%url 'createtask:TextAnno_task_add'%}" >Add text annotation Task</a></button> 
+        <!--div class="w3-container">
           <button type="button" class="btn btn-outline-success" ><a href="{% url 'UserManagement:author_task_list' %}">Edit Profile</a></button>
         </div><br>
         <div class="w3-container">
@@ -120,7 +76,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
         </div><br-->
       </div>
 
-      {% if profile.is_contributor %}
       <div class="w3-container w3-card w3-white">
         <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Completed Tasks</h2>
         <div class="w3-container">
@@ -136,24 +91,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <hr>
         </div>
 
-      </div>
-      {% endif %}
-      {% if profile.is_author %}
-      <div class="w3-container w3-card w3-white">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Authored Tasks</h2>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Task1</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>date</h6>
-          <p>Description</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Task2</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>year</h6>
-          <p>description</p>
-          <hr>
-        </div>
-      {% endif %}
       </div>
 
     <!-- End Right Column -->
