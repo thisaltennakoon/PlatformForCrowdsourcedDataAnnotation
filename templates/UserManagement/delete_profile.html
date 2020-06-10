@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %}Sign Up | {{ super }}{% endblock %}
+{% block title %}Delete User | {{ super }}{% endblock %}
 
 {% block style %}
 <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
               <p style="color:red">{{form.errors}}</p>
               <form method="POST" action="">
                 {% csrf_token %}
-                  <a href="{% url 'UserManagement:profile_list' %}">NO, take me back.</a> 
+                  <a href="{% url 'UserManagement:profile_list' %}" class="">NO, take me back.</a> 
                   <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Yes, I'm sure">
                 </form>
             </div>
