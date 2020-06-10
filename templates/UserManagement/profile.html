@@ -93,7 +93,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
             {% endif %}
             {% if profile.is_author %}
             <a href="{% url 'createtask:Anno_task_add' %}">Add image annotation Task</a>
-            <a href="{% url 'createtask:Anno_task_add' %}">Add text annotation Task</a>
+            <a href="{% url 'createtask:TextAnno_task_add' %}">Add text annotation Task</a>
             {% endif %}
           </div>
         </div>
