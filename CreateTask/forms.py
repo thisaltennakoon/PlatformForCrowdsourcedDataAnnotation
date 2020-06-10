@@ -110,14 +110,14 @@ class CreateTaskForm(forms.ModelForm):
 #             #'csvFile': forms.FileField(required=True),
 #         }
 
-# class CsvForm(forms.Form):
-#     data = forms.FileField(required=True,validators=[FileTypeValidator(
-#         allowed_types=['application/vnd.ms-excel'],
-#         allowed_extensions=[ '.csv']
-#     )])
-
 class CsvForm(forms.Form):
-    data = forms.FileField(required=True)
+    data = forms.FileField(required=True,validators=[FileTypeValidator(
+        allowed_types=['text/plain'],
+        allowed_extensions=[ '.csv']
+    )])
+
+# class CsvForm(forms.Form):
+#     data = forms.FileField(required=True)
 
 
 DQuestionFormSet = modelformset_factory(
