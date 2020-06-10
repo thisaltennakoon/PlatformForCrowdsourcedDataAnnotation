@@ -10,31 +10,24 @@
 <style>
 	body{
 		padding-top: 5px;
-		background-color: #2b753c!important;
+		background-color: #6f746f;
 	}
-	.navbar {
-		background-color:#28a745!important; height:50px; padding-top:0px;
-		border: white 1px solid;
-	  }
-	  .navbar-brand{
-		color: white!important; line-height:40px; padding-left: 50px; padding-top:0px; font-size:25px;
-	  }
 	  .form-inline{
 		padding-top:7px;
 	  }
 	  .btn{
 		background-color: white!important; 
 	  }
-	  .btn:active{color:#28a745!important;
+	  .btn:active{color:#343a40;
 	  }
 	 
 	  .highcharts-point{
-		fill:#28a745!important;
+		fill:#343a40;
 	  }
 	  .card {
 		background-color: white;
-		border: 2px solid #28a745;
-        margin: 0 auto; /* Added */
+		border: 2px solid #343a40;
+		margin: 0 auto; /* Added */
         float: none; /* Added */
 		margin-bottom: 10px; /* Added */
 		width: 1000px;
@@ -52,12 +45,58 @@ h5{
 
 </style>
 <body>
-	<nav class="navbar navbar-light bg-light justify-content-between " >
-		<a class="navbar-brand" >CDAP</a>
-		<form class="form-inline">
-		  <a href="###" class="btn btn-outline-success mr-sm-2"  > View Result </a>
-		  <a href="###" class="btn btn-outline-success my-2 my-sm-0" >SignOut</a>
-		</form>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="/">CDAP</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+		</button>
+	
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/search/">Search</a>
+			</li>
+			
+			
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/profile/">Profile</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/profile/edit/">Edit Profile</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/profile/change_password/">Change Password</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/MyTasks/">My Tasks</a>
+			</li>
+			<li class="nav_item">
+	
+			</li>
+			<!---li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+				  Settings
+			</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				  <a class="dropdown-item" href="/UserManagement/profile/edit/">Edit Profile</a>
+				  <a class="dropdown-item" href="/UserManagement/profile/change_password/">Change Password</a>
+				  <div class="dropdown-divider"></div>
+				  <a class="dropdown-item" href="#">Something else here</a>
+				</div>
+			  </li-->
+			
+			
+			
+			
+			<li class="nav-item">
+				<a class="nav-link" href="/UserManagement/sign_out/">Sign Out</a>
+			</li>
+			
+			</ul>
+	</div>
 	</nav>
 	<br>
 	<div class="card" >

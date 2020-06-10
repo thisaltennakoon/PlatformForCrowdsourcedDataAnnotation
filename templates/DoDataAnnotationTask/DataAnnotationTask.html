@@ -36,7 +36,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
             <!---Annotated images-->
 
             {% if annotated_data_instances_available %}
-            <button onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.id}}'" type="button" class="btn btn-info">View My Contributions</button><hr>
+            <button onclick="window.location.href = '/DoDataAnnotationTask/ViewMyAnnotations?task_id={{task_id}}&viewing_data_instance={{data_instance.media}}'" type="button" class="btn btn-info">View My Contributions</button><hr>
 
             {% for annotated_data_instance in annotated_data_instances %}
             <div class="w3-bar-item">

@@ -2,8 +2,12 @@
 
 Thisal
 
+git pull origin master
 pip install mysqlclient
 pip install django-pyc
+pip3 install django-filter
+pip3 install xlrd
+pip3 install Pillow
 Clear all pyc files safely- python manage.py clearpyc --noinput
 
 MySQL event
@@ -19,7 +23,7 @@ CREATE EVENT release_data_instances  -- create your event
 
 
 Janani
-pip install django_countries
+pip3 install django_countries
 make a superuser : python manage.py createsuperuser
 
 
@@ -28,4 +32,4 @@ Kasun
 
 
 Abi
-pip install nltk
+pip3 install nltk
