@@ -127,14 +127,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
         {% for text_data_annotation_task in user_text_data_annotation_tasks %}
         {% if text_data_annotation_task.status == "completed" %}
         <div class="w3-container">
-          <h5 class="w3-opacity"><b>text_data_annotation_task.title</b></h5>
+          <h5 class="w3-opacity"><b>{{text_data_annotation_task.title}}</b></h5>
           <p>text_data_annotation_task.description</p>
           <hr>
         </div>
         {% endif %} 
         {% if image_data_annotation_task.status == "completed" %}
         <div class="w3-container">
-          <h5 class="w3-opacity"><b>image_data_annotation_task.title</b></h5>
+          <h5 class="w3-opacity"><b>{{image_data_annotation_task.title}}</b></h5>
           <p>image_data_annotation_task.description</p>
           <hr>
         </div>
