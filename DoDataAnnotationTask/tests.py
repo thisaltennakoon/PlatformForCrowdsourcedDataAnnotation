@@ -4,7 +4,7 @@ from django.urls import reverse, resolve
 from .views import *
 from .models import *
 from CreateTask.models import Task
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 import datetime
 
 
@@ -82,9 +82,27 @@ class TestModels(TestCase):
 
 class TestViews(TestCase):
 
-    def test_testgtgt_GET(self):
-        client = Client()
-        #response = client.get('')
+    def setUp(self):
+        group_name = "My Test Group"
+        self.group = Group(name=group_name)
+        self.group.save()
+        self.c = Client()
+        self.user = User.objects.create_user(username="test", email="test@test.com", password="test")
+        print(self.group)
+
+    #def test_testgtgt_GET(self):
+        #client = Client()
+        #response = client.get('test')
 
         #self.assertEquals(response.status_code, 200)
         #self.assertTemplateUsed(response, 'DoDataAnnotationTask/test.html')
+
+
+    def test_user_can_access(self):
+        """user in group should have access
+        """
+        self.user.groups.add(self.group)
+        self.user.save()
+        self.c.login(username='test', password='test')
+        response = self.c.get("/DoDataAnnotationTask/task")
+        self.assertEqual(response.status_code, 200)
