@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['104.197.54.228']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'TextDataAnalyse',
     'testresultrank',
     'django_filters',  #search filter in user management
-    'django_pyc',
+    #'django_pyc',
 ]
 
 MIDDLEWARE = [
@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Janani's mysql database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sepnew',
@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
         'HOST': '',
         'PORT': ''
     }
-}"""
+}
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -119,17 +119,16 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST':'localhost',
+        'HOST':'127.0.0.1',
         'PORT':'3308'
     }
-}
-
+}"""
 
 #MySQL event for release data instances
 """
@@ -151,19 +150,19 @@ CREATE EVENT release_data_instances_mediadatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.CreateTask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.createtask_mediadatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
       
 CREATE EVENT release_data_instances_textdatainstance  -- create your event
     ON SCHEDULE
       EVERY 300 SECOND  -- run every 300 secs (5 Min)
     DO
-      UPDATE crowdsourceddataannotationplatform.CreateTask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
+      UPDATE crowdsourceddataannotationplatform.createtask_textdatainstance SET IsViewing=False,WhoIsViewing=0 WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 5 MINUTE)-- update this table
 ;
 
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
-    BEFORE UPDATE ON CreateTask_mediadatainstance
+    BEFORE UPDATE ON createtask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -173,7 +172,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
-    BEFORE INSERT ON CreateTask_mediadatainstance
+    BEFORE INSERT ON createtask_mediadatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -182,7 +181,7 @@ CREATE TRIGGER set_last_update_time_mediadatainstance_on_insert
 
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_update
-    BEFORE UPDATE ON CreateTask_textdatainstance
+    BEFORE UPDATE ON createtask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -192,7 +191,7 @@ CREATE TRIGGER set_last_update_time_textdatainstance_on_update
     
 delimiter //
 CREATE TRIGGER set_last_update_time_textdatainstance_on_insert
-    BEFORE INSERT ON CreateTask_textdatainstance
+    BEFORE INSERT ON createtask_textdatainstance
     FOR EACH ROW
     BEGIN
     SET NEW.LastUpdate = NOW();
@@ -239,14 +238,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS =  [
-    os.path.join(BASE_DIR  , 'static')
-]
+# STATICFILES_DIRS =  [
+#     os.path.join(BASE_DIR  , 'static')
+# ]
 
-STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
+#STATIC_ROOT = os.path.join(BASE_DIR  , 'assets')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #Janani's parts
 #MEDIA_URL = '/images/'
