@@ -10,133 +10,136 @@
     
 </head>
 <style>
-    
-   
-  body{
-    border:5px solid  #343a40;
-   }   
-      
-      
-      #popup-1 {
-          display: none;
-          background-color: rgba(0,0,0,0.5);
-          position: absolute;
-      
-      }
-      #popup-2 {
-        display: none;
-        background-color: rgba(0,0,0,0.5);
-        position: absolute;
-      }
-      #popup-3 {
-      display: none;
-      background-color: rgba(0,0,0,0.5);
-      position: absolute;
-    }
-    #popup-4 {
+  #popup-1 {
     display: none;
     background-color: rgba(0,0,0,0.5);
     position: absolute;
-    
-    }
-      
-      .popup-content {
-          position: relative;
-          padding: 20px;
-          margin: 0 auto;
-          background-color: rgb(152, 226, 216);
-          width: 700px;
-          top: 0vh;
-          border:4px solid  #343a40;
-          border-radius: 8px;
-      }
-      button{
-        border:2px ;
-      }
-      button:active{
-        background-color:darkseagreen;
-      }
-  .row{
-    padding-left: 175px; 
-    padding-top:5px;
-  }
-  .card{
-    border:2px solid #343a40;
-  }
-  .card-header{
-    background-color: #343a40;; 
-    color: #fff; 
-    font-size:20;
-  
-  }
-  .card-body{
-    background-color: #6f746f;
-  }
-  #container{
-    width:525px; 
-    padding-left:200; 
-    padding-top:20px;
-  }
-  #textanalyse{
-    border:2px solid  #343a40;;
-  }
-  .card1{
-    height:10px;
-  }
-  .card text-white bg-success mb-4{
-    max-width: 45rem;
-  }
-  #body{
-    height:580px;
-  }
-  #inner-body{
-    background-color: white;
-    border:#343a40;;
-    padding-top:10px;
-    border-radius: 5px;
-    
-  }
-  .card2{
-    width: 22rem;
-  }
-  .card-title{
-    color: black;
-    cursor: pointer;
-    pointer-events: visible;
-    
-  }
-  .card-title:active{
-    color: rgb(82, 82, 170);
-  }
-  .card-text{
-    color: black;
-  
-  }
-  #int{
-    height:125px; padding-top:50px;
-    padding-bottom: 20px;
-  }
-  .text{
-    text-align:center; 
-    font-weight:bold;
-  }
-  #last{
-    padding-top:10px;
-  }
-  .form-inline{
-    padding-top:7px;
-  }
-  .btn{
-    background-color: white; 
-  }
-  .btn:active{color:#343a40;;
-  }
-  .bg-success1{
-    background-color: #343835 !important;
-  
-  }
+
+}
+#popup-2 {
+  display: none;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+}
+#popup-3 {
+display: none;
+background-color: rgba(0,0,0,0.5);
+position: absolute;
+}
+#popup-4 {
+display: none;
+background-color: rgba(0,0,0,0.5);
+position: absolute;
+
+}
+
+.popup-content {
+    position: relative;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: rgb(152, 226, 216);
+    width: 50%;
+    top: 0vh;
+    border:4px solid  #343a40;
+    border-radius: 8px;
+}
+button{
+  border: solid black;
+  border-radius: 5%;
+}
+button:active{
+  background-color:darkseagreen;
+}
+.row{
+padding-left: 175px; 
+padding-top:5px;
+}
+
+.card-header{
+
+color: #fff; 
+font-size:20;
+
+}
+.card-body{
+background-color: #6f746f;
+}
+#container{
+width:45%; 
+margin: auto;
+}
+#textanalyse{
+border:2px solid  #343a40;;
+}
+.card{
+border: solid black;
+border-radius:1% ;
+}
+.card1{
+height:10px;
+}
+.card text-white bg-success1 mb-4{
+max-width: 45rem;
+border-radius: 0.6%;
+
+}
+
+#body{
+height:150%;
+background-color: white;
+}
+#inner-body{
+background-color: white;
+border: solid black;
+padding-top:10px;
+border-radius: 5px;
+
+}
+.card2{
+margin: auto;
+}
+.card-title{
+color:rgb(112, 7, 77);
+text-underline-position: below;
+cursor: pointer;
+pointer-events: visible;
+
+}
+.card-title:hover{
+color:darkviolet;
+}
+.card-title:active{
+color: rgb(82, 82, 170);
+}
+.card-text{
+color: black;
+
+}
+#int{
+height:125px; padding-top:50px;
+padding-bottom: 20px;
+}
+.text{
+text-align:center; 
+font-weight:bold;
+}
+#last{
+padding-top:10px;
+}
+.form-inline{
+padding-top:7px;
+}
+.btn{
+background-color: white; 
+}
+.btn:active{color:#343a40;;
+}
+.bg-success2{
+background-color: #188333 !important;
+
+}
 </style>
-<body >
+<body style="background-color: #6f746f;">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">CDAP</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -190,72 +193,75 @@
         </ul>
 </div>
 </nav>
-    <div class="row" >
-        <div class="col-sm-7">
-          <div class="card" >
-            <div class="card-header" >Annotation Analysis Pie Chart for {{r}} number of details</div>
-            <div class="card-body"  >
-                <div id="container" >
-                  <canvas id="textanalyse" width="100%" height="100%" style='background-color:#fff;'></canvas>
-                </div>
-            </div>
+<div class="row" >
+  <div class="col-sm-7">
+    <div class="card" style="border: black 1%;">
+      <div class="card-header" style="background-color:navy">Annotation Analysis Pie Chart for {{r}} number of details</div>
+      <div class="card-body" style="background-color:white; border:black" >
+          <div id="container" >
+            <canvas id="textanalyse" width="100%" height="100%" style="background-color: #fff;"></canvas>
           </div>
-        </div>
+      </div>
+    </div>
+  </div>
+          
         
-        <div class="col-sm-4">
-          <div class="card1" >
-            <div class="card text-white bg-success mb-4" >
-                <div class="card-header">Inter Annotator Agreement for Task</div>
-                <div class="card-body" id = "body" >
-                    <div class="card2"  >
-                        <div class="card-body" id= "inner-body">
-                          <h5 class="card-title" id="open-popup-1">Inter-rater reliability(Kappa)</h5>
-                          <p class="card-text">{{k}}</p>
-                          
-                        </div>
-                      </div>
-                      <br>
-                      <div class="card2"  >
-                        <div class="card-body" id= "inner-body">
-                          <h5 class="card-title" id="open-popup-2" >Statistical measure for agreement(Fleiss)</h5>
-                          <p class="card-text">{{f}} </p>
-                          
-                        </div>
-                      </div>
-                      <br>
-                      <div class="card2"  >
-                        <div class="card-body" id= "inner-body">
-                          <h5 class="card-title" id="open-popup-3" >Versatile statistic for agreement(Alpha)</h5>
-                          <p class="card-text">{{a}} </p>
-                          
-                        </div>
-                      </div>
-                      <br>
-                      <div class="card2"  >
-                        <div class="card-body" id= "inner-body">
-                          <h5 class="card-title" id="open-popup-4" >statistic for measuring inter-rater reliability for nominal data(Scotts)</h5>
-                          <p class="card-text">{{s}}</p>
-                          
-                        </div>
-                      </div>
-
-                
+        
+  <div class="col-sm-4">
+    <div class="card1" >
+      <div class="card text-white bg-success1 mb-4" >
+          <div class="card-header" style="background-color:#660066;">Inter Annotator Agreement for Task</div>
+          <div class="card-body" id = "body" >
+              <div class="card2"  >
+                  <div class="card-body" id= "inner-body">
+                    <h5 class="card-title" id="open-popup-1"><u>Inter-rater reliability(Kappa)</u></h5>
+                    <p class="card-text">{{k}}</p>
+                    
+                  </div>
                 </div>
-              </div>
+                <br>
+                <div class="card2"  >
+                  <div class="card-body" id= "inner-body">
+                    <h5 class="card-title" id="open-popup-2" ><u>Statistical measure for agreement(Fleiss)</u></h5>
+                    <p class="card-text">{{f}} </p>
+                    
+                  </div>
+                </div>
+                <br>
+                <div class="card2"  >
+                  <div class="card-body" id= "inner-body">
+                    <h5 class="card-title" id="open-popup-3" ><u>Versatile statistic for agreement(Alpha)</u></h5>
+                    <p class="card-text">{{a}} </p>
+                    
+                  </div>
+                </div>
+                <br>
+                <div class="card2"  >
+                  <div class="card-body" id= "inner-body">
+                    <h5 class="card-title" id="open-popup-4" ><u>statistic for measuring inter-rater reliability for nominal data(Scotts)</u>
+                    </h5>
+                    <p class="card-text">{{s}}</p>
+                    
+                  </div>
+                </div>
+
+          
           </div>
         </div>
-        <div class="col-sm-7" id="last">
-            <div class="card"  >
-              <div class="card-header" >Process Progress for Annotation Task</div>
-              <div class="card-body" id="int">
-                <div class="progress" >
-                    <div class="progress-bar progress-bar-striped bg-success1" role="progressbar" style="width: {{process}}%;  " aria-valuenow="{{process}}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> 
-                <br>
-                <p class ="text">Task Done Now :{{process}}%  </p>
-              </div>
-            </div>
-          </div>
+    </div>
+  </div>
+  <div class="col-sm-7" id="last">
+      <div class="card" >
+        <div class="card-header" style="background-color: rgb(9, 82, 9); border-radius: 0.6%; ">Process Progress for Annotation Task</div>
+        <div class="card-body" id="int"style="background-color:white;">
+          <div class="progress" >
+              <div class="progress-bar progress-bar-striped bg-success2" role="progressbar" style="width: {{process}}%;  " aria-valuenow="{{process}}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> 
+          <br>
+          <p class ="text">Task Done Now :{{process}}%  </p>
+        </div>
+      </div>
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script>
   var config = {
@@ -264,7 +270,7 @@
       datasets: [{
         data: {{ data|safe }},
         backgroundColor: [
-        '#343a40', '#C3BFBF','AD9E9E',
+        '#29B6F6', '#1E88E5','#039BE5',
         ],
         label: 'Analysis'
       }],
