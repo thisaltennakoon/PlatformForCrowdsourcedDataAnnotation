@@ -2,7 +2,7 @@ from django_countries.data import COUNTRIES
 from django import forms
 from . import models
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
 from .models import Profile, ContributorTask
 from .filters import ProfileFilter
@@ -69,7 +69,6 @@ class TaskRegForm(forms.ModelForm):
     class Meta:
         model = ContributorTask
         fields = ['User', 'Task']
-
 
 """class RateForm (forms.ModelForm):
     class Meta:
