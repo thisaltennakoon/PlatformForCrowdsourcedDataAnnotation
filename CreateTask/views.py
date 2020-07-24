@@ -726,9 +726,9 @@ def createTextGenerationTask(request):
             request.session['task'] = task.id      #task id session created
 
             # return render(request, 'createtask/success.html')
-            return redirect('createtask:Gen_example_add')
+            return redirect('UserManagement:author_task_list')
         else:
-            print('aiiyo')
+            #print('aiiyo')
             #print(taskform.errors)
             print(csvform.errors)
     
@@ -751,60 +751,60 @@ def processCsvGen(filename,task):
                 instancelist.append(DataGenTextinstance)
         DataGenTextInstance.objects.bulk_create(instancelist)
 
-@login_required(login_url='UserManagement:sign_in')
-def createGenerationTask(request):
-    template_name = 'createtask/genarationtask_form.html'
-    if request.method == 'GET':
-        customform = CustomForm1()
-        taskform = CreateTaskForm(request.GET or None)
-        formset = CateogaryFormSet(queryset=Cateogary.objects.none())
+# @login_required(login_url='UserManagement:sign_in')
+# def createGenerationTask(request):
+#     template_name = 'createtask/genarationtask_form.html'
+#     if request.method == 'GET':
+#         customform = CustomForm1()
+#         taskform = CreateTaskForm(request.GET or None)
+#         formset = CateogaryFormSet(queryset=Cateogary.objects.none())
 
-        # print(taskform.name.label)
+#         # print(taskform.name.label)
 
-    elif request.method == 'POST':
-        taskform = CreateTaskForm(request.POST)
-        formset = CateogaryFormSet(request.POST)
-        customform = CustomForm1(request.POST)
-        if taskform.is_valid() and formset.is_valid() and customform.is_valid():
-            task = taskform.save(commit=False)
-            task.creatorID = User.objects.get(id=request.session['user_id'])
-            rough = customform.cleaned_data
-            dataType = rough.get('dataType')
-            if dataType == 'T':
-                task.taskType = "TextGen"
-            elif dataType == 'I':
-                task.taskType = "ImageGen"
-            task.save()
-            request.session['task'] = task.id  # task id session created
-            tag = 0
-            for form in formset:
-                # so that `book` instance can be attached.
-                generationClass = form.save(commit=False)
-                generationClass.taskID = task
-                generationClass.cateogaryTag = tag
-                generationClass.save()
-                tag += 1
-            # return render(request, 'createtask/success.html')
-            return redirect('createtask:Gen_example_add')
+#     elif request.method == 'POST':
+#         taskform = CreateTaskForm(request.POST)
+#         formset = CateogaryFormSet(request.POST)
+#         customform = CustomForm1(request.POST)
+#         if taskform.is_valid() and formset.is_valid() and customform.is_valid():
+#             task = taskform.save(commit=False)
+#             task.creatorID = User.objects.get(id=request.session['user_id'])
+#             rough = customform.cleaned_data
+#             dataType = rough.get('dataType')
+#             if dataType == 'T':
+#                 task.taskType = "TextGen"
+#             elif dataType == 'I':
+#                 task.taskType = "ImageGen"
+#             task.save()
+#             request.session['task'] = task.id  # task id session created
+#             tag = 0
+#             for form in formset:
+#                 # so that `book` instance can be attached.
+#                 generationClass = form.save(commit=False)
+#                 generationClass.taskID = task
+#                 generationClass.cateogaryTag = tag
+#                 generationClass.save()
+#                 tag += 1
+#             # return render(request, 'createtask/success.html')
+#             return redirect('createtask:Gen_example_add')
 
-    return render(request, template_name, {
-        'taskform': taskform,
-        'formset': formset,
-        'customform': customform,
-    })
+#     return render(request, template_name, {
+#         'taskform': taskform,
+#         'formset': formset,
+#         'customform': customform,
+#     })
 
 
-def AddGenExample(request):
-    task = Task.objects.get(id=request.session['task'])
-    # questionaire = Questionaire.objects.get(taskID=task) #try required
-    class_list = task.cateogary_set.all()
+# def AddGenExample(request):
+#     task = Task.objects.get(id=request.session['task'])
+#     # questionaire = Questionaire.objects.get(taskID=task) #try required
+#     class_list = task.cateogary_set.all()
 
-    if request.method == 'GET':
-        context = {'class_list': class_list}
-        return render(request, 'createtask/addGenExamples.html', context)
+#     if request.method == 'GET':
+#         context = {'class_list': class_list}
+#         return render(request, 'createtask/addGenExamples.html', context)
 
-    if request.method == 'POST':
-        # for i in range(len(class_list)):
-        #     input1 = request.POST['class'+i]
-        #     exampleEntry =
-        return render(request, 'createtask/success.html')
+#     if request.method == 'POST':
+#         # for i in range(len(class_list)):
+#         #     input1 = request.POST['class'+i]
+#         #     exampleEntry =
+#         return render(request, 'createtask/success.html')
