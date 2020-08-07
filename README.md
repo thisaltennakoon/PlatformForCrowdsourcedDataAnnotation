@@ -9,15 +9,15 @@ The main objective of this study is to develop a web-based system where users (c
 <b>Data Annotation</b> : Data annotation is the task of labeling data.
 		Eg : Given an image, the user annotates whether the image is a picture of a cat or a picture of a dog.
 
-&#9632;Data Generation : Data generation can be considered as providing examples/data instances related to a class.
+<b>Data Generation</b> : Data generation can be considered as providing examples/data instances related to a class.
 		Eg: If the task is generating synonyms for a word, given the word “clever”, the user will input words such as “smart”,” talented”, “brilliant”.
 
 
-&#9654;Main User Roles:
+<h3>Main User Roles:</h3>
 
 The functionalities of the system include (but not limited to) the following features,
 
-&#9658;Admin - Admin users can upload data annotation or generation tasks. 
+<b>Admin</b> - Admin users can upload data annotation or generation tasks. 
 In data annotation task, the admin can :
 1.	Upload a description on the task (including text, audio, images, and videos)
 2.	Upload the data to be annotated. (To upload the data, standard mechanism should be provided by the system)
@@ -40,14 +40,14 @@ In data generation tasks, the admin can :
 7.	Check the progress.
 
 
-&#9658;Annotator -
+<b>Annotator</b> -
 1.	Add personal details
 2.	Annotate or generate data.
 3.	Add comments.
 4.	Report problems.
 5.	Check his/her annotation history.
 
-&#9658;Special Features of the system:
+<b>Special Features of the system</b>:
 1.	Web-based system (can be extended as a mobile app as well)
 2.	Handling concurrency issues (to prevent data instance from being annotated more than the required number of users)
 3.	Limit the number of times a user annotates a particular data.
