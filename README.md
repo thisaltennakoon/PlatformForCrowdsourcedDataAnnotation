@@ -43,9 +43,7 @@ In data generation tasks, the admin can :
 <b>Annotator</b> -
 1.	Add personal details
 2.	Annotate or generate data.
-3.	Add comments.
-4.	Report problems.
-5.	Check his/her annotation history.
+3.	Check his/her annotation history.
 
 <b>Special Features of the system</b>:
 1.	Web-based system (can be extended as a mobile app as well)
@@ -56,7 +54,6 @@ In data generation tasks, the admin can :
 6.	Capabilities to identify users who are not suitable for the task (by considering there first few annotations with a golden standard)
 7.	Dynamic user interfaces that can automatically adjust according to the type of the data (image/text) and the number of classes.
 8.	Proper authentication and user validation mechanisms.
-9.	* As an advanced feature, online payment capabilities to pay annotators (not necessary)
 
 
 Expand the project idea into 4 main modules, that can be developed by the 4 members, and then combine the main modules as a single application.
