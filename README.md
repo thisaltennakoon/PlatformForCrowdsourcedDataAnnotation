@@ -6,7 +6,7 @@ Data annotation and data generation has become an integral part of any research 
 
 The main objective of this study is to develop a web-based system where users (crowdsourced) of the system can participate in the data annotation and data generation tasks. As the initial phase, the system will focus only on image and text data. But, the system can be developed in a generalized manner so it can be extended to other forms of data such as audio/video.
 
-&#9632;Data Annotation : Data annotation is the task of labeling data.
+<h4>Data Annotation</h4> : Data annotation is the task of labeling data.
 		Eg : Given an image, the user annotates whether the image is a picture of a cat or a picture of a dog.
 
 &#9632;Data Generation : Data generation can be considered as providing examples/data instances related to a class.
@@ -69,7 +69,7 @@ Expand the project idea into 4 main modules, that can be developed by the 4 memb
 
 
 
-Thisal
+Followinng python packeges will be needed
 
 git pull origin master
 
@@ -83,8 +83,15 @@ pip3 install xlrd
 
 pip3 install Pillow
 
-Clear all pyc files safely- python manage.py clearpyc --noinput
+pip3 install nltk
 
+pip3 install django_countries
+make a superuser : python manage.py createsuperuser
+
+Clear all pyc files safely
+python manage.py clearpyc --noinput
+
+Example MySQL event for realesing locked data instances
 
 MySQL event
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
@@ -94,18 +101,3 @@ CREATE EVENT release_data_instances  -- create your event
       EVERY 120 SECOND  -- run every 120 secs (2 Min)
     DO
       UPDATE CrowdsourcedDataAnnotationPlatform.CreateDataAnnotationTask_annotationdataset SET IsViewing=False,WhoIsViewing=0,LastUpdate=NOW() WHERE IsViewing=True AND LastUpdate<= DATE_SUB(NOW(), INTERVAL 2 MINUTE)-- update this table
-
-
-
-
-Janani
-pip3 install django_countries
-make a superuser : python manage.py createsuperuser
-
-
-Kasun
-
-
-
-Abi
-pip3 install nltk
