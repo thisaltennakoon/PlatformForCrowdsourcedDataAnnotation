@@ -71,14 +71,7 @@ Expand the project idea into 4 main modules, that can be developed by the 4 memb
 
 Following python packeges will be needed
 
-git pull origin master
-pip install mysqlclient
-pip3 install django-pyc
-pip3 install django-filter
-pip3 install xlrd
-pip3 install Pillow
-pip3 install nltk
-pip3 install django_countries
+git pull origin master,pip install mysqlclient,pip3 install django-pyc,pip3 install django-filter,pip3 install xlrd,pip3 install Pillow,pip3 install nltk,pip3 install django_countries
 
 Clear all pyc files safely
 python manage.py clearpyc --noinput
