@@ -66,7 +66,7 @@ Expand the project idea into 4 main modules, that can be developed by the 4 memb
 3.	Consider the project deployment in a free cloud server 
 4.	The final output, the tool should be accessible (web application)
 
-===================================================================================================
+==============================================================================================
 
 
 Following python packeges will be needed
