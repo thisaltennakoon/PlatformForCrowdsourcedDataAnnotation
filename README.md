@@ -2,16 +2,12 @@
 
 <h3>Description of the given assignment</h3>
 
-Data annotation and data generation has become an integral part of any research project. Unavailability of a proper open-source tool to perform crowdsourcing for data annotation tasks and data generation tasks can be considered as a challenge which is faced by research students.
+Data annotation has become an integral part of any research project. Unavailability of a proper open-source tool to perform crowdsourcing for data annotation tasks and can be considered as a challenge which is faced by research students.
 
-The main objective of this study is to develop a web-based system where users (crowdsourced) of the system can participate in the data annotation and data generation tasks. As the initial phase, the system will focus only on image and text data. But, the system can be developed in a generalized manner so it can be extended to other forms of data such as audio/video.
+The main objective of this study is to develop a web-based system where users (crowdsourced) of the system can participate in the data annotation. As the initial phase, the system will focus only on image and text data. But, the system can be developed in a generalized manner so it can be extended to other forms of data such as audio/video.
 
 <b>Data Annotation</b> : Data annotation is the task of labeling data.
 		Eg : Given an image, the user annotates whether the image is a picture of a cat or a picture of a dog.
-
-<b>Data Generation</b> : Data generation can be considered as providing examples/data instances related to a class.
-		Eg: If the task is generating synonyms for a word, given the word “clever”, the user will input words such as “smart”,” talented”, “brilliant”.
-
 
 <h3>Main User Roles:</h3>
 
@@ -25,19 +21,8 @@ In data annotation task, the admin can :
 4.	Add a test to validate the ability of the data annotators.
 5.	Approve a user as suitable for the annotation task.
 6.	Provide how many users should annotate each data instance.
-7.	Add constraints (all the data instances should be annotated by the same users)
-8.	Dynamically add more data with the time.
-9.	Remove and hide data instances.
-10.	Check the progress.
-
-In data generation tasks, the admin can :
-1.	Upload a description on the task (including text, audio, images, and videos)
-2.	Upload the classes which need generated data
-3.	Upload desired number of examples for each class
-4.	Add a test to validate the ability of the data annotators.
-5.	Approve a user as suitable for the annotation task.
-6.	Detect data duplications.
-7.	Check the progress.
+7.	Dynamically add more data with the time.
+9.	Check the progress.
 
 
 <b>Annotator</b> -
