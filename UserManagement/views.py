@@ -142,12 +142,13 @@ def edit_profile(request):
     form = ProfileForm(instance=profile)
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile  )
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
+            user.email = profile.email
             form.save()
+            user.save()
             messages.success(request, "Updated the Profile Successfully!")
             return HttpResponseRedirect(reverse('UserManagement:profile'))
-
     return render(request, 'UserManagement/edit_profile.html', {
         'form': form
     })
