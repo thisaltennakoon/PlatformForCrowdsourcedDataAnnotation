@@ -288,3 +288,4 @@ def view_author_task(request):
     user = request.session['user_id']
     all_author_tasks = Task.objects.filter(creatorID=user)
     return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})
+

@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 from . import views
+from .forms import ResetPasswordForm, PasswordSetForm
 
 app_name = 'UserManagement'
 
@@ -20,15 +21,21 @@ urlpatterns = [
     path ('profile_list/view_profile/<str:pk>', views.view_profile, name='view_profile'),
     path ('profile_list/delete_profile/<str:pk>',views.delete_profile, name="delete_profile"),
 
-    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='UserManagement/reset_password.html'),name='reset_password'),
-    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64/token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='UserManagement/reset_password.html',
+                                                                form_class=ResetPasswordForm),
+                                                                 name='reset_password'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='UserManagement/password_reset_done.html', ),
+                                                                 name='password_reset_done'),
+    path('reset/<uid64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='UserManagement/password_reset_confirm.html',
+                                                                               form_class=PasswordSetForm),
+                                                                                name='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='UserManagement/password_reset_complete.html'),
+                                                                 name='password_reset_complete'),
     
     path('MyTasks/', views.view_my_tasks , name = 'MyTasks'),
     path('field_task_list/', views.view_field_task_list, name='field_task_list'),
     path('author_task_list/', views.view_author_task, name='author_task_list'),
-    path ('author_task_list/delete_task/<str:pk>',views.delete_task, name="delete_task"),
+    path('author_task_list/delete_task/<str:pk>',views.delete_task, name="delete_task"),
     path('Reg_task/<str:pk>', views.reg_task, name='reg_task')
 
 ]

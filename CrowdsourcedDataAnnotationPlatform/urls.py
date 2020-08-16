@@ -8,9 +8,9 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('UserManagement/', include('UserManagement.urls', namespace='accounts')),
+    path('UserManagement/', include('UserManagement.urls', namespace='UserManagement')),
     path('', views.home, name='home'),
-    path('', include('django.contrib.auth.urls')),
+    path('UserManagement/', include('django.contrib.auth.urls')),
     path('DoDataAnnotationTask/', include('DoDataAnnotationTask.urls')),
     path('DoDataGenerationTask/', include('DoDataGenerationTask.urls')),
     path('DoTextDataAnnotationTask/', include('DoTextDataAnnotationTask.urls')),

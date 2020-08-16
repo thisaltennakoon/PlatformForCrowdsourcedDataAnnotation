@@ -2,7 +2,7 @@ from django_countries.data import COUNTRIES
 from django import forms
 from . import models
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Profile, ContributorTask
 from .filters import ProfileFilter
@@ -69,6 +69,16 @@ class TaskRegForm(forms.ModelForm):
     class Meta:
         model = ContributorTask
         fields = ['User', 'Task']
+
+class ResetPasswordForm (PasswordResetForm):
+    email = forms.EmailField(label='username',widget=forms.EmailInput(attrs={'placeholder': 'email address', 'class': 'form-control'}))
+
+class PasswordSetForm (SetPasswordForm):
+    class Meta:
+        model = User
+        fields = ['new_password1', 'new_password2']
+    new_password1 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password', 'class': 'form-control'}))
+    new_password2 = forms.CharField(label='password', widget=forms.PasswordInput(attrs={'placeholder': 'new password confirmation', 'class': 'form-control'}))
 
 """class RateForm (forms.ModelForm):
     class Meta:
