@@ -144,6 +144,8 @@ def edit_profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile  )
         if form.is_valid():
+            user.email = profile.email
+            user.save()
             form.save()
             messages.success(request, "Updated the Profile Successfully!")
             return HttpResponseRedirect(reverse('UserManagement:profile'))
@@ -287,3 +289,14 @@ def view_author_task(request):
     user = request.session['user_id']
     all_author_tasks = Task.objects.filter(creatorID=user)
     return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})
+
+@login_required(login_url='UserManagement:sign_in')
+def view_task_contributors(request, pk):
+    task = get_object_or_404(Task, id=pk)
+    contributors = ContributorTask.User.filter(Task=task.id)
+    contributor_details = {}
+    for each in contributors:
+        user = Profile.objects.filter(user=each)
+        contributor_details += user
+    return render(request, 'UserManagement/task_contributors.html', {'contributor_details':contributor_details})
+

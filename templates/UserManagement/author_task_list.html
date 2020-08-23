@@ -15,7 +15,7 @@
 
 <div class="container">
 
-    <br> <h2 class="text-center">My authered Tasks</h2>
+    <br> <h2 class="text-center">My Authored Tasks</h2>
     <hr>
     {% if all_author_tasks %}
     <div class="row">
@@ -31,7 +31,7 @@
                     <h4 class="title">{{task.title}}</h4>
                     <p class="desc">{{task.description}}</p>
                     <div class="rating-wrap">
-                        <div class="label-rating"><a href="#">Contributors</div>
+                        <div class="label-rating"><a href="{% url 'UserManagement:view_task_contributors' task.id %}">Contributors</a></div>
                         <div class="label-rating"><a href="/ResultAnalyse/Rank/?Task_ID={{task.id}}" class="btn btn-sm btn-outline-primary">Test result analysis </a></div>
                     </div> <!-- rating-wrap.// -->
             </figcaption>
