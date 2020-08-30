@@ -12,7 +12,7 @@ from.filters import ProfileFilter
 from .forms import ProfileForm # RateForm
 from .models import Profile, ContributorTask
 from django.contrib import messages
-from CreateTask.models import Task
+from CreateTask.models import Task,TestResult,AnnotationTest
 from .decorators import unauthenticated_user, allowed_user
 
 
@@ -223,8 +223,16 @@ def view_field_task_list(request):
     for i in registeredTasks:
         registeredTaskID += [i.Task_id]
     all_field_tasks = Task.objects.filter(field=user_field).exclude(creatorID=user)
+    # I remove attempted tasks
+    all_tests_user_done = TestResult.objects.filter(annotatorID=user)
+    doneTaskID = []
+    for j in all_tests_user_done:
+        test = j.testID
+        doneTaskID += [test.taskID]
+        print(test.taskID.id)
+        registeredTaskID += [test.taskID.id]
+
     all_field_tasks_unregistered = all_field_tasks.exclude(id__in = registeredTaskID)
-    #print(all_field_tasks)
     return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks_unregistered':all_field_tasks_unregistered})
 
 # @login_required(login_url='UserManagement:sign_in')
