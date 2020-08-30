@@ -3,12 +3,12 @@ from django.views import generic
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
-
+from django.contrib import messages
 from .models import  Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
-from UserManagement.models import User
+from UserManagement.models import User,ContributorTask
 
 from django.forms import formset_factory
 from django import template
@@ -20,6 +20,20 @@ import sys
 import os
 from PIL import Image
 import csv
+
+def creating_contibtask(request,pk):
+    print('kll')
+    ct = ContributorTask()
+    task = Task.objects.get(id=pk)
+    print(task.id)
+    user = request.user
+    ct.Task=task
+    ct.User=user
+    ct.save()
+    print('here')
+    messages.success(request, "You have successfully registered as a contributor")
+    #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+    return redirect('UserManagement:return_field_task_list')
 
 def ExampleSkip(request):
     if request.method == 'POST':
@@ -171,7 +185,7 @@ def DoMediaAnnotationTest(request,task_id):   #how to get the task
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user = User.objects.get(pk=request.session['user_id'])  
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -216,6 +230,20 @@ def DoMediaAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html')
 
@@ -392,7 +420,7 @@ def DoTextAnnotationTest(request,task_id):   #how to get the task
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user = User.objects.get(pk=request.session['user_id'])  
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.exampletextdatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -441,6 +469,20 @@ def DoTextAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html') 
 
