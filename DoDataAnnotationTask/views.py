@@ -12,7 +12,6 @@ from django.db import DatabaseError, transaction
 import datetime
 
 def test(request):
-    #return HttpResponse(str(datetime.datetime.now()))
     return render(request, 'DoDataAnnotationTask/test.html')
 
 @login_required(login_url='UserManagement:sign_in')
@@ -29,51 +28,39 @@ def first(request):
 @login_required(login_url='UserManagement:sign_in')
 def task(request):
     user_id = request.session['user_id']
-    #print(1)
     if request.method == 'POST':
         data_class_id = request.POST['data_class_id']
         data_instance = request.POST['DataInstance']
         task_id = request.POST['task_id']
-        #print(2)
         try:
             with transaction.atomic():
                 annotating_data_instance = MediaDataInstance.objects.get(taskID_id=task_id, media=data_instance)
-                #print(3)
                 if (annotating_data_instance.WhoIsViewing==user_id) and (annotating_data_instance.IsViewing==True) and (annotating_data_instance.NumberOfAnnotations < Task.objects.get(id=task_id).requiredNumofAnnotations):  # for extra protection.Can be removed if nessasary
-                    #print(4)
 
                     data_annotation_result = DataAnnotationResult(TaskID=Task.objects.get(id=task_id),
                                                                   DataInstance=annotating_data_instance,
                                                                   ClassID=data_class_id,
                                                                   UserID=user_id)
-                    #print(5)
+            
                     data_annotation_result.save()
-                    #print(6)
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.NumberOfAnnotations += 1
-                    #print(7)
                     annotating_data_instance.save()
-                    #print(8)
                     return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
                 else:
                     return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
         except DatabaseError:
             print('DatabaseError in task() annotation submission Image Data Annotation')
-            #return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     else:
-        #print(1)
         try:
-            #print(Profile.objects.get(user=request.user).first_name)
-            #'user':Profile.objects.get(user=request.user)
             task_id = request.GET['task_id']
             if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:
                 return redirect('/UserManagement/MyTasks/')
             data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations)
             annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
             data_instances_to_exclude = []
-            #print(2)
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance.id]
             try:
@@ -83,20 +70,15 @@ def task(request):
                 skip_instance_request =True
             except:
                 skip_instance_request =False
-            #print(3)
             try:
                 with transaction.atomic():
-                    #print(4)
-                    #print(data_instances_to_exclude)
                     data_annotation = MediaDataInstance.objects.filter(taskID_id=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude)
-                    #print(5)
                     if len(data_annotation) > 0:
                         data_instance = random.choice(data_annotation)
                         data_instance_about_to_annotate = MediaDataInstance.objects.get(taskID_id=task_id, media=data_instance.media)
                         data_instance_about_to_annotate.IsViewing=True
                         data_instance_about_to_annotate.WhoIsViewing=user_id
                         data_instance_about_to_annotate.save()
-                        #print(Cateogary.objects.filter(taskID_id=task_id))
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -159,7 +141,6 @@ def task(request):
                                                                                                     'annotated_data_instances_available': False,})
             except DatabaseError:
                 print('DatabaseError in task() giving data instance to annotator Image data annotation')
-                # return HttpResponse("DatabaseError")
                 return redirect('/UserManagement/MyTasks/')
         except:
             print('Failure in task() Image data annotation ')
@@ -180,14 +161,12 @@ def skip_data_instance(request):
                     return HttpResponse('error')
         except DatabaseError:
             print('DatabaseError in skip_data_instance()  Image data annotation')
-            # return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/DoDataAnnotationTask/Task?task_id=' + str(task_id))
 
 @login_required(login_url='UserManagement:sign_in')
 def stop_annotating(request):
-    #print(132213231312)
     try:
         task_id = request.GET['task_id']
         viewing_data_instance = request.GET['viewing_data_instance']
@@ -196,7 +175,6 @@ def stop_annotating(request):
             return redirect('/UserManagement/MyTasks/')
         else:
             print('Error in stop_annotating()  Image data annotation')
-            # return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     except:
         print('Error in stop_annotating()  Image data annotation')
@@ -210,15 +188,11 @@ def stop_viewing(request,task_id,viewing_data_instance):
         user_id = request.session['user_id']
         try:
             with transaction.atomic():
-                #print(1)
                 annotating_data_instance = MediaDataInstance.objects.get(taskID_id=task_id,media=viewing_data_instance)
-                #print(2)
                 if (annotating_data_instance.WhoIsViewing == user_id) and (annotating_data_instance.IsViewing == True):
-                    #print(3)
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.save()
-                    #print(4)
                     return True
         except DatabaseError:
             return False
@@ -270,7 +244,6 @@ def view_my_annotations_change(request):
         except:
             pass
         data_instance = MediaDataInstance.objects.get(id = annotated_data_instance.DataInstance.id)
-        #print(Profile.objects.get(user=request.user))
         return render(request, 'DoDataAnnotationTask/ViewMyAnnotationsChange.html',{'annotated_data_instance':annotated_data_instance,
                                                                                     'annotated_data_instance_id':annotated_data_instance_id,
                                                                                      'data_instance':data_instance,
