@@ -52,17 +52,17 @@ def task(request):
         except DatabaseError:
             print('DatabaseError in task() annotation submission Image Data Annotation')
             return redirect('/UserManagement/MyTasks/')
-    else: # giving data instqance to annotate. This will execute after clicking a task, submitting an annotation or skipping a data instance
+    else: # this part is responsible for giving data instance to annotate. This will execute after clicking a task, submitting an annotation or skipping a data instance
         try:
             task_id = request.GET['task_id']
             if len(ContributorTask.objects.filter(User_id=user_id, Task_id=task_id)) == 0:# check whether this user is registerd for this task
                 return redirect('/UserManagement/MyTasks/')
-            data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations)
-            annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
-            data_instances_to_exclude = []
+            data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations) # Take required number of annotations for the task
+            annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')# Take submitted annotation for this task by this user so that we can prevent being annotate same data instance by the same user.
+            data_instances_to_exclude = [] # add those data instance to this list
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance.id]
-            try:
+            try:# there is an option to skip data instances. here skipped data instances are addded to excluding data instances list so that annotator will not get those data instances.
                 skip_instance=request.GET['skip_instance']
                 skip_instance_object = MediaDataInstance.objects.get(taskID_id=task_id, media=skip_instance)
                 data_instances_to_exclude += [skip_instance_object.id]
@@ -71,7 +71,8 @@ def task(request):
                 skip_instance_request =False
             try:
                 with transaction.atomic():
-                    data_annotation = MediaDataInstance.objects.filter(taskID_id=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude) # take data instances which are not viewing and number of annotations are less than required number of annotations while excluding the data instances which have annotated already by this user
+                    data_annotation = MediaDataInstance.objects.filter(taskID_id=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude) 
+                    # take data instances which are not viewing and number of annotations are less than required number of annotations while excluding the data instances which have annotated already by this user
                     if len(data_annotation) > 0:
                         data_instance = random.choice(data_annotation) # choose one data instance randomly and put a lock to that data instance before giving.
                         data_instance_about_to_annotate = MediaDataInstance.objects.get(taskID_id=task_id, media=data_instance.media)
