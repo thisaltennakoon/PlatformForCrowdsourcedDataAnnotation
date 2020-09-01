@@ -1,15 +1,15 @@
 from django.contrib import messages
-from django.contrib.auth import (authenticate, login, logout,update_session_auth_hash)
+from django.contrib.auth import (authenticate, login, logout, update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,PasswordChangeForm)
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm, PasswordChangeForm)
 from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models
 from .forms import *
-from.filters import ProfileFilter
-from .forms import ProfileForm # RateForm
+from .filters import ProfileFilter
+from .forms import ProfileForm  # RateForm
 from .models import Profile, ContributorTask
 from django.contrib import messages
 from CreateTask.models import Task
@@ -47,12 +47,14 @@ def sign_in(request):
                     )
         return render(request, 'UserManagement/sign_in.html', {'form': form})
 
+
 def formView(request):
-   if request.session.has_key('username'):
-      username = request.session['username']
-      return render(request, 'profile.html', {"username" : username})
-   else:
-      return render(request, 'sign_in.html', {})
+    if request.session.has_key('username'):
+        username = request.session['username']
+        return render(request, 'profile.html', {"username": username})
+    else:
+        return render(request, 'sign_in.html', {})
+
 
 def sign_up(request):
     if request.user.is_authenticated:
@@ -72,7 +74,7 @@ def sign_up(request):
                 new_user.groups.add(group)
                 login(request, user)
                 request.session['user_id'] = user.id
-                messages.success(request,"Congradulations! Your account was created successfully")
+                messages.success(request, "Congradulations! Your account was created successfully")
                 return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
         return render(request, 'UserManagement/sign_up.html', {'form': form})
 
@@ -87,7 +89,7 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
-@login_required (login_url='UserManagement:sign_in')
+@login_required(login_url='UserManagement:sign_in')
 def profile(request):
     """Display User Profile"""
     profile = request.user.profile
@@ -100,39 +102,39 @@ def profile(request):
     user_image_data_annotation_tasks = []
     for user_task in all_user_tasks:
         if user_task.Task.taskType == 'TextAnno':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_text_data_annotation_tasks += [user_task.Task]
             else:
                 user_text_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImageAnno':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_image_data_annotation_tasks += [user_task.Task]
             else:
                 user_image_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'TextGen':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_text_data_generation_tasks += [user_task.Task]
             else:
                 user_text_data_generation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImgGen':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_image_data_generation_tasks += [user_task.Task]
             else:
                 user_image_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/profile.html', {'profile': profile,'all_author_tasks':all_author_tasks, 
-                                                        'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
-                                                        'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
-                                                        'user_text_data_generation_tasks': user_text_data_generation_tasks,
-                                                        'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                        'user_id':request.session['user_id']})
+    return render(request, 'UserManagement/profile.html', {'profile': profile, 'all_author_tasks': all_author_tasks,
+                                                           'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                                                           'user_image_data_annotation_tasks': user_image_data_annotation_tasks,
+                                                           'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                                                           'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                                                           'user_id': request.session['user_id']})
 
 
 @login_required(login_url='UserManagement:sign_in')
@@ -140,9 +142,8 @@ def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
     form = ProfileForm(instance=profile)
-
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile  )
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             user.email = profile.email
             user.save()
@@ -171,20 +172,22 @@ def change_password(request):
     })
 
 
-def search (request):
-    profile_list = Profile.objects.all().exclude(first_name = '')
+def search(request):
+    profile_list = Profile.objects.all().exclude(first_name='')
     searchFilter = ProfileFilter(request.GET, queryset=profile_list)
-    return render(request, 'UserManagement/search.html', {'filter':searchFilter})
+    return render(request, 'UserManagement/search.html', {'filter': searchFilter})
+
 
 def profiles(request):
-    profiles = Profile.objects.all().exclude(first_name = '')
-    return render(request,'UserManagement/profile_list.html', {'profiles':profiles})
+    profiles = Profile.objects.all().exclude(first_name='')
+    return render(request, 'UserManagement/profile_list.html', {'profiles': profiles})
 
 
 def view_profile(request, pk):
     profile = Profile.objects.get(user=pk)
     context = {'profile': profile}
-    return render(request, 'UserManagement/view_profile.html',context)
+    return render(request, 'UserManagement/view_profile.html', context)
+
 
 @login_required(login_url='UserManagement:sign_in')
 @allowed_user(allowed_roles=['admin'])
@@ -199,14 +202,16 @@ def delete_profile(request, pk):
         return HttpResponseRedirect(reverse('UserManagement:profile_list'))
     return render(request, 'UserManagement/delete_profile.html', context)
 
+
 @login_required(login_url='UserManagement:sign_in')
 def delete_task(request, pk):
     task = get_object_or_404(Task, id=pk)
-    if request.method == "POST" :
+    if request.method == "POST":
         task.delete()
         messages.success(request, 'You have deleted a task')
         return HttpResponseRedirect(reverse('UserManagement:author_task_list'))
-    return render (request, 'UserManagement/delete_task.html', {'task':task})
+    return render(request, 'UserManagement/delete_task.html', {'task': task})
+
 
 """def rate(request):
     if request.method == "POST":
@@ -225,23 +230,40 @@ def view_field_task_list(request):
     for i in registeredTasks:
         registeredTaskID += [i.Task_id]
     all_field_tasks = Task.objects.filter(field=user_field).exclude(creatorID=user)
-    all_field_tasks_unregistered = all_field_tasks.exclude(id__in = registeredTaskID)
-    #print(all_field_tasks)
-    return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks_unregistered':all_field_tasks_unregistered})
+    all_field_tasks_unregistered = all_field_tasks.exclude(id__in=registeredTaskID)
+    # print(all_field_tasks)
+    return render(request, 'UserManagement/field_task_list.html',
+                  {'all_field_tasks_unregistered': all_field_tasks_unregistered})
+
 
 @login_required(login_url='UserManagement:sign_in')
-def reg_task (request, pk):
+def reg_task(request, pk):
     ct = ContributorTask()
     task = get_object_or_404(Task, id=pk)
     user = request.user
-    context = {'task':task}
-    if request.method=="POST":
-        ct.Task=task
-        ct.User=user
+    context = {'task': task}
+    if request.method == "POST":
+        ct.Task = task
+        ct.User = user
         ct.save()
         messages.success(request, "You have successfully registered as a contributor")
         return HttpResponseRedirect(reverse('UserManagement:field_task_list'))
     return render(request, 'UserManagement/reg_task.html')
+
+
+@login_required(login_url='UserManagement:sign_in')
+def view_task_contributors(request, pk):
+    task=get_object_or_404(Task, id=pk)
+    all_tasks = ContributorTask.objects.all()
+    contributors = {}
+    for each in all_tasks:
+        if each.Task == task.id:
+            contributors += each.User
+    profiles = {}
+    for i in contributors:
+        user = Profile.objects.filter(user = i.id)
+        profiles += user
+    return render(request, 'UserManagement/task_contributors.html', {'contributor_details':contributors})
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):
@@ -252,51 +274,43 @@ def view_my_tasks(request):
     user_image_data_annotation_tasks = []
     for user_task in all_user_tasks:
         if user_task.Task.taskType == 'TextAnno':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_text_data_annotation_tasks += [user_task.Task]
             else:
                 user_text_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImageAnno':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_image_data_annotation_tasks += [user_task.Task]
             else:
                 user_image_data_annotation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'TextGen':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_text_data_generation_tasks += [user_task.Task]
             else:
                 user_text_data_generation_tasks += [user_task.Task]
         elif user_task.Task.taskType == 'ImgGen':
-            if len(user_task.Task.description)>140:
-                user_task.Task.description1=user_task.Task.description[0:140]
+            if len(user_task.Task.description) > 140:
+                user_task.Task.description1 = user_task.Task.description[0:140]
                 user_task.Task.description2 = user_task.Task.description[140:]
                 user_image_data_generation_tasks += [user_task.Task]
             else:
                 user_image_data_generation_tasks += [user_task.Task]
-    return render(request, 'UserManagement/MyTasks.html',{'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
-                                                          'user_image_data_annotation_tasks':user_image_data_annotation_tasks,
-                                                          'user_text_data_generation_tasks': user_text_data_generation_tasks,
-                                                          'user_image_data_generation_tasks': user_image_data_generation_tasks,
-                                                          'user_id':request.session['user_id']})
+    return render(request, 'UserManagement/MyTasks.html',
+                  {'user_text_data_annotation_tasks': user_text_data_annotation_tasks,
+                   'user_image_data_annotation_tasks': user_image_data_annotation_tasks,
+                   'user_text_data_generation_tasks': user_text_data_generation_tasks,
+                   'user_image_data_generation_tasks': user_image_data_generation_tasks,
+                   'user_id': request.session['user_id']})
+
+
 @login_required(login_url='UserManagement:sign_in')
 def view_author_task(request):
     user = request.session['user_id']
     all_author_tasks = Task.objects.filter(creatorID=user)
-    return render (request, 'UserManagement/author_task_list.html', {'all_author_tasks':all_author_tasks})
-
-@login_required(login_url='UserManagement:sign_in')
-def view_task_contributors(request, pk):
-    task = get_object_or_404(Task, id=pk)
-    contributors = ContributorTask.User.filter(Task=task.id)
-    contributor_details = {}
-    for each in contributors:
-        user = Profile.objects.filter(user=each)
-        contributor_details += user
-    return render(request, 'UserManagement/task_contributors.html', {'contributor_details':contributor_details})
-
+    return render(request, 'UserManagement/author_task_list.html', {'all_author_tasks': all_author_tasks})

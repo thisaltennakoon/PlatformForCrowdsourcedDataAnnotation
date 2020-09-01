@@ -1,0 +1,9 @@
+{% if contributor_details %}
+    {% for i in contributor_details %}
+        <p>{{i.Task}}</p>
+        <p>{{i.User}}</p>
+    {% endfor %}
+{% else %}
+    <h3>Oops! no contributors been registered</h3>
+{% endif %}
+

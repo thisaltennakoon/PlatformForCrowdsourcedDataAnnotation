@@ -49,11 +49,6 @@ def create_profile(sender, **kwargs):
 
 post_save.connect(create_profile, sender=User)
 
-class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    star = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])
-
-
 class ContributorTask(models.Model):
     Task = models.ForeignKey(Task, on_delete=models.CASCADE)
     User = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,4 +56,6 @@ class ContributorTask(models.Model):
     class Meta:
         unique_together = (('Task', 'User'),)
 
-
+class Review (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_good = models.BooleanField(default=False)

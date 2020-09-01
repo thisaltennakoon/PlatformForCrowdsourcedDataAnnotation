@@ -29,7 +29,7 @@ urlpatterns = [
     path('field_task_list/', views.view_field_task_list, name='field_task_list'),
     path('author_task_list/', views.view_author_task, name='author_task_list'),
     path ('author_task_list/delete_task/<str:pk>',views.delete_task, name="delete_task"),
-    path ('task_contributors/<str_pk>', views.view_task_contributors, name='view_task_contributors'),
+    path ('task_contributors/<str:pk>', views.view_task_contributors, name='view_task_contributors'),
     path('Reg_task/<str:pk>', views.reg_task, name='reg_task')
 
 ]

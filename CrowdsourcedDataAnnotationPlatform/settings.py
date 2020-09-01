@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sepnew',
+        'NAME': 'final_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '',
