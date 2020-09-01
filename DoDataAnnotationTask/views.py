@@ -27,21 +27,23 @@ def first(request):
 @login_required(login_url='UserManagement:sign_in')
 def task(request):
     user_id = request.session['user_id']
-    if request.method == 'POST':
+    if request.method == 'POST': # This part will only execute after submitting annotation answer for given data instance
         data_class_id = request.POST['data_class_id']
         data_instance = request.POST['DataInstance']
         task_id = request.POST['task_id']
         try:
             with transaction.atomic():
                 annotating_data_instance = MediaDataInstance.objects.get(taskID_id=task_id, media=data_instance)
+                # system will check whether the data instance is belongs to this user for more accuracy.
                 if (annotating_data_instance.WhoIsViewing==user_id) and (annotating_data_instance.IsViewing==True) and (annotating_data_instance.NumberOfAnnotations < Task.objects.get(id=task_id).requiredNumofAnnotations):  # for extra protection.Can be removed if nessasary
-
+                    # create data annotation result and save it in the database
                     data_annotation_result = DataAnnotationResult(TaskID=Task.objects.get(id=task_id),
                                                                   DataInstance=annotating_data_instance,
                                                                   ClassID=data_class_id,
                                                                   UserID=user_id)
             
                     data_annotation_result.save()
+                    # release the lock for submitted data instance
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.NumberOfAnnotations += 1
