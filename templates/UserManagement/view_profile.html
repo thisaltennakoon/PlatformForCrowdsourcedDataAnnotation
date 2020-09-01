@@ -71,21 +71,46 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
       </div>
       {% endif %}
+     {% if profile.is_contributor %}
+      <div class="w3-container w3-card w3-white">
+        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Completed Tasks</h2>
+        {% if user_text_data_annotation_tasks %}
+        {% for text_data_annotation_task in user_text_data_annotation_tasks %}
+        {% if text_data_annotation_task.status == "completed" %}
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>{{text_data_annotation_task.title}}</b></h5>
+          <p>{{text_data_annotation_task.description}}</p>
+          <hr>
+        </div>
+        {% endif %}
+        {% if image_data_annotation_task.status == "completed" %}
+        <div class="w3-container">
+          <h5 class="w3-opacity"><b>{{image_data_annotation_task.title}}</b></h5>
+          <p>{{image_data_annotation_task.description}}</p>
+          <hr>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>You haven't completed any task yet</p>
+        {% endif %}
+      {% endif %}
+      </div>
+
       {% if profile.is_author %}
       <div class="w3-container w3-card w3-white">
         <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Authored Tasks</h2>
+        {% if all_author_task %}
+        {% for task in all_author_task %}
         <div class="w3-container">
-          <h5 class="w3-opacity"><b>Task1</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>date</h6>
-          <p>Description</p>
+          <h5 class="w3-opacity"><b>{{task.title}}</b></h5>
+          <p>{{task.description}}</p>
           <hr>
         </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Task2</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>year</h6>
-          <p>description</p>
-          <hr>
-        </div>
+        {% endfor %}
+        {% else %}
+        <p>You haven't authored any tasks yet !</p>
+        {% endif %}
       {% endif %}
       </div>
 

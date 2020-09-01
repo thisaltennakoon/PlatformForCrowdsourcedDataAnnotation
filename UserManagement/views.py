@@ -10,7 +10,7 @@ from . import models
 from .forms import *
 from .filters import ProfileFilter
 from .forms import ProfileForm  # RateForm
-from .models import Profile, ContributorTask
+from .models import Profile, ContributorTask, Review
 from django.contrib import messages
 from CreateTask.models import Task
 from .decorators import unauthenticated_user, allowed_user
@@ -63,6 +63,7 @@ def sign_up(request):
     else:
         form = CreateUserForm()
         if request.method == 'POST':
+            review = Review()
             form = CreateUserForm(data=request.POST)
             if form.is_valid():
                 new_user = form.save()
@@ -74,6 +75,8 @@ def sign_up(request):
                 new_user.groups.add(group)
                 login(request, user)
                 request.session['user_id'] = user.id
+                review.user_id = request.session['user_id']
+                review.save()
                 messages.success(request, "Congradulations! Your account was created successfully")
                 return HttpResponseRedirect(reverse('UserManagement:edit_profile'))  # TODO: go to profile
         return render(request, 'UserManagement/sign_up.html', {'form': form})
@@ -141,6 +144,7 @@ def profile(request):
 def edit_profile(request):
     user = request.user
     profile = get_object_or_404(models.Profile, user=user)
+
     form = ProfileForm(instance=profile)
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -186,6 +190,7 @@ def profiles(request):
 def view_profile(request, pk):
     profile = Profile.objects.get(user=pk)
     context = {'profile': profile}
+
     return render(request, 'UserManagement/view_profile.html', context)
 
 
@@ -254,16 +259,23 @@ def reg_task(request, pk):
 @login_required(login_url='UserManagement:sign_in')
 def view_task_contributors(request, pk):
     task=get_object_or_404(Task, id=pk)
-    all_tasks = ContributorTask.objects.all()
-    contributors = {}
-    for each in all_tasks:
-        if each.Task == task.id:
-            contributors += each.User
-    profiles = {}
-    for i in contributors:
-        user = Profile.objects.filter(user = i.id)
-        profiles += user
-    return render(request, 'UserManagement/task_contributors.html', {'contributor_details':contributors})
+    task_contributors = ContributorTask.objects.filter(Task_id=task.id)
+    profiles = []
+    for each in task_contributors:
+        profile = Profile.objects.filter(user_id = each.User_id)
+        profiles += profile
+    return render(request, 'UserManagement/task_contributors.html', {'contributor_details':profiles})
+
+@login_required(login_url='UserManagement:sign_in')
+def review(request, pk):
+    contributor_reviews = get_object_or_404(Review, user_id=pk)
+    review_count = contributor_reviews.is_good
+    if request.method == "POST":
+        review_count += 1
+        contributor_reviews.is_good = review_count
+        contributor_reviews.save()
+        return HttpResponseRedirect(reverse('UserManagement:view_task_contributors'))
+    return render(request, 'UserManagement/rate.html')
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):

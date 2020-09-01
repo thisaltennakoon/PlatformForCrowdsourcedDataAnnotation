@@ -1,9 +1,47 @@
-{% if contributor_details %}
-    {% for i in contributor_details %}
-        <p>{{i.Task}}</p>
-        <p>{{i.User}}</p>
-    {% endfor %}
-{% else %}
-    <h3>Oops! no contributors been registered</h3>
-{% endif %}
+{% extends 'layout.html' %}
+{% load static %}
 
+{% block title %} Authored Tasks  |{% endblock %}
+
+{% block style %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/list.css' %}">
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+
+    <br> <h2 class="text-center">Current Contributors</h2>
+    <hr>
+    {% if contributor_details %}
+    <div class="row">
+    {% for each in contributor_details %}
+    <div class="col-md-4">
+        <figure class="card card-product">
+            <div class="img-wrap"><img src="{{each.avatar.url}}"></div>
+            <figcaption class="info-wrap">
+                    <h4 class="title">{{each.first_name}} {{each.last_name}}</h4>
+                    <p class="desc"></p>
+                    <div class="bottom-wrap">
+                <a href="{% url 'UserManagement:view_profile' each.user_id %}" class="btn btn-sm btn-outline-primary float-right">View profile</a>
+                <div class="price-wrap h5">
+                        <!--a href="{% url 'UserManagement:review' each.user_id %}" class="btn btn-sm btn-outline-success">Rate</a-->
+                </div> <!-- price-wrap.// -->
+            </div> <!-- bottom-wrap.// -->
+            </figcaption>
+        </figure>
+    </div> <!-- col // -->
+    {% endfor %}
+
+    </div> <!-- row.// -->
+    {% else %}
+    <h3>No contributors have been registered !!!</h3>
+
+    {% endif %}
+    </div>
+
+{% endblock %}

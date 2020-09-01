@@ -27,22 +27,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def no_of_ratings(self):
-        ratings = Rating.objects.filter(user=self)
-        return len(ratings)
-
-    def avg_ratings(self):
-        sum = 0
-        ratings = Rating.objects.filter(user=self)
-        for rating in ratings:
-            sum += rating.star
-        if len(ratings)>0:
-            return sum/len(ratings)
-        else:
-            return 0
-
-
-
 def create_profile(sender, **kwargs):
     if kwargs['created']:
         profile = Profile.objects.create(user=kwargs['instance'])
@@ -57,5 +41,5 @@ class ContributorTask(models.Model):
         unique_together = (('Task', 'User'),)
 
 class Review (models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_good = models.BooleanField(default=False)
+    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
+    is_good = models.IntegerField(default=0)
