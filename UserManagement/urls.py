@@ -35,7 +35,7 @@ urlpatterns = [
 
     path ('task_contributors/<str:pk>', views.view_task_contributors, name='view_task_contributors'),
     path('Reg_task/<str:pk>', views.reg_task, name='reg_task'),
-    path('review/<str:pk>', views.review, name='review')
+    path('review/<str:pk>', views.review, name='review'),
 
     #path('Reg_task/<str:pk>', views.reg_task, name='reg_task'),
     url(r'^return_contributor_task_list/$',views.view_field_task_list, name='return_field_task_list')
