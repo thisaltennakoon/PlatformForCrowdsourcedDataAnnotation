@@ -23,7 +23,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 DEBUG = True
 
 #ALLOWED_HOSTS = ['104.197.54.228']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['35.232.121.54']
 
 
 # Application definition
@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Janani's mysql database
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'final_db',
@@ -103,7 +103,7 @@ DATABASES = {
         'HOST': '',
         'PORT': ''
     }
-}
+}"""
 
 #Thisal's Postgres databsse
 """DATABASES = {
@@ -117,7 +117,7 @@ DATABASES = {
 }"""
 
 #Thisal's Mysql databsse
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -126,7 +126,7 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3308'
     }
-}"""
+}
 
 
 #MySQL event for release data instances
