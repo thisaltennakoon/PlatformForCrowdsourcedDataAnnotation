@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-us" >
+{% extends "createtask/base.html" %}
+{% block container %}
 <head>
     <title>Data Annotation Task</title>
     <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
@@ -10,22 +11,9 @@
     <meta name="robots" content="NONE,NOARCHIVE">
 </head>
 <body class=" dashboard" data-admin-utc-offset="0" >
-<!-- Container -->
-<div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
-    </div>
-    <!-- END Header -->
-    <div class="breadcrumbs">
-        <a href="/UserManagement/MyTasks/"> My Tasks </a>
-        &rsaquo;<a href="/DoTextDataAnnotationTask/"> My Data Annotation Tasks </a>
-        &rsaquo; {{task_object.Title}}
-    </div>
-    <!-- Content -->
+
     <div id="content" class="colMS">
+    <h class="alert alert-warning"> You have to complete this test before registering</h><br><br><br>
         <h1><strong>Task Title : {{task.title}}</strong></h1>
         <h1><strong>Task Description : {{task.description}}</strong></h1>
         <h1><strong>Instructions : {{task.instructions}}</strong></h1>
@@ -56,13 +44,15 @@
                         <input type="hidden" name="DataInstance" value="{{instance.id}}">
                         {% comment %} <input type="hidden" name="task_id" value="{{task_id}}">
                         <input type="hidden" name="user_id" value="{{user_id}}"> {% endcomment %}
+                        <br><br><br>
                         
                     
                 {%endfor%}
-                <input type="Submit" value="Submit Data Annotation" >
+                <input class="btn btn-success" type="Submit" value="Submit Data Annotation" >
                 </form>
             </div>
         </div>
 </div>
 </body>
+{% endblock %}
 </html>

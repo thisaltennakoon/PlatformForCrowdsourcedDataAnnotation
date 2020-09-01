@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us" >
+{% extends "createtask/base.html" %}
+{% block container %}
 <head>
     <title>Data Annotation Task</title>
     <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
@@ -12,13 +14,7 @@
 <body class=" dashboard" data-admin-utc-offset="0" >
 <!-- Container -->
 <div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
-    </div>
-    <!-- END Header -->
+   
 
     <!-- Content -->
     <div id="content" class="colMS">
@@ -56,4 +52,5 @@
 </div>
 <!-- END Container -->
 </body>
+{% endblock %}
 </html>
