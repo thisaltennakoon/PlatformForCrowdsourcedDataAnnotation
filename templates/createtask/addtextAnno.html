@@ -1,12 +1,49 @@
 {% extends "createtask/base.html" %}
 {% block container %}
-
+{% load static %}
 
 <h3>{{heading}}</h3>
+<div class="container">
+<div class="row">
+    <div class="col">
+        <h4> You can cateogarise words or phares into classes</h4>
+        <h6>Example .csv file for cateogarize words into Nouns,Verbs and Adjectives</h6>
+        <img src="{% static 'guide/words1.png' %}" class="rounded" alt="..." style="width:60%">
+    </div>
+    <div class="col-5">
+        <br>
+        <br>
+        <h6>Cateogaries</h6>
+        <img src="{% static 'guide/noun.png' %}" class="rounded" alt="..." style="width:100%">
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col">
+        <h4> You can compare words or phares and annoatate them</h4>
+        <h6>Example .csv file For compare words and annotate simillar or disssimillar</h6>
+        <img src="{% static 'guide/words_compair1.png' %}" class="rounded" alt="..." style="width:60%">
+    </div>
+    <div class="col-5">
+        <br>
+        <br>
+        <br>
+        <h6>Cateogaries</h6>
+        <img src="{% static 'guide/similar.png' %}" class="rounded" alt="..." style="width:100%">
+    </div>
+</div>
+</div>
+
+
+{% comment %} <img src="{% static 'guide/words.png' %}" class="rounded float-right" alt="..." style="width:20%"> {% endcomment %}
+{% comment %} <div class="w3-display-container w3-center">
+    <img src="{% static 'guide/words.png' %}" style="width:20% ">
+</div> {% endcomment %}
 
 <form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="row spacer">
+    {% comment %} <div class="col-3"></div> {% endcomment %}
     <div class="col-2">
         <label>{{taskform.title.label}}</label>
     </div>
@@ -17,6 +54,7 @@
     </div>
     </div>
     <div class="row spacer">
+        {% comment %} <div class="col-3"></div> {% endcomment %}
     <div class="col-2">
         <label>{{taskform.description.label}}</label>
     </div>
@@ -28,6 +66,7 @@
     </div>
 
     <div class="row spacer">
+        {% comment %} <div class="col-3"></div> {% endcomment %}
     <div class="col-2">
         <label>{{taskform.instructions.label}}</label>
     </div>
@@ -39,10 +78,11 @@
     </div>
 
     {% comment %} not connected {% endcomment %}
-    <div class="row spacer">           
+    <div class="row spacer">  
+        {% comment %} <div class="col-3"></div>          {% endcomment %}
         <label for="exampleFormControlSelect1" class="col-2">Number of Annotations per data instance</label>
         <div class="col-4">
-            <select class="form-control" id="exampleFormControlSelect1">
+            <select class="form-control" id="exampleFormControlSelect1" name = "NumAnnotations">
             <option>1</option>
             <option>3</option>
             <option>5</option>
@@ -52,7 +92,8 @@
     </div>
 
 
-    <div class="row spacer">           
+    <div class="row spacer">
+        {% comment %} <div class="col-3"></div>            {% endcomment %}
         <label for="exampleFormControlSelect1" class="col-2">Related field</label>
         <div class="col-4">
             <select class="form-control" id="exampleFormControlSelect1" name = "feild">
@@ -71,6 +112,7 @@
     {{ formset.management_form }}
     {% for form in formset %}
     <div class="row form-row spacer">
+        {% comment %} <div class="col-3"></div> {% endcomment %}
         <div class="col-2">
             <label>{{form.cateogaryName.label}}</label>
         </div>
@@ -87,8 +129,9 @@
 
     {% comment %} Not working {% endcomment %}
     <div class="row spacer">
+        {% comment %} <div class="col-3"></div> {% endcomment %}
             <div class="col-2">
-                <label for="exampleFormControlFile1">Dataset </label>
+                <label for="exampleFormControlFile1">Dataset (Add a .csv file according to the given guide lines)</label>
             </div>
             <div class="col-4">
                 {{csvform.data}}
@@ -103,7 +146,6 @@
     </div>
 
 </form>
-
 
 {% block custom_js %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
