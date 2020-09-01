@@ -169,7 +169,7 @@ def doMediaAnnoExamples(request,task_id):       #by task author
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
     print(str(cateogary_list))
-    print(cateogary_list[1].cateogaryName)
+    #print(cateogary_list[1].cateogaryName)
     for cateogary in cateogary_list:
         tag = str(cateogary.cateogaryTag)         #handle errors
         dic.update({tag:cateogary})
@@ -186,7 +186,8 @@ def doMediaAnnoExamples(request,task_id):       #by task author
             result_obj.ExampleMediaDataInstanceID = instance
             result_obj.resultCateogary = resultCateogary
             result_obj.save()
-            return redirect('UserManagement:author_task_list')
+        return redirect('UserManagement:author_task_list')
+
 
 @login_required(login_url='UserManagement:sign_in')
 def DoMediaAnnotationTest(request,task_id):   #how to get the task
@@ -388,7 +389,7 @@ def processExampleCsvFile(filename,task,words,test,dic):
         for i, line in enumerate(reader):
             if i == 0:
                 continue
-            elif i == 21 :
+            elif i == 11 :
                 break
             else:
                 exampledatainstance = ExampleTextDataInstance(testID=test)
@@ -396,17 +397,19 @@ def processExampleCsvFile(filename,task,words,test,dic):
         ExampleTextDataInstance.objects.bulk_create(exampleinstancelist)
         real_objects = ExampleTextDataInstance.objects.filter(testID=test)
 
-        #print(real_objects)
+        print(len(real_objects))
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
         for i, line in enumerate(reader):
             # print(instancelist[i-1])
             if i == 0:
                 continue
-            elif i == 21:
+            elif i == 11:
                 break
             else:
                 for j in range(words):
+                    print ("j"+str(j))
+                    print(i-1)
                     data = ExampleTextData(Data=line[j], InstanceID=real_objects[i - 1])
                     exampledatalist.append(data)
                 result = str(line[words])
@@ -415,13 +418,16 @@ def processExampleCsvFile(filename,task,words,test,dic):
                     resultCateogary = dic[result]
                 except KeyError:
                     error.append('Cateogary tag error')
-                resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
-                exampleAnnotationresult.append(resultobject)
+                    return redirect('createtask:TextAnno_example_add',task_id = task.id)
+                else:
+                    resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
+                    exampleAnnotationresult.append(resultobject)
 
 
         ExampleTextData.objects.bulk_create(exampledatalist)
         ExampleTextAnnoResult.objects.bulk_create(exampleAnnotationresult)
         print (error)
+
 
 
 
