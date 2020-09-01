@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en-us" >
+{% extends "createtask/base.html" %}
+{% block container %}
 <head>
     <title>Data Annotation Task</title>
     <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
@@ -10,29 +10,25 @@
     <meta name="robots" content="NONE,NOARCHIVE">
 </head>
 <body class=" dashboard" data-admin-utc-offset="0" >
-<!-- Container -->
-<div id="container">
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-            <h1 id="site-name">Crowd Sourced Data Annotation Platform</h1>
-        </div>
-    </div>
-    <!-- END Header -->
-
-    <!-- Content -->
     <div id="content" class="colMS">
+    <h class="alert alert-warning"> You have to complete this test before registering</h><br><br><br>
         <h1><strong>Task Title : {{task.title}}</strong></h1>
         <h1><strong>Task Description : {{task.description}}</strong></h1>
         <h1><strong>Instructions : {{task.instructions}}</strong></h1>
         <h1><strong>Task Type : {{task.taskType}}</strong></h1>
-        <div id="content-main">
-            <div class="app-auth module">
-                <form action="" method="POST">
+    </div>
+        
+            <form action="" method="POST">
+                <div class="album py-5 bg-light">
+                <div class="container">
+                <div class="row">
                 {%for data_instance in instance_list%}
+                    <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
                     <h1><strong>Data Instance</strong></h1>
                     {% load static %}
-                    <img max-width="420" max-height="420" src="{{ data_instance.mediaData.url }}" alt="{{ data_instance.mediaData.url }}"><br>
+                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src={{ data_instance.mediaData.url }} data-holder-rendered="true">
+                    {% comment %} <img max-width="420" max-height="420" src="{{ data_instance.mediaData.url }}" alt="{{ data_instance.mediaData.url }}"><br> {% endcomment %}
                     <h4>Data Classes</h4>
                         {% csrf_token %}
                         {% for data_class in cateogary_list %}
@@ -42,18 +38,22 @@
                         <input type="hidden" name="DataInstance" value="{{data_instance.mediaData}}">
                         <input type="hidden" name="task_id" value="{{task_id}}">
                         <input type="hidden" name="user_id" value="{{user_id}}">
+                        </div>
+                        </div>
                 {%endfor%}
+                </div>
+                </div>
+                </div>
                 <input type="Submit" value="Submit Data Annotation" >
-                </form>
+            </form>
 
                 
-            </div>
-        </div>
+
         <br class="clear">
-    </div>
     <!-- END Content -->
     <div id="footer"></div>
 </div>
 <!-- END Container -->
 </body>
+{% endblock %}
 </html>

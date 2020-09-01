@@ -12,7 +12,7 @@ from .filters import ProfileFilter
 from .forms import ProfileForm  # RateForm
 from .models import Profile, ContributorTask, Review
 from django.contrib import messages
-from CreateTask.models import Task
+from CreateTask.models import Task,TestResult,AnnotationTest
 from .decorators import unauthenticated_user, allowed_user
 
 
@@ -235,25 +235,51 @@ def view_field_task_list(request):
     for i in registeredTasks:
         registeredTaskID += [i.Task_id]
     all_field_tasks = Task.objects.filter(field=user_field).exclude(creatorID=user)
-    all_field_tasks_unregistered = all_field_tasks.exclude(id__in=registeredTaskID)
-    # print(all_field_tasks)
-    return render(request, 'UserManagement/field_task_list.html',
-                  {'all_field_tasks_unregistered': all_field_tasks_unregistered})
 
+    # I remove attempted tasks
+    all_tests_user_done = TestResult.objects.filter(annotatorID=user)
+    doneTaskID = []
+    for j in all_tests_user_done:
+        test = j.testID
+        doneTaskID += [test.taskID]
+        print(test.taskID.id)
+        registeredTaskID += [test.taskID.id]
+
+    all_field_tasks_unregistered = all_field_tasks.exclude(id__in = registeredTaskID)
+    return render (request, 'UserManagement/field_task_list.html', {'all_field_tasks_unregistered':all_field_tasks_unregistered})
+
+# @login_required(login_url='UserManagement:sign_in')
+# def reg_task (request, pk):
+#     ct = ContributorTask()
+#     task = get_object_or_404(Task, id=pk)
+#     user = request.user
+#     context = {'task':task}
+#     if request.method=="POST":
+#         ct.Task=task
+#         ct.User=user
+#         ct.save()
+#         messages.success(request, "You have successfully registered as a contributor")
+#         return HttpResponseRedirect(reverse('UserManagement:field_task_list'))
+#     return render(request, 'UserManagement/reg_task.html')
 
 @login_required(login_url='UserManagement:sign_in')
-def reg_task(request, pk):
-    ct = ContributorTask()
+
+def reg_task (request, pk):
+    
+    #ct = ContributorTask()
     task = get_object_or_404(Task, id=pk)
-    user = request.user
-    context = {'task': task}
-    if request.method == "POST":
-        ct.Task = task
-        ct.User = user
-        ct.save()
-        messages.success(request, "You have successfully registered as a contributor")
-        return HttpResponseRedirect(reverse('UserManagement:field_task_list'))
-    return render(request, 'UserManagement/reg_task.html')
+    #user = request.user
+    context = {'task':task}
+
+    if request.method=="POST":
+        print('hellooo')
+        #creating_contibtask(request,pk)
+        return redirect('createtask:check_test',task_id=pk)
+    
+    if request.method=="GET":
+    
+        return render(request, 'UserManagement/reg_task.html')
+
 
 
 @login_required(login_url='UserManagement:sign_in')
@@ -276,6 +302,7 @@ def review(request, pk):
         contributor_reviews.save()
         return HttpResponseRedirect(reverse('UserManagement:view_task_contributors'))
     return render(request, 'UserManagement/rate.html')
+
 
 @login_required(login_url='UserManagement:sign_in')
 def view_my_tasks(request):

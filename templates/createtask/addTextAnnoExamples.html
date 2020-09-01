@@ -1,5 +1,26 @@
 {% extends "createtask/base.html" %}
 {% block container %}
+{% load static %}
+<div class="container">
+<div class="row">
+    <div class="col">
+        <h4> Guide adding example test data annotations</h4>
+        <br>
+        <h6>Example .csv file for adding annotation examples </h6>
+        <img src="{% static 'guide/textannoexample1.png' %}" class="rounded" alt="..." style="width:60%">
+    </div>
+    <div class="col-5">
+        <br>
+        <br>
+        <br>
+        <h6>Cateogarie Tags form similar and dissimilar</h6>
+        <img src="{% static 'guide/textexamplecateogary.png' %}" class="rounded" alt="..." style="width:100%">
+    </div>
+</div>
+<br>
+
+</div>
+
 <h2>   Add the number tag(0,1,2..) relative to each cateogary</h2>
 <form class="form-horizontal col-12" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
@@ -37,26 +58,26 @@
         <div class="col-8">
         <input type="checkbox" id="checktest" name="checktest" value="checked">
         <label for="checktest"> Make these example annotations a test and automaticly approve annotators with</label>
-        <select  class="" id="exampleFormControlSelect1">
-            <option>90%</option>
-            <option>80%</option>
-            <option>75%</option>
-            <option>70%</option>
-            <option>60%</option>
-            <option>50%</option>
+        <select  class="" id="exampleFormControlSelect1" name = "required_accuaracy">
+            <option>90</option>
+            <option>80</option>
+            <option>75</option>
+            <option>70</option>
+            <option>60</option>
+            <option>50</option>
         </select>
-        accuaracy
+        % accuaracy
         </div>
 
     </div> 
 
     <div class="row spacer">
         <div class="col-2">
+            <a class="btn btn-danger" href="{% url 'UserManagement:author_task_list' %}">Skip This Step</a>
+        </div>
+        <div class="col-4">
             <button type="submit" class="btn btn-primary">Next</button>
         </div>
-        {% comment %} <div class="col-4">
-            <button type="submit" class="btn btn-primary">Skip This Step</button>
-        </div> {% endcomment %}
     </div>
 
 

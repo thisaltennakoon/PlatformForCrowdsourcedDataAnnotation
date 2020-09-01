@@ -3,13 +3,13 @@ from django.views import generic
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic import View
 from .forms import CreateTaskForm, CateogaryFormSet, DQuestionFormSet, McqFormSet, McqForm, CustomForm1, CsvForm
-
+from django.contrib import messages
 from .models import  Cateogary, DescrptiveQuestion, McqQuestion, McqOption, Questionaire, TextFile, \
     TextDataInstance, TextData, MediaDataInstance, Task, GenTextFile, DataGenTextInstance,TestTextFile,\
     ExampleTextDataInstance,ExampleTextData,ExampleTextAnnoResult,AnnotationTest,TestResult,TextAnnoAnswers,\
     ExampleMediaDataInstance,ExampleMediaAnnoResult,MediaAnnoAnswers
-from UserManagement.models import User
-
+from UserManagement.models import User,ContributorTask
+from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory
 from django import template
 from random import shuffle
@@ -21,12 +21,27 @@ import os
 from PIL import Image
 import csv
 
+def creating_contibtask(request,pk):
+    print('kll')
+    ct = ContributorTask()
+    task = Task.objects.get(id=pk)
+    print(task.id)
+    user = request.user
+    ct.Task=task
+    ct.User=user
+    ct.save()
+    print('here')
+    messages.success(request, "You have successfully registered as a contributor")
+    #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+    return redirect('UserManagement:return_field_task_list')
+
 def ExampleSkip(request):
     if request.method == 'POST':
         #redirect correctly
         pass
 
 
+@login_required(login_url='UserManagement:sign_in')
 def doTest(request,task_id):
     is_test = False
     task = Task.objects.get(pk=task_id)
@@ -36,17 +51,23 @@ def doTest(request,task_id):
     except AnnotationTest.DoesNotExist:
         is_test = False
     else:
-        is_test = True
-
-    if request.method == 'GET':
-        if is_test == True:
-            if task.taskType == 'TextAnno':
-                return redirect('createtask:TextAnno_Test',task_id=task_id)
-            elif task.taskType == 'ImageAnno':
-                return redirect('createtask:ImageAnno_Test',task_id=task_id)
+        if test.is_active == True:
+            is_test = True
         else:
-            #redirect directly to do task
-            pass
+            is_test = False
+
+    if is_test == True:
+        if task.taskType == 'TextAnno':
+            return redirect('createtask:TextAnno_Test',task_id=task_id)
+        elif task.taskType == 'ImageAnno':
+            return redirect('createtask:ImageAnno_Test',task_id=task_id)
+    else:
+        print('hooooooooooooooooooooooooooooooooooo')
+        creating_contibtask(request,task_id)
+    if request.method == 'GET':
+
+        return redirect('UserManagement:return_field_task_list')
+
 
 def is_pass(score,test):
     if score >= test.required_marks:
@@ -55,7 +76,7 @@ def is_pass(score,test):
     else:
         pass
 
-
+@login_required(login_url='UserManagement:sign_in')
 def createTask(request):
     template_name = 'createtask/new.html'
     if request.method == 'GET':
@@ -109,7 +130,7 @@ def processImages(files, task):
             pass
     MediaDataInstance.objects.bulk_create(images)
 
-
+@login_required(login_url='UserManagement:sign_in')
 def AddMediaAnnoExamples(request,task_id):
     template_name = 'createtask/addMediaAnnoExamples.html'
     task = Task.objects.get(id=task_id)
@@ -120,11 +141,11 @@ def AddMediaAnnoExamples(request,task_id):
     if request.method == 'POST':
         test = AnnotationTest(taskID = task)  
         files = request.FILES.getlist('file_field')
-        isTest = request.POST['checktest']   
-        if isTest == 'checked':
+        check = request.POST.getlist('checktest')   
+        if len(check) > 0:
             isTest = True
         else:
-            isTest =False             
+            isTest =False                          
         test.is_active = isTest
         test.save()
         request.session['test'] = test.id
@@ -138,6 +159,7 @@ def AddMediaAnnoExamples(request,task_id):
         ExampleMediaDataInstance.objects.bulk_create(images)
         return redirect('createtask:MediaAnno_example_do',task_id=task_id)
 
+@login_required(login_url='UserManagement:sign_in')
 def doMediaAnnoExamples(request,task_id):       #by task author
     template_name = 'createtask/doMediaAnnoExamples.html'
 
@@ -147,7 +169,7 @@ def doMediaAnnoExamples(request,task_id):       #by task author
     exampleinstance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
     print(str(cateogary_list))
-    print(cateogary_list[1].cateogaryName)
+    #print(cateogary_list[1].cateogaryName)
     for cateogary in cateogary_list:
         tag = str(cateogary.cateogaryTag)         #handle errors
         dic.update({tag:cateogary})
@@ -164,14 +186,16 @@ def doMediaAnnoExamples(request,task_id):       #by task author
             result_obj.ExampleMediaDataInstanceID = instance
             result_obj.resultCateogary = resultCateogary
             result_obj.save()
-            return redirect('UserManagement:author_task_list')
+        return redirect('UserManagement:author_task_list')
 
+
+@login_required(login_url='UserManagement:sign_in')
 def DoMediaAnnotationTest(request,task_id):   #how to get the task
     template_name = 'createtask/mediaAnnoTest.html'
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user = User.objects.get(pk=request.session['user_id'])  
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.examplemediadatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -216,9 +240,24 @@ def DoMediaAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html')
 
+@login_required(login_url='UserManagement:sign_in')
 def createTextTask(request):
     template_name = 'createtask/addtextAnno.html'
     if request.method == 'GET':
@@ -300,7 +339,7 @@ def ProcessCsv(filename, task):
         TextData.objects.bulk_create(datalist)
     return words
 
-
+@login_required(login_url='UserManagement:sign_in')
 def AddTextAnnoExamples(request,task_id):
     template_name = 'createtask/addTextAnnoExamples.html'
     csvform = CsvForm()
@@ -326,12 +365,12 @@ def AddTextAnnoExamples(request,task_id):
         examplefile.save()
         filename = './' + examplefile.csvFile.url
         test = AnnotationTest(taskID = task)               #check checkbox
-        isTest = request.POST['checktest']             #handle errors
-        if isTest == 'checked':
+        check = request.POST.getlist('checktest')           #handle errors
+        if len(check) > 0:
             isTest = True
         else:
-            isTest =False             
-        print('isTest='+str(isTest))
+            isTest =False                  
+        #print('isTest='+str(isTest))
         test.is_active = isTest
         test.save()
         processExampleCsvFile(filename,task,words,test,dic)
@@ -350,7 +389,7 @@ def processExampleCsvFile(filename,task,words,test,dic):
         for i, line in enumerate(reader):
             if i == 0:
                 continue
-            elif i == 21 :
+            elif i == 11 :
                 break
             else:
                 exampledatainstance = ExampleTextDataInstance(testID=test)
@@ -358,17 +397,19 @@ def processExampleCsvFile(filename,task,words,test,dic):
         ExampleTextDataInstance.objects.bulk_create(exampleinstancelist)
         real_objects = ExampleTextDataInstance.objects.filter(testID=test)
 
-        #print(real_objects)
+        print(len(real_objects))
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=",")
         for i, line in enumerate(reader):
             # print(instancelist[i-1])
             if i == 0:
                 continue
-            elif i == 21:
+            elif i == 11:
                 break
             else:
                 for j in range(words):
+                    print ("j"+str(j))
+                    print(i-1)
                     data = ExampleTextData(Data=line[j], InstanceID=real_objects[i - 1])
                     exampledatalist.append(data)
                 result = str(line[words])
@@ -377,8 +418,10 @@ def processExampleCsvFile(filename,task,words,test,dic):
                     resultCateogary = dic[result]
                 except KeyError:
                     error.append('Cateogary tag error')
-                resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
-                exampleAnnotationresult.append(resultobject)
+                    return redirect('createtask:TextAnno_example_add',task_id = task.id)
+                else:
+                    resultobject = ExampleTextAnnoResult(ExampleTextDataInstanceID=real_objects[i - 1],resultCateogary=resultCateogary)
+                    exampleAnnotationresult.append(resultobject)
 
 
         ExampleTextData.objects.bulk_create(exampledatalist)
@@ -388,11 +431,12 @@ def processExampleCsvFile(filename,task,words,test,dic):
 
 
 
+@login_required(login_url='UserManagement:sign_in')
 def DoTextAnnotationTest(request,task_id):   #how to get the task
     task = Task.objects.get(pk=task_id)
     test = AnnotationTest.objects.get(taskID=task)  # try required
     user_done_this = False
-    user= UserNew2.objects.get(name='kasun')    
+    user = User.objects.get(pk=request.session['user_id'])  
     #user_done_this = check_test_done(user,test)     #user can answer only one time
     instance_list = test.exampletextdatainstance_set.all()
     cateogary_list = task.cateogary_set.all()
@@ -441,6 +485,20 @@ def DoTextAnnotationTest(request,task_id):   #how to get the task
             result_object.score = score_prentage
             result_object.save()
             print(score_prentage)
+            is_pass = False
+            if score_prentage >= test.required_marks:
+                is_pass = True
+            else:
+                is_pass = False
+            if is_pass == True:
+                creating_contibtask(request,task_id)
+                #messages.success(request, "You have successfully registered as a contributor")
+                #return HttpResponseRedirect(reverse('UserManagement:field_task_list')) #why not coming
+                return redirect('UserManagement:return_field_task_list')
+
+            else:
+                messages.success(request, "Sorry you didn't met the accuarcy requirement to register to this task")
+                return redirect('UserManagement:return_field_task_list')
         else:
             return render(request, 'createtask/Uhavedonethis.html') 
 
@@ -468,7 +526,7 @@ def check_is_test(task):
 
 def check_is_taskauthor(user,task):
     isTaskAuthor = False
-    user = UserNew2.objects.get(name='kasun') 
+    user = User.objects.get(pk=request.session['user_id']) 
     task = Task.objects.get(pk=task)
     if task.creatorID == user.id:
         isTaskAuthor = True
