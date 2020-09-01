@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import DataAnnotationResult
 from django.http import HttpResponse
-#from CreateDataAnnotationTask.models import Task, DataClass, AnnotationDataSet
 from CreateTask.models import Task, Cateogary, TextDataInstance, TextData
 from .models import DataAnnotationResult
 from django.contrib import messages
@@ -49,7 +48,6 @@ def task(request):
                     return redirect('/DoTextDataAnnotationTask/Task?task_id=' + str(task_id))
         except DatabaseError:
             print('DatabaseError in task() annotation submission Text Data Annotation')
-            # return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     else:
         try:
@@ -58,7 +56,6 @@ def task(request):
                 return redirect('/UserManagement/MyTasks/')
             data_instance_annotation_times = int(Task.objects.get(id=task_id).requiredNumofAnnotations)
             annotated_data_instances = DataAnnotationResult.objects.filter(TaskID_id=task_id, UserID=user_id).order_by('-LastUpdate')
-            #print(annotated_data_instances)
             data_instances_to_exclude = []
             for i in annotated_data_instances:
                 data_instances_to_exclude += [i.DataInstance.id]
@@ -69,19 +66,16 @@ def task(request):
                 skip_instance_request =True
             except:
                 skip_instance_request =False
-            #print(data_instances_to_exclude)
             try:
                 with transaction.atomic():
                     data_annotation = TextDataInstance.objects.filter(taskID_id=task_id,IsViewing=False,NumberOfAnnotations__lt=data_instance_annotation_times).exclude(id__in=data_instances_to_exclude)
-                    #print(data_annotation)
                     if len(data_annotation) > 0:
                         data_instance = random.choice(data_annotation)
-                        data_instance_about_to_annotate = data_instance #TextDataInstance.objects.get(taskID_id=task_id, media=data_instance.media)
+                        data_instance_about_to_annotate = data_instance
                         data_instance_about_to_annotate.IsViewing=True
                         data_instance_about_to_annotate.WhoIsViewing=user_id
                         data_instance_about_to_annotate.save()
                         sub_data_instances = TextData.objects.filter(InstanceID=data_instance_about_to_annotate.id)
-                        #print(Cateogary.objects.filter(taskID_id=task_id))
                         if len(annotated_data_instances) > 0:
                             return render(request, 'DoTextDataAnnotationTask/DataAnnotationTask.html', {'data_instance_available': True,
                                                                                                     'task_object': Task.objects.get(id=task_id),
@@ -149,7 +143,6 @@ def task(request):
                                                                                                     'annotated_data_instances_available': False,})
             except DatabaseError:
                 print('DatabaseError in task() giving data instance to annotator Text Data Annotation')
-                # return HttpResponse("DatabaseError")
                 return redirect('/UserManagement/MyTasks/')
         except:
             print('Error in task() giving data instance to annotator Text Data Annotation')
@@ -170,7 +163,6 @@ def skip_data_instance(request):
                     return redirect('/UserManagement/MyTasks/')
         except DatabaseError:
             print('DatabaseError in skip_data_instance() Text Data Annotation')
-            # return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/DoTextDataAnnotationTask/Task?task_id=' + str(task_id))
@@ -185,7 +177,6 @@ def stop_annotating(request):
             return redirect('/UserManagement/MyTasks/')
         else:
             print('Error in stop_annotating() Text Data Annotation')
-            # return HttpResponse("DatabaseError")
             return redirect('/UserManagement/MyTasks/')
     except:
         return redirect('/UserManagement/MyTasks/')
@@ -198,15 +189,11 @@ def stop_viewing(request,task_id,viewing_data_instance):
         user_id = request.session['user_id']
         try:
             with transaction.atomic():
-                #print(1)
                 annotating_data_instance = TextDataInstance.objects.get(taskID_id=task_id,id=viewing_data_instance)
-                #print(2)
                 if (annotating_data_instance.WhoIsViewing == user_id) and (annotating_data_instance.IsViewing == True):
-                    #print(3)
                     annotating_data_instance.IsViewing = False
                     annotating_data_instance.WhoIsViewing = 0
                     annotating_data_instance.save()
-                    #print(4)
                     return True
         except DatabaseError:
             return False
@@ -264,18 +251,3 @@ def view_my_annotations_change(request):
                                                                                         'sub_data_instances':sub_data_instances,
                                                                                     'task_object': Task.objects.get(id=task_id),
                                                                                      'data_classes': Cateogary.objects.filter(taskID_id=task_id),})
-
-"""def view_my_annotations_delete(request):
-    annotated_data_instance_id = request.GET['annotated_data_instance_id']
-    task_id = DataAnnotationResult.objects.get(id=annotated_data_instance_id).TaskID_id
-    try:
-        last_confirmation = request.GET['last_confirmation']
-        if last_confirmation=="True":
-            DataAnnotationResult.objects.get(id=annotated_data_instance_id).delete()
-            return redirect('/DoTextDataAnnotationTask/ViewMyAnnotations?task_id='+str(task_id))
-        else:
-            return redirect('/DoTextDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id=' + str(annotated_data_instance_id))
-
-    except:
-        return render(request, 'DoTextDataAnnotationTask/ViewMyAnnotationsDelete.html', {'annotated_data_instance_id': annotated_data_instance_id,
-                                                                                     'task_object':Task.objects.get(id=task_id)})"""
