@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import DataAnnotationResult
 from django.http import HttpResponse
-#from CreateDataAnnotationTask.models import Task, DataClass, AnnotationDataSet
 from CreateTask.models import Task, Cateogary, MediaDataInstance
 from .models import DataAnnotationResult
 from django.contrib import messages
@@ -250,18 +249,3 @@ def view_my_annotations_change(request):
                                                                                     'task_object': Task.objects.get(id=task_id),
                                                                                      'data_classes': Cateogary.objects.filter(taskID_id=task_id),
                                                                                     })
-
-"""def view_my_annotations_delete(request):
-    annotated_data_instance_id = request.GET['annotated_data_instance_id']
-    task_id = DataAnnotationResult.objects.get(id=annotated_data_instance_id).TaskID_id
-    try:
-        last_confirmation = request.GET['last_confirmation']
-        if last_confirmation=="True":
-            DataAnnotationResult.objects.get(id=annotated_data_instance_id).delete()
-            return redirect('/DoDataAnnotationTask/ViewMyAnnotations?task_id='+str(task_id))
-        else:
-            return redirect('/DoDataAnnotationTask/ViewMyAnnotations/Change?annotated_data_instance_id=' + str(annotated_data_instance_id))
-
-    except:
-        return render(request, 'DoDataAnnotationTask/ViewMyAnnotationsDelete.html', {'annotated_data_instance_id': annotated_data_instance_id,
-                                                                                     'task_object':Task.objects.get(id=task_id)})"""
