@@ -15,13 +15,13 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='UserManagement:sign_in')
 def textanalyse(request):
     try:
-        TaskID = request.GET['Task_ID']
+        TaskID = request.GET['Task_ID']    # GET TASK ID FOR FIND ANALYSIS
         lables = []
         classid = []
         t = Task.objects.all()
         for t1 in t:
             if t1.id == int(TaskID):
-                noOfannotationneed = t1.requiredNumofAnnotations
+                noOfannotationneed = t1.requiredNumofAnnotations # GET HOW MANY ANNOTATION NEED FOR ONE TASK
         d1 = DataClass.objects.all()
         a1 = AnnotationDataSet.objects.all()
         ar = AnnotationDataSetresult.objects.all()
@@ -29,12 +29,12 @@ def textanalyse(request):
         datainstance = []
         for j in d1:
             if j.taskID_id == int(TaskID):
-                lables.append(j.cateogaryName)
-                classid.append(j.cateogaryTag)
+                lables.append(j.cateogaryName)    # TAKE ALL CATOGORIES NAME IN A LIST (EG: CAT,DOG,OTHERS)
+                classid.append(j.cateogaryTag)    # TAKE ALL CATOGARY TAG IN A LIST (EG: CAT=0, DOG=1, OTHERS =2)
         for k in a1:
             if k.taskID_id == int(TaskID):
-                noOdata += 1
-                datainstance.append(k.id)
+                noOdata += 1                      # FIND HOW MANY INSTANCE IN ONE TASK
+                datainstance.append(k.id)        # TAKE ALL INSTANCE ID IN A LIST
         result1 = []
         annotator = []
         noOfannotation = []
@@ -42,34 +42,34 @@ def textanalyse(request):
         task = []
         for l in datainstance:
             for lm in ar:
-                if l == lm.DataInstance_id:
-                    task.append([lm.UserID, str(l), str(lm.ClassID)])
-                    result1.append(lm.ClassID)
-                    annotator.append(lm.UserID)
+                if l == lm.DataInstance_id:                             # CHECK WHETHER THAT DATA INSTANT IN ANNOTATION RESULT SET
+                    task.append([lm.UserID, str(l), str(lm.ClassID)])   # TAKE THAT ISTANCE DETAILS LIKE ANNOTATOR ID , DATA ID, AND ANNOTATION RESULT TAG AS A NESTED LIST FOR EVERY INSTANCE
+                    result1.append(lm.ClassID)                          # TAKE TAG ID AS A LIST
+                    annotator.append(lm.UserID)                         # TAKE USER ID AS A LIST
             for ml in a1:
                 if l == ml.id:
-                    noOfannotation.append(ml.NumberOfAnnotations)
-                    noOfannotationnum += ml.NumberOfAnnotations
-        qn = []
+                    noOfannotation.append(ml.NumberOfAnnotations) # GET NO OF ANNOTATION DONE FOR ONE INSTANCE
+                    noOfannotationnum += ml.NumberOfAnnotations  # GET TOTAL NUMBER OF ANNOTATION
+        qn = [] 
         lenth = 0
         for q in noOfannotation:
             co1 = []
-            for co in classid:
+            for co in classid:                            # FIND THE CLASS TAG FOR ONE INSTANCE BY DIFFERENT ANNOTATORS
                 co1.append((result1[lenth:lenth + q].count(co)))
             lenth += q
             if max(co1) is 0:
                 qn.append('None')
             else:
-                qn.append(lables[co1.index(max(co1))])
+                qn.append(lables[co1.index(max(co1))])  # ANALYSE WHICH CLASS IS THAT DATA INSTANCE MOST LIKELY USING ALL ANNOTATORS RESULT
         m = []
         for data in lables:
-            m.append(qn.count(data))
-        totneed = noOdata * noOfannotationneed
-        totdone = noOfannotationnum
-        process = ("%.2f" % round((totdone / totneed) * 100, 2))
+            m.append(qn.count(data))                    # FIND THE COUNT OF EVERY CLASS CATOGARY DATA INSTANCE IN THAT TASK
+        totneed = noOdata * noOfannotationneed          # FIND FULL COUNT FOR ANNOTATION FOR TASK
+        totdone = noOfannotationnum                     # FIND FINSHED ANNOTATION COUNT
+        process = ("%.2f" % round((totdone / totneed) * 100, 2))  # FIND THE PROGRESS PERCENTATION FOR DONE TASK
         r = []
         # taskdata=[[0,str(i),str(rater1[i])] for i in range(0,len(rater1))]+[[1,str(i),str(rater2[i])] for i in range(0,len(rater2))]+[[2,str(i),str(rater3[i])] for i in range(0,len(rater3))]
-        ratingtask = agreement.AnnotationTask(data=task)
+        ratingtask = agreement.AnnotationTask(data=task)    # INPUT LIST TO FIND INTER ANNOTATOR AGREMENT IN NLTK INBUILT FUNCTION 
         try:
             r.append(str("%.4f" % round(ratingtask.kappa(), 4)))
 
