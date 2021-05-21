@@ -121,7 +121,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
-        'USER': 'thisal',
+        'USER': 'sep',
         'PASSWORD': 'sep.2020',
         'HOST':'localhost',
         'PORT':'3308'
