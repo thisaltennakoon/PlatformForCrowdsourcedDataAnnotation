@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 #Janani's sqlite database
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}"""
+}
 
 #Janani's mysql database
 """DATABASES = {
@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'CrowdsourcedDataAnnotationPlatform.wsgi.application'
 }"""
 
 #Thisal's Mysql databsse
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
@@ -126,7 +126,7 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3308'
     }
-}
+}"""
 
 
 #MySQL event for release data instances
