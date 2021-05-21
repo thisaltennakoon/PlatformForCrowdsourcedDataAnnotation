@@ -23,7 +23,7 @@ SECRET_KEY = 'mgqr+xmp@v=y+6-ohs8t6cy9j841(j012agi=6$3r(-9(mf@cz'
 DEBUG = True
 
 #ALLOWED_HOSTS = ['104.197.54.228']
-ALLOWED_HOSTS = ['35.232.121.54']
+ALLOWED_HOSTS = ['34.134.212.174']
 
 
 # Application definition
@@ -137,6 +137,7 @@ use crowdsourceddataannotationplatform;
 show tables;
 select * from createtask_mediadatainstance;  
 select * from createtask_textdatainstance; 
+
 SET GLOBAL event_scheduler = ON; -- enable event scheduler.
 SELECT @@event_scheduler;  -- check whether event scheduler is ON/OFF
 CREATE EVENT release_data_instances_mediadatainstance  -- create your event
