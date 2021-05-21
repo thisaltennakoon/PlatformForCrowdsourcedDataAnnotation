@@ -9,7 +9,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('UserManagement/', include('UserManagement.urls', namespace='UserManagement')),
-    path('UserManagement/',include('password_reset.urls')),
+    #path('UserManagement/',include('password_reset.urls')),
     path('', views.home, name='home'),
     path('UserManagement/', include('django.contrib.auth.urls')),
     path('DoDataAnnotationTask/', include('DoDataAnnotationTask.urls')),
