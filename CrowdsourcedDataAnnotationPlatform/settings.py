@@ -122,7 +122,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crowdsourceddataannotationplatform',
         'USER': 'thisal',
-        'PASSWORD': 'thisal.1226',
+        'PASSWORD': 'sep.2020',
         'HOST':'localhost',
         'PORT':'3308'
     }
