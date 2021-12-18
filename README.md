@@ -38,16 +38,3 @@ In data annotation task, the admin can :
 5.	Dynamic user interfaces that can automatically adjust according to the type of the data (image/text) and the number of classes.
 6.	Proper authentication and user validation mechanisms.
 
-
-==========================================================================================
-
-
-Following python packages will be needed to install the application
-
-pip install mysqlclient
-pip install django-pyc
-pip install django-filter
-pip install xlrd
-pip install Pillow
-pip install nltk
-pip install django_countries
