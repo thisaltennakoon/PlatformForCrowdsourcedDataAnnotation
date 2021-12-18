@@ -8,8 +8,8 @@ The main objective of this study is to develop a web-based system where users (c
 		Eg : Given an image, the user annotates whether the image is a picture of a cat or a picture of a dog.
 
 <h3>Main User Roles:</h3>
-1.Task Authors
-2.Annotators
+1.	Task Authors
+2.	Annotators
 
 The functionalities of the system include the following features,
 
